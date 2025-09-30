@@ -19,6 +19,11 @@ export class TodoList implements OnInit{
   localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService)
 
+  console(){
+    const test = 'test'
+  }
+
+
   ngOnInit(): void {
     const savedTodos = this.localManager.getAllTodos()
     this.todoState.loadFromStorage(savedTodos)
