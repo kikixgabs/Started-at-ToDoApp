@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';
@@ -6,8 +6,9 @@ import { TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 
 interface contentForm {
-  formContent: FormControl<string>
-  formSelector: FormControl<Priority | null>
+  formContent: FormControl<string>,
+  formSelector: FormControl<Priority | null>,
+  formFilter: FormControl<Priority | 'ALL' | null>
 }
 @Component({
   selector: 'app-todo-list',
@@ -21,16 +22,34 @@ export class TodoList implements OnInit{
   todoState = inject(TodoStateService)
   Priority = Priority;
 
+  filterSignal = signal<Priority | 'ALL' | null>(null)
 
   ngOnInit(): void {
     const savedTodos = this.localManager.getAllTodos()
     this.todoState.loadFromStorage(savedTodos)
+
+    this.todoForm.controls.formFilter.valueChanges.subscribe(value => {
+      if (value) this.filterSignal.set(value);
+    })
   }
 
   todoForm = new FormGroup<contentForm>({
     formContent: new FormControl('', {nonNullable:true, validators:[Validators.required, Validators.minLength(1)]}),
-    formSelector: new FormControl<Priority | null>(null, {nonNullable: false, validators:[Validators.required]})
+    formSelector: new FormControl<Priority | null>(null, {nonNullable: false, validators:[Validators.required]}),
+    formFilter: new FormControl<Priority | 'ALL' | null>(null)
   })
+
+  filteredTodos = computed(() => {
+    const filter = this.filterSignal();
+    const todos = this.todoState.todos();
+    const pendingTodos = todos.filter(todo => !todo.completed)
+
+    if (!filter || filter === 'ALL') return pendingTodos;
+
+    return pendingTodos.filter(todo => todo.priority === filter);
+  });
+
+
 
   onSubmit(): void{
     const newTodo: TodoItemInterface = {
@@ -43,7 +62,8 @@ export class TodoList implements OnInit{
     
     this.todoState.addTodo(newTodo);
     this.localManager.setToDoItem(newTodo);
-    this.todoForm.reset();
+    this.todoForm.controls.formContent.reset();
+    this.todoForm.controls.formSelector.reset();
   }
 
 } 

@@ -23,10 +23,26 @@
     }
     
   </form>
-  <ul class="space-y-3">
-    @for(todo of todoState.todos(); track todo.id){
-      <app-todo-item [todo]="todo"></app-todo-item>
-    }
-  </ul>
+  <div class="flex gap-x-2 items-center mb-4">
+    <label for="filter">Filter by:</label>
+    <select [formControl]="todoForm.controls.formFilter" id="filter" class="border-2 rounded-xl px-2 py-1">
+      <option [ngValue]="null" disabled selected>Priority</option>
+      <option [ngValue]="Priority.LOW">Low</option>
+      <option [ngValue]="Priority.MEDIUM">Medium</option>
+      <option [ngValue]="Priority.HIGH">High</option>
+      <option [ngValue]="'ALL'">All</option>
+    </select>
+  </div>
+
+  @if(filteredTodos().length === 0){
+    <p>There're ain't ToDo's for this filter</p>
+  }
+  @else {
+    <ul class="space-y-3">
+      @for(todo of filteredTodos(); track todo.id){
+        <app-todo-item [todo]="todo"></app-todo-item>
+      }
+    </ul>
+  }
     
 </div>
