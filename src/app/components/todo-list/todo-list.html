@@ -35,7 +35,7 @@
   </div>
 
   @if(filteredTodos().length === 0){
-    <p>There're ain't ToDo's for this filter</p>
+    <p>There're ain't ToDo's for {{todoForm.controls.formFilter.value}} priority to filter</p>
   }
   @else {
     <ul class="space-y-3">
