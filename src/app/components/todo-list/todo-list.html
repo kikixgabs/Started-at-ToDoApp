@@ -6,11 +6,20 @@
       class="rounded-xl bg-orange-400 text-black hover:bg-orange-500 px-6 py-3 text-lg">
       Add ToDo
     </button>
+    <select formControlName="formSelector" class="w-[8rem] h-[2rem] border-2 rounded-xl">
+      <option [ngValue]="null" disabled selected>Priority</option>
+      <option [ngValue]="Priority.LOW">Low</option>
+      <option [ngValue]="Priority.MEDIUM">Medium</option>
+      <option [ngValue]="Priority.HIGH">High</option>
+    </select>
     
-    @if(todoForm.controls.formContent.invalid &&  todoForm.controls.formContent.touched){
-      <div class="text-red-500 text-sm font-bold">
-        Content is required
-      </div>
+    @if(
+        (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
+        (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
+      ){
+        <div class="text-red-500 text-sm font-bold">
+          Content & Priority required
+        </div>
     }
     
   </form>

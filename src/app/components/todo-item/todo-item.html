@@ -11,16 +11,26 @@
     [class.scale-90]="removing()"
     [class.opacity-100]="!removing()"
     [class.scale-100]="!removing()">
-    <div>
+    <div class="flex">
       @if(!isEditing()){
         
         <span 
           [class.line-through]="todo().completed"
           [class.text-gray-400]="todo().completed"
-          class="text-2xl break-words pr-24 max-w-full"
+          class="text-2xl break-words pr-24 w-[75%]"
         >
           {{ todo().content }}
         </span>
+        <div class="text-2xl w-[25%] justify-self-end">
+          @if(todo().priority === Priority.LOW) {
+            <i class="fa-solid fa-gauge-high scale-x-[-1]"></i>
+          }@else if (todo().priority === Priority.MEDIUM){
+            <i class="fa-solid fa-gauge"></i>
+          }@else {
+            <i class="fa-solid fa-gauge-high"></i>
+          }
+          {{ todo().priority }}
+        </div>
       }@else {
         <input
           type="text"

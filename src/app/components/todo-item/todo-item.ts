@@ -1,6 +1,6 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { LocalManagerService, TodoStateService } from '../../services';
-import { DefaultTodoItem, TodoItemInterface } from '../../models';
+import { DefaultTodoItem, Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -14,6 +14,7 @@ export class TodoItem {
   todo = input<TodoItemInterface>(DefaultTodoItem);
   appearing = signal(false);
   removing = signal(false);
+  Priority = Priority;
 
   ngOnInit() {
     setTimeout(() => this.appearing.set(true), 10)

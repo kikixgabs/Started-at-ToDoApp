@@ -1,12 +1,13 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
-import { TodoItemInterface } from '../../models';
+import { Priority, TodoItemInterface } from '../../models';
 import { TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 
 interface contentForm {
   formContent: FormControl<string>
+  formSelector: FormControl<Priority | null>
 }
 @Component({
   selector: 'app-todo-list',
@@ -18,10 +19,7 @@ export class TodoList implements OnInit{
 
   localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService)
-
-  console(){
-    const test = 'test'
-  }
+  Priority = Priority;
 
 
   ngOnInit(): void {
@@ -30,13 +28,15 @@ export class TodoList implements OnInit{
   }
 
   todoForm = new FormGroup<contentForm>({
-    formContent: new FormControl('', {nonNullable:true, validators:[Validators.required, Validators.minLength(1)]})
+    formContent: new FormControl('', {nonNullable:true, validators:[Validators.required, Validators.minLength(1)]}),
+    formSelector: new FormControl<Priority | null>(null, {nonNullable: false, validators:[Validators.required]})
   })
 
   onSubmit(): void{
     const newTodo: TodoItemInterface = {
       id: Date.now().toString(),
-      content: this.todoForm.getRawValue().formContent,
+      content: this.todoForm.getRawValue().formContent!,
+      priority: this.todoForm.value.formSelector!,
       date: new Date(),
       completed: false
     }
