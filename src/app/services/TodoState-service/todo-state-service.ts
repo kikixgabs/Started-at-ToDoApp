@@ -1,5 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { TodoItemInterface } from '../../models';
+import { Priority, TodoItemInterface } from '../../models';
 import { LocalManagerService } from '../local-manager-service/local-manager-service';
 
 @Injectable({
@@ -33,6 +33,12 @@ export class TodoStateService {
       )
     )
     this.localManager.updateToDoItem(id, updateContent);
+  }
+
+  editTodoPriority(id: string, priority: Priority) {
+    this.todos.update(todos =>
+      todos.map(t => t.id === id ? { ...t, priority } : t)
+    );
   }
 
   toggleCompletedToDo (id: string) {

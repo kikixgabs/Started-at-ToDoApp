@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, input, signal } from '@angular/core';
 import { LocalManagerService, TodoStateService } from '../../services';
 import { DefaultTodoItem, Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
@@ -22,6 +22,7 @@ export class TodoItem {
   }
 
   isEditing = signal(false);
+  prioritySignal = signal<Priority>(this.todo().priority)
   contentEdit = signal('');
 
   localManager = inject(LocalManagerService);
@@ -30,7 +31,16 @@ export class TodoItem {
   startEdit(){
     this.isEditing.set(true);
     this.contentEdit.set(this.todo().content);
+    this.prioritySignal.set(this.todo().priority);
   }
+
+/*  changePriority() {
+    const newPriority = this.prioritySignal();
+    this.todoState.editTodoPriority(this.todo().id, newPriority);
+    this.todo().priority = newPriority;
+  }*/
+
+
 
   completeToDo(){
     this.removing.set(true);
@@ -46,14 +56,25 @@ export class TodoItem {
   }
 
   saveEdit(){
-    const updateTodo = {
+    const updateTodo: TodoItemInterface = {
       ...this.todo(),
-      content: this.contentEdit()
-    }
+      content: this.contentEdit(),
+      priority: this.prioritySignal()
+    };
+
+    // Actualizo ambos campos en el estado global
     this.todoState.editTodo(updateTodo.id, updateTodo.content);
+    this.todoState.editTodoPriority(updateTodo.id, updateTodo.priority);
+
+    // Reflejo el cambio localmente para que la tarjeta se actualice al instante
+    this.todo().content = updateTodo.content;
+    this.todo().priority = updateTodo.priority;
+
+    // Cierro edición
     this.isEditing.set(false);
     this.contentEdit.set('');
   }
+
 
   deleteTodoWithAnimation() {
     this.removing.set(true);
