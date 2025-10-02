@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:nagular-tailwind-postcss": "node dist/nagular-tailwind-postcss/server/server.mjs"
+    "serve:ssr:nagular-tailwind-postcss": "node dist/nagular-tailwind-postcss/server/server.mjs",
+    "deploy": "ng build --configuration production && cp dist/nagular-tailwind-postcss/browser/index.html dist/nagular-tailwind-postcss/browser/404.html && npx angular-cli-ghpages --dir=dist/nagular-tailwind-postcss/browser"
   },
   "prettier": {
     "printWidth": 100,
