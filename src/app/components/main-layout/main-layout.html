@@ -1,13 +1,16 @@
-<div class="flex h-screen">
-    <div class="bg-blue-400 h-screen w-[10rem] flex">
-        <p class="p-2">
-            Reddot.
-        </p>
-    </div>
-    <div class="bg-gray-50 border-r-[2px] border-gray-300 h-screen flex-1">
-        <app-todo-list></app-todo-list>
-    </div>
-    <div class="bg-gray-50  h-screen w-[30rem] flex">
-        <app-todo-helper-component class="flex-1"></app-todo-helper-component>
-    </div>
+<div class="flex min-h-screen">
+  <!-- Sidebar izquierdo -->
+  <div class="bg-blue-400 w-[10rem] flex-shrink-0">
+    <p class="p-2">Reddot.</p>
+  </div>
+
+  <!-- Contenido central -->
+  <div class="bg-gray-50 flex-1">
+    <app-todo-list></app-todo-list>
+  </div>
+
+  <!-- Sidebar derecho / helper -->
+  <div class="bg-gray-50 w-[30rem] flex-shrink-0">
+    <app-todo-helper-component class="flex-1"></app-todo-helper-component>
+  </div>
 </div>

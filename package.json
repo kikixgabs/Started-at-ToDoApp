@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:nagular-tailwind-postcss": "node dist/nagular-tailwind-postcss/server/server.mjs",
-    "deploy": "ng build --configuration production && cp dist/nagular-tailwind-postcss/browser/index.html dist/nagular-tailwind-postcss/browser/404.html && npx angular-cli-ghpages --dir=dist/nagular-tailwind-postcss/browser"
-  },
+    "deploy": "ng build --configuration production && powershell -Command \"Copy-Item 'dist\\nagular-tailwind-postcss\\browser\\index.html' -Destination 'dist\\nagular-tailwind-postcss\\browser\\404.html' -Force\" && npx angular-cli-ghpages --dir dist/nagular-tailwind-postcss/browser"
+},
   "prettier": {
     "printWidth": 100,
     "singleQuote": true,
@@ -46,6 +46,7 @@
     "@types/express": "^5.0.1",
     "@types/jasmine": "~5.1.0",
     "@types/node": "^20.17.19",
+    "cpx": "^1.5.0",
     "jasmine-core": "~5.9.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
