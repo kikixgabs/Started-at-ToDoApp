@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';
-import { TodoStateService } from '../../services';
+import { FilterService, TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 
 interface contentForm {
@@ -19,7 +19,8 @@ interface contentForm {
 export class TodoList implements OnInit{
 
   localManager = inject(LocalManagerService);
-  todoState = inject(TodoStateService)
+  todoState = inject(TodoStateService);
+  filterService = inject(FilterService);
   Priority = Priority;
 
   filterSignal = signal<Priority | 'ALL' | null>(null)
@@ -39,15 +40,9 @@ export class TodoList implements OnInit{
     formFilter: new FormControl<Priority | 'ALL' | null>(null)
   })
 
-  filteredTodos = computed(() => {
-    const filter = this.filterSignal();
-    const todos = this.todoState.todos();
-    const pendingTodos = todos.filter(todo => !todo.completed)
-
-    if (!filter || filter === 'ALL') return pendingTodos;
-
-    return pendingTodos.filter(todo => todo.priority === filter);
-  });
+  filteredTodos = computed<TodoItemInterface[]>(() =>
+  this.filterService.filteredTodos(this.todoState.todos(), this.filterSignal())
+);
 
 
 

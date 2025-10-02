@@ -2,10 +2,11 @@ import { Component, inject, input, signal } from '@angular/core';
 import { LocalManagerService, TodoStateService } from '../../services';
 import { DefaultTodoItem, Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
+import { DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-todo-item',
-  imports: [FormsModule,],
+  imports: [FormsModule,DecimalPipe],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css'
 })
@@ -32,7 +33,11 @@ export class TodoItem {
   }
 
   completeToDo(){
-    this.todoState.toggleCompletedToDo(this.todo().id);
+    this.removing.set(true);
+
+    setTimeout(() => {
+      this.todoState.toggleCompletedToDo(this.todo().id);
+    }, 300);
   }
 
   cancelEdit(){
