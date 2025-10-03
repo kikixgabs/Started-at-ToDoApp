@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms'
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';
-import { FilterService, TodoStateService } from '../../services';
+import { FilterService, ToastService, TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 
 interface contentForm {
@@ -21,6 +21,7 @@ export class TodoList implements OnInit{
   localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService);
   filterService = inject(FilterService);
+  toastService = inject(ToastService);
   Priority = Priority;
 
   filterSignal = signal<Priority | 'ALL' | null>(null)
@@ -54,6 +55,8 @@ export class TodoList implements OnInit{
       date: new Date(),
       completed: false
     }
+
+    this.toastService.showToast('Created new todo');
     
     this.todoState.addTodo(newTodo);
     this.localManager.setToDoItem(newTodo);

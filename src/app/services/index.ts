@@ -1,3 +1,4 @@
 export * from './TodoState-service/todo-state-service'
 export * from './local-manager-service/local-manager-service'
 export * from './filter-service/filter-service'
+export * from './toast-service/toast'

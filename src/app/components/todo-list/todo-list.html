@@ -44,5 +44,26 @@
       }
     </ul>
   }
+  <div class="fixed bottom-4 right-4 space-y-2">
+    @for(toast of toastService.toasts(); track toast.id) {
+      <div 
+        class="px-4 py-2 rounded-lg shadow-lg border bg-gray-50 border-orange-400 text-black 
+              min-w-[14rem] text-center overflow-hidden transition-all duration-700 transform"
+        [class.opacity-100]="toast.visible"
+        [class.opacity-0]="!toast.visible"
+        [class.translate-y-0]="toast.visible"
+        [class.translate-y-4]="!toast.visible"
+      >
+        <div class="mb-1">{{ toast.message }}</div>
+        <div class="h-1 bg-orange-200 rounded-full overflow-hidden">
+          <div 
+            class="h-1 bg-orange-500"
+            [style.width.%]="toast.shrinking ? 0 : 100"
+            [style.transition]="'width ' + (toast.duration / 1000) + 's linear'"
+          ></div>
+        </div>
+      </div>
+    }
+  </div>
     
 </div>
