@@ -47,8 +47,8 @@
   <div class="fixed bottom-4 right-4 space-y-2">
     @for(toast of toastService.toasts(); track toast.id) {
       <div 
-        class="px-4 py-2 rounded-lg shadow-lg border bg-gray-50 border-orange-400 text-black 
-              min-w-[14rem] text-center overflow-hidden transition-all duration-700 transform"
+        class="px-14 py-4 rounded-lg shadow-lg border bg-gray-50 border-orange-400 text-black text-2xl
+              min-w-[20rem] text-center overflow-hidden transition-all duration-700 transform"
         [class.opacity-100]="toast.visible"
         [class.opacity-0]="!toast.visible"
         [class.translate-y-0]="toast.visible"
