@@ -13,45 +13,57 @@
     [class.scale-100]="!removing()">
     <div class="flex">
       @if(!isEditing()){
-        
+
         <div class="flex flex-col w-full">
-      <!-- Contenido del todo -->
-      <span 
-        [class.line-through]="todo().completed"
-        [class.text-gray-400]="todo().completed"
-        class="text-2xl break-words w-full mb-2"
-      >
-        {{ todo().content }}
-      </span>
 
-      <div class="flex justify-between gap-6 w-full text-sm text-gray-500">
-        <div class="flex items-center gap-1 text-lg">
-          Priority: 
-          {{ todo().priority }}
-          @if(todo().priority === Priority.LOW) {
-            <i class="fa-solid fa-gauge-high scale-x-[-1] text-green-400"></i>
-          } @else if(todo().priority === Priority.MEDIUM) {
-            <i class="fa-solid fa-gauge text-yellow-500"></i>
-          } @else {
-            <i class="fa-solid fa-gauge-high text-red-500"></i>
+          <span 
+            [class.line-through]="todo().completed"
+            [class.text-gray-400]="todo().completed"
+            class="text-2xl break-words w-full mb-2"
+          >
+            {{ todo().content }}
+          </span>
+          
+          
+          <div class="flex justify-between gap-6 w-full text-sm text-gray-500">
+            <div class="flex items-center gap-1 text-lg">
+              Priority: 
+              {{ todo().priority }}
+              @if(todo().priority === Priority.LOW) {
+                <i class="fa-solid fa-gauge-high scale-x-[-1] text-green-400"></i>
+              } @else if(todo().priority === Priority.MEDIUM) {
+                <i class="fa-solid fa-gauge text-yellow-500"></i>
+              } @else {
+                <i class="fa-solid fa-gauge-high text-red-500"></i>
+              }
+            </div>
+            
+            <div class="flex items-center gap-3">
+              <div>
+                <i class="fa-solid fa-calendar-days"></i>
+                {{ todo().date.getMonth() + 1 }}/{{ todo().date.getDate() }}
+              </div>
+              <div>
+                <i class="fa-solid fa-clock"></i>
+                {{ todo().date.getHours() | number:'2.0' }}:{{ todo().date.getMinutes() | number:'2.0' }}
+              </div>
+            </div>
+          </div>
+          @if(todo().tag?.length){
+            <div class="flex flex-wrap gap-2 mt-2">
+              @for(tag of todo().tag; track tag){
+                <span
+                  class="px-2 py-0.5 rounded-full text-center text-sm text-black"
+                  [ngClass]="tagColors[tag]"
+                >
+                  {{ tag }}
+                </span>
+              }
+            </div>
           }
-        </div>
-
-        <div class="flex items-center gap-3">
-          <div>
-            <i class="fa-solid fa-calendar-days"></i>
-            {{ todo().date.getMonth() + 1 }}/{{ todo().date.getDate() }}
-          </div>
-          <div>
-            <i class="fa-solid fa-clock"></i>
-            {{ todo().date.getHours() | number:'2.0' }}:{{ todo().date.getMinutes() | number:'2.0' }}
-          </div>
-        </div>
-      </div>
-    </div>
-
-        
-      }@else {
+        </div> 
+      }
+      @else {
         <div class="flex flex-col gap-4 w-full">
           <input
             type="text"

@@ -35,4 +35,9 @@ export class ToastService {
       }, 700);
     }, duration);
   }
+
+  removeToast(id:number){
+    this.toasts.update(arr => arr.filter(t => t.id !== id))
+  }
+
 }

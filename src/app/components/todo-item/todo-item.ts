@@ -2,11 +2,11 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { LocalManagerService, TodoStateService } from '../../services';
 import { DefaultTodoItem, Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
-import { DecimalPipe } from '@angular/common';
+import { CommonModule, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-todo-item',
-  imports: [FormsModule,DecimalPipe],
+  imports: [FormsModule,DecimalPipe, CommonModule],
   templateUrl: './todo-item.html',
   styleUrl: './todo-item.css'
 })
@@ -28,19 +28,20 @@ export class TodoItem {
   localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService);
 
+  tagColors: Record<string, string> = {
+  Work: 'bg-blue-300',
+  Learning: 'bg-green-300',
+  Home: 'bg-amber-300',
+  Finance: 'bg-purple-300',
+  Health: 'bg-red-300',
+  Personal: 'bg-pink-300',
+};
+
   startEdit(){
     this.isEditing.set(true);
     this.contentEdit.set(this.todo().content);
     this.prioritySignal.set(this.todo().priority);
   }
-
-/*  changePriority() {
-    const newPriority = this.prioritySignal();
-    this.todoState.editTodoPriority(this.todo().id, newPriority);
-    this.todo().priority = newPriority;
-  }*/
-
-
 
   completeToDo(){
     this.removing.set(true);
@@ -62,15 +63,12 @@ export class TodoItem {
       priority: this.prioritySignal()
     };
 
-    // Actualizo ambos campos en el estado global
     this.todoState.editTodo(updateTodo.id, updateTodo.content);
     this.todoState.editTodoPriority(updateTodo.id, updateTodo.priority);
 
-    // Reflejo el cambio localmente para que la tarjeta se actualice al instante
     this.todo().content = updateTodo.content;
     this.todo().priority = updateTodo.priority;
 
-    // Cierro edición
     this.isEditing.set(false);
     this.contentEdit.set('');
   }

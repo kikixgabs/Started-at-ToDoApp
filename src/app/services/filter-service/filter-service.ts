@@ -6,22 +6,33 @@ import { Priority, TodoItemInterface } from '../../models';
 })
 export class FilterService {
 
-  filteredTodos (todos: TodoItemInterface[], filter: Priority | 'ALL' | null) :TodoItemInterface[]{
-    
-    const pendingTodos = todos.filter(todo => !todo.completed)
+  filteredTodos(todos: TodoItemInterface[], tags: string[] | null, filter: Priority | 'ALL' | null): TodoItemInterface[] {
+    let result = todos.filter(todo => !todo.completed);
 
-    if (!filter || filter === 'ALL') return pendingTodos;
+    if (filter && filter !== 'ALL') {
+      result = result.filter(todo => todo.priority === filter);
+    }
 
-    return pendingTodos.filter(todo => todo.priority === filter);
-  };
+    if (tags && tags.length > 0) {
+      result = result.filter(todo => todo.tag?.some(tag => tags.includes(tag)));
+    }
 
-  filteredDoneTodos (todos: TodoItemInterface[], filter: Priority | 'ALL' | null) :TodoItemInterface[]{
-    
-    const pendingTodos = todos.filter(todo => todo.completed)
+    return result;
+  }
 
-    if (!filter || filter === 'ALL') return pendingTodos;
 
-    return pendingTodos.filter(todo => todo.priority === filter);
-  };
+  filteredDoneTodos(todos: TodoItemInterface[], filter: Priority | 'ALL' | null, tags: string[] = []): TodoItemInterface[] {
+    let result = todos.filter(todo => todo.completed);
+
+    if (filter && filter !== 'ALL') {
+      result = result.filter(todo => todo.priority === filter);
+    }
+
+    if (tags.length > 0) {
+      result = result.filter(todo => todo.tag?.some(tag => tags.includes(tag)));
+    }
+
+    return result;
+  }
   
 }

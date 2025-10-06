@@ -1,41 +1,76 @@
 <div class="p-6 space-y-4">
-    <form class="flex items-center gap-x-4" [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+<form class="flex flex-col gap-y-0.5" [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+  
+  <div class="flex items-center gap-x-4">
     <input formControlName="formContent" 
-      class="bg-zinc-100 w-[25rem] border-2 text-zinc-950 rounded-xl h-[3.35rem] p-4 text-lg"/>
+      class="bg-zinc-100 w-[25rem] border-2 text-zinc-950 rounded-xl h-[3.35rem] pt-4 text-lg"/>
+      
+    <select formControlName="formSelector" class="w-[8rem] h-[2rem] border-2 rounded-xl px-2 py-1">
+      <option [ngValue]="null" disabled selected>Priority</option>
+      <option [ngValue]="Priority.LOW">Low</option>
+      <option [ngValue]="Priority.MEDIUM">Medium</option>
+      <option [ngValue]="Priority.HIGH">High</option>
+    </select>
+    
     <button type="submit" [disabled]="todoForm.invalid" 
       class="rounded-xl bg-orange-400 text-black cursor-pointer hover:bg-orange-500 px-6 py-3 text-lg">
       Add ToDo
     </button>
-    <select formControlName="formSelector" class="w-[8rem] h-[2rem] border-2 rounded-xl">
-      <option [ngValue]="null" disabled selected>Priority</option>
-      <option [ngValue]="Priority.LOW">Low</option>
-      <option [ngValue]="Priority.MEDIUM">Medium</option>
-      <option [ngValue]="Priority.HIGH">High</option>
-    </select>
-    
-    @if(
-        (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
-        (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
-      ){
-        <div class="text-red-500 text-sm font-bold">
-          Content & Priority required
-        </div>
+  </div>
+  
+  <div class="flex flex-wrap gap-2 pt items-center pt-1">
+    <span class="text-gray-500 w-full">Add tags:</span>
+    @for(tag of tagList; track tag){
+      <button
+        type="button"
+        (click)="toggleTag(tag)"
+        [ngClass]="[
+          tagColors[tag],
+          selectedTags().includes(tag) ? 'border-2 border-gray-950' : 'text-black',
+          'px-3 py-1 cursor-pointer rounded-lg border border-gray-300 text-sm transition-all duration-300 hover:scale-105 hover:brightness-90'
+        ]"
+      >
+        {{ tag }}
+      </button>
     }
-    
-  </form>
-  <div class="flex gap-x-2 items-center mb-4">
-    <label for="filter">Filter by:</label>
+  </div>
+
+  
+  @if(
+    (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
+    (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
+  ){
+    <div class="text-red-500 text-sm font-bold">
+      Content & Priority required
+    </div>
+  }
+  
+</form>
+<div class="flex mb-4 gap-x-8 pt-10">
+  <div class="flex items-center gap-x-1">
+    <label for="filter">Filter priority:</label>
     <select [formControl]="todoForm.controls.formFilter" id="filter" class="border-2 rounded-xl px-2 py-1">
-      <option [ngValue]="null" disabled selected>Priority</option>
+      <option [ngValue]="'ALL'" selected>All</option>
       <option [ngValue]="Priority.LOW">Low</option>
       <option [ngValue]="Priority.MEDIUM">Medium</option>
       <option [ngValue]="Priority.HIGH">High</option>
-      <option [ngValue]="'ALL'">All</option>
     </select>
   </div>
 
+    <div class="flex items-center gap-x-1">
+      <label for="filterTag">Filter tag: </label>
+      <select [formControl]="todoForm.controls.formFilterTag" id="filterTag" class="border-2 rounded-xl px-2 py-1">
+        <option [ngValue]="null" selected>All tags</option>
+        @for(tag of tagList; track tag){
+          <option [ngValue]="tag">{{ tag }}</option>
+        }
+      </select>
+    </div>
+
+</div>
+
   @if(filteredTodos().length === 0){
-    <p>There're ain't ToDo's for {{todoForm.controls.formFilter.value}} priority to filter</p>
+    <p>There're ain't ToDo's for this filter</p>
   }
   @else {
     <ul class="space-y-3">
@@ -46,9 +81,10 @@
   }
   <div class="fixed bottom-4 right-4 space-y-2">
     @for(toast of toastService.toasts(); track toast.id) {
-      <div 
+      <div
+        (click)="removeToast(toast.id)"
         class="px-14 py-4 rounded-lg shadow-lg border bg-gray-50 border-orange-400 text-black text-2xl
-              min-w-[20rem] text-center overflow-hidden transition-all duration-700 transform"
+              min-w-[20rem] cursor-pointer text-center overflow-hidden transition-all duration-700 transform"
         [class.opacity-100]="toast.visible"
         [class.opacity-0]="!toast.visible"
         [class.translate-y-0]="toast.visible"
