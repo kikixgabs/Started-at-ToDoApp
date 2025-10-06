@@ -114,12 +114,14 @@ export class TodoList implements OnInit{
       completed: false,
       tag: this.todoForm.value.formTag || null,
     }
-
-    this.toastService.showToast('Created new todo');
-    
     this.todoState.addTodo(newTodo);
     this.localManager.setToDoItem(newTodo);
-    this.todoForm.reset();
+    
+    this.toastService.showToast('Created new todo');
+    
+    this.todoForm.controls.formContent.reset('');
+    this.todoForm.controls.formSelector.reset(null);
+    this.todoForm.controls.formTag.reset(null);
     this.selectedTags.set([]);
   }
 
@@ -131,6 +133,15 @@ export class TodoList implements OnInit{
     setTimeout(() => {
       this.toastService.removeToast(id);
     }, 700);
+  }
+
+  resetFilters(){
+
+    this.filterSignal.set('ALL');
+    this.todoForm.controls.formFilter.setValue('ALL');
+    this.filterTags.set([]);
+    this.todoForm.controls.formFilterTag.setValue(null);
+    
   }
 
 } 

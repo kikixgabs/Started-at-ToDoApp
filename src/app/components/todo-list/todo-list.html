@@ -67,6 +67,15 @@
       </select>
     </div>
 
+    <div>
+      <button
+        type="button"
+        class=" bg-sky-400 p-1 px-2 rounded-xl cursor-pointer brightness-110 hover:brightness-100"
+        (click)="resetFilters()">
+        Reset Filters
+      </button>
+    </div>
+
 </div>
 
   @if(filteredTodos().length === 0){
