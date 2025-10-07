@@ -26,6 +26,10 @@ export class TodoStateService {
     this.todos.set(items)
   }
 
+  setTodos(todos: TodoItemInterface[]){
+    this.todos.set(todos);
+  }
+
   editTodo(id: string, updateContent: string){
     this.todos.update(todos => 
       todos.map(todo => 

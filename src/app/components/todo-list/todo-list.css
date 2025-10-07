@@ -1,0 +1,32 @@
+
+
+li {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Entrada */
+li.entering {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+li.entered {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Salida */
+li.removing {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.cdk-drag-placeholder {
+  display: block;
+  visibility: hidden;
+}
+
+.cdk-drag-preview {
+  width: 100%; /* ocupa todo el ancho del item */
+  pointer-events: none;
+  cursor: grabbing !important;
+}

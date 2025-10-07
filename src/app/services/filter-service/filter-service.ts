@@ -20,6 +20,8 @@ export class FilterService {
     return result;
   }
 
+  
+
 
   filteredDoneTodos(todos: TodoItemInterface[], filter: Priority | 'ALL' | null, tags: string[] = []): TodoItemInterface[] {
     let result = todos.filter(todo => todo.completed);

@@ -54,6 +54,12 @@ export class LocalManagerService {
     if(typeof localStorage !== 'undefined') localStorage.setItem(item.id, JSON.stringify(item))
   }
 
+  setToDoItems(todos: TodoItemInterface[]){
+    todos.forEach(todo => {
+      localStorage.setItem(todo.id, JSON.stringify(todo))
+    })
+  }
+
   eraseToDoItem(key: string): void {
     if(typeof localStorage !== 'undefined') localStorage.removeItem(key);
   }
