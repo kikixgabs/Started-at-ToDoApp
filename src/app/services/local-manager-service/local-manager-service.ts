@@ -7,11 +7,29 @@ import { TodoItemInterface } from '../../models';
 export class LocalManagerService {
 
   getAllTodos(): TodoItemInterface[] {
-    if(typeof localStorage !== 'undefined'){
-      return Object.keys(localStorage)
+    if (typeof localStorage === 'undefined') return [];
+
+    const orderData = localStorage.getItem('todos_order');
+    const order = orderData ? JSON.parse(orderData) : [];
+
+    if (order.length > 0) {
+      return order
+        .map((id: string) => {
+          const itemString = localStorage.getItem(id);
+          if (itemString) {
+            const item: TodoItemInterface = JSON.parse(itemString);
+            item.date = new Date(item.date);
+            return item;
+          }
+          return null;
+        })
+        .filter((item: TodoItemInterface | null): item is TodoItemInterface => item !== null);
+    }
+
+    return Object.keys(localStorage)
       .map(key => {
-        const itemString = localStorage.getItem(key)
-        if(itemString) {
+        const itemString = localStorage.getItem(key);
+        if (itemString) {
           const item: TodoItemInterface = JSON.parse(itemString);
           item.date = new Date(item.date);
           return item;
@@ -19,10 +37,8 @@ export class LocalManagerService {
         return null;
       })
       .filter((item): item is TodoItemInterface => item !== null);
-    }else{
-      return []
-    }
-    }
+  }
+
 
   getToDoItem(key: string): TodoItemInterface | null {
     if(typeof localStorage === 'undefined') return null
@@ -54,11 +70,15 @@ export class LocalManagerService {
     if(typeof localStorage !== 'undefined') localStorage.setItem(item.id, JSON.stringify(item))
   }
 
-  setToDoItems(todos: TodoItemInterface[]){
+  setToDoItems(todos: TodoItemInterface[]) {
     todos.forEach(todo => {
-      localStorage.setItem(todo.id, JSON.stringify(todo))
-    })
+      localStorage.setItem(todo.id, JSON.stringify(todo));
+    });
+
+    const order = todos.map(todo => todo.id);
+    localStorage.setItem('todos_order', JSON.stringify(order));
   }
+
 
   eraseToDoItem(key: string): void {
     if(typeof localStorage !== 'undefined') localStorage.removeItem(key);

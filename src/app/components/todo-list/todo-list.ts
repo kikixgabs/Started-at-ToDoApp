@@ -162,8 +162,25 @@ export class TodoList implements OnInit {
   }
 
   onDrop(event: CdkDragDrop<TodoItemInterface[]>) {
-    moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    this.todoState.setTodos(event.container.data);
-    this.localManager.setToDoItems(event.container.data);
+    const allTodos = [...this.todoState.todos()];
+    const visibleTodos = this.filteredTodos();
+
+    moveItemInArray(visibleTodos, event.previousIndex, event.currentIndex);
+
+    const newAllTodos: TodoItemInterface[] = [];
+    let visibleIndex = 0;
+
+    allTodos.forEach(todo => {
+      if (visibleTodos.find(v => v.id === todo.id)) {
+        newAllTodos.push(visibleTodos[visibleIndex]);
+        visibleIndex++;
+      } else {
+        newAllTodos.push(todo);
+      }
+    });
+
+    this.todoState.setTodos(newAllTodos);
+    this.localManager.setToDoItems(newAllTodos);
   }
+
 }

@@ -20,18 +20,11 @@ export class FilterService {
     return result;
   }
 
-  
-
-
-  filteredDoneTodos(todos: TodoItemInterface[], filter: Priority | 'ALL' | null, tags: string[] = []): TodoItemInterface[] {
+  filteredDoneTodos(todos: TodoItemInterface[], filter: Priority | 'ALL' | null): TodoItemInterface[] {
     let result = todos.filter(todo => todo.completed);
 
     if (filter && filter !== 'ALL') {
       result = result.filter(todo => todo.priority === filter);
-    }
-
-    if (tags.length > 0) {
-      result = result.filter(todo => todo.tag?.some(tag => tags.includes(tag)));
     }
 
     return result;
