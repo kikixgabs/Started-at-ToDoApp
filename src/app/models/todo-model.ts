@@ -1,3 +1,5 @@
+import { Subtask } from "./subtask";
+
 export enum Priority {
     LOW = 'Low',
     MEDIUM = 'Medium',
@@ -11,6 +13,7 @@ export interface TodoItemInterface {
     tag: string[] | null;
     date: Date;
     completed: boolean;
+    subtask?: Subtask[];
 }
 
 export const DefaultTodoItem: TodoItemInterface = {
@@ -19,7 +22,8 @@ export const DefaultTodoItem: TodoItemInterface = {
     priority: Priority.MEDIUM,
     tag: [],
     date: new Date(),
-    completed: false
+    completed: false,
+    subtask: [],
 }
 
 export const tagsList = [

@@ -14,13 +14,6 @@
         <option [ngValue]="Priority.MEDIUM">Medium</option>
         <option [ngValue]="Priority.HIGH">High</option>
       </select>
-      <button
-        type="submit"
-        [disabled]="todoForm.invalid"
-        class="rounded-xl bg-orange-400 text-black cursor-pointer hover:bg-orange-500 px-6 py-3 text-lg"
-      >
-        Add ToDo
-      </button>
     </div>
 
     <div class="flex flex-wrap gap-2 pt items-center pt-1">
@@ -48,6 +41,33 @@
         Content & Priority required
       </div>
     }
+    <div class="subtasks mt-2">
+      @for(sub of formSubtasksWithIndex; track sub.index) {
+        <div class="flex gap-2 w-[50%] mt-1">
+          <input
+            type="text"
+            [value]="sub.content"
+            (input)="updateSubtask(sub.index, $any($event.target).value)"
+            placeholder="Subtask"
+            class="border rounded px-2 py-1 flex-1"
+          />
+          <button type="button" (click)="removeSubtask(sub.index)" class="bg-red-400 text-white px-2 py-1 rounded">X</button>
+        </div>
+      }
+
+      <button type="button" (click)="addSubtaskInput()" class="mt-1 hover:bg-blue-500 cursor-pointer bg-blue-400 text-white px-3 py-1 rounded">
+        Add subtask
+      </button>
+    </div>
+
+    <button
+      type="submit"
+      [disabled]="todoForm.invalid"
+      class="rounded-lg w-[10vw] h-[4rem] bg-orange-400 mt-2 text-black cursor-pointer hover:bg-orange-500 px-6 py-3 text-lg"
+    >
+      Add ToDo
+    </button>
+
   </form>
 
   <div class="flex mb-4 gap-x-8 pt-10">
@@ -101,7 +121,14 @@
       class="space-y-3"
     >
       @for(todo of filteredTodos(); track todo.id){
-        <li cdkDrag class="transition-opacity transition-transform duration-300 ease-out">
+        <li
+          cdkDrag
+          class="transition-opacity transition-transform duration-300 ease-out transform"
+          [class.opacity-0]="!appearingMap()[todo.id] || removingMap()[todo.id]"
+          [class.opacity-100]="appearingMap()[todo.id] && !removingMap()[todo.id]"
+          [class.translate-y-4]="!appearingMap()[todo.id]"
+          [class.translate-y-0]="appearingMap()[todo.id]"
+        >
           <ng-container *cdkDragPreview>
             <div class="bg-gray-50 h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem]">
               <span class="text-2xl break-words">{{ todo.content }}</span>
@@ -115,7 +142,6 @@
 
           <app-todo-item [todo]="todo" (delete)="removeTodoWithAnimation($event)"></app-todo-item>
         </li>
-
       }
     </ul>
   }

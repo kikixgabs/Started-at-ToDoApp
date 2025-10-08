@@ -43,14 +43,20 @@ export class TodoItem {
   }
 
   completeToDo() {
-    setTimeout(() => {
-      this.todoState.toggleCompletedToDo(this.todo().id);
-    }, 300);
+    this.todoState.toggleCompletedToDo(this.todo().id);
   }
 
   cancelEdit() {
     this.isEditing.set(false);
     this.contentEdit.set('');
+  }
+
+  toggleSubtaskCompletion(subtaskId: string) {
+    const subtask = this.todo().subtask?.find(s => s.id === subtaskId);
+    if (subtask) {
+      subtask.completed = !subtask.completed;
+      this.localManager.setToDoItem(this.todo())
+    }
   }
 
   saveEdit() {

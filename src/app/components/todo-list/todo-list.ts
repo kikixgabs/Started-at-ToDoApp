@@ -13,6 +13,7 @@ interface contentForm {
   formFilter: FormControl<Priority | 'ALL' | null>;
   formTag: FormControl<string[] | null>;
   formFilterTag: FormControl<string | null>;
+  formSubtasks: FormControl<string[] | null>;
 }
 
 @Component({
@@ -57,6 +58,7 @@ export class TodoList implements OnInit {
     formFilter: new FormControl<Priority | 'ALL' | null>('ALL'),
     formTag: new FormControl<string[] | null>(null),
     formFilterTag: new FormControl<string | null>(null),
+    formSubtasks: new FormControl<string[]>([]),
   });
 
   filteredTodos = computed<TodoItemInterface[]>(() =>
@@ -86,6 +88,18 @@ export class TodoList implements OnInit {
       }, 10);
     });
   }
+
+  addSubtaskInput() {
+    const current = this.todoForm.controls.formSubtasks.value ?? [];
+    this.todoForm.controls.formSubtasks.setValue([...current, '']);
+  }
+
+  removeSubtask(index: number) {
+    const current = this.todoForm.controls.formSubtasks.value ?? [];
+    current.splice(index, 1);
+    this.todoForm.controls.formSubtasks.setValue([...current]);
+  }
+
 
   toggleFilterTag(tag: string) {
     const current = this.filterTags();
@@ -126,23 +140,40 @@ export class TodoList implements OnInit {
       date: new Date(),
       completed: false,
       tag: this.todoForm.value.formTag || null,
+      subtask: (this.todoForm.value.formSubtasks ?? []).map(sub => ({
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        content: sub,
+        completed: false
+      }))
     };
+
 
     this.todoState.addTodo(newTodo);
     this.localManager.setToDoItem(newTodo);
 
     this.appearingMap.update((map) => ({ ...map, [newTodo.id]: false }));
-    this.appearingMap.update(map => ({ ...map, [newTodo.id]: false }));
     setTimeout(() => {
-      this.appearingMap.update(map => ({ ...map, [newTodo.id]: true }));
-    }, 15);
-
+      this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true }));
+    }, 10);
 
     this.toastService.showToast('Created new todo');
     this.todoForm.controls.formContent.reset('');
     this.todoForm.controls.formSelector.reset(null);
     this.todoForm.controls.formTag.reset(null);
+    this.todoForm.controls.formSubtasks.setValue([]);
     this.selectedTags.set([]);
+
+  }
+
+  get formSubtasksWithIndex() {
+    const subtasks = this.todoForm.controls.formSubtasks.value ?? [];
+    return subtasks.map((content, index) => ({ content, index }));
+  }
+
+  updateSubtask(index: number, value: string) {
+    const current = this.todoForm.controls.formSubtasks.value ?? [];
+    current[index] = value;
+    this.todoForm.controls.formSubtasks.setValue([...current]);
   }
 
   removeToast(id: number) {
