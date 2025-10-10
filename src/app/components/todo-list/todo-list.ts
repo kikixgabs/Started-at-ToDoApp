@@ -139,6 +139,16 @@ export class TodoList implements OnInit {
   }
 
   onSubmit(): void {
+    const rawSubtasks = this.todoForm.value.formSubtasks ?? [];
+
+    const processedSubtasks = rawSubtasks
+      .filter(sub => sub.trim() !== '')
+      .map(sub => ({
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        content: sub,
+        completed: false
+      }));
+
     const newTodo: TodoItemInterface = {
       id: Date.now().toString(),
       content: this.todoForm.getRawValue().formContent!,
@@ -146,13 +156,8 @@ export class TodoList implements OnInit {
       date: new Date(),
       completed: false,
       tag: this.todoForm.value.formTag || null,
-      subtask: (this.todoForm.value.formSubtasks ?? []).map(sub => ({
-        id: Date.now().toString() + Math.random().toString(36).slice(2),
-        content: sub,
-        completed: false
-      }))
+      subtask: processedSubtasks.length ? processedSubtasks : null
     };
-
 
     this.todoState.addTodo(newTodo);
     this.localManager.setToDoItem(newTodo);

@@ -13,7 +13,7 @@ export interface TodoItemInterface {
     tag: string[] | null;
     date: Date;
     completed: boolean;
-    subtask?: Subtask[];
+    subtask: Subtask[] | null;
 }
 
 export const DefaultTodoItem: TodoItemInterface = {
