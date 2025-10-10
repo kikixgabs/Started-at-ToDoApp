@@ -34,7 +34,7 @@
                   [checked]="sub.completed" 
                   (change)="toggleSubtaskCompletion(sub.id)" 
                 />
-                <span [class.line-through]="sub.completed">{{ sub.content }}</span>
+                <span (click)="toggleSubtaskCompletion(sub.id)" class="cursor-pointer" [class.line-through]="sub.completed">{{ sub.content }}</span>
               </li>
             }
           </ul>

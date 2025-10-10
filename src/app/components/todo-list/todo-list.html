@@ -7,7 +7,7 @@
       />
       <select
         formControlName="formSelector"
-        class="w-[8rem] h-[2rem] border-2 rounded-xl px-2 py-1"
+        class="w-[8rem] cursor-pointer h-[2rem] border-2 rounded-xl px-2 py-1"
       >
         <option [ngValue]="null" disabled selected>Priority</option>
         <option [ngValue]="Priority.LOW">Low</option>
@@ -51,7 +51,7 @@
             placeholder="Subtask"
             class="border rounded px-2 py-1 flex-1"
           />
-          <button type="button" (click)="removeSubtask(sub.index)" class="bg-red-400 text-white px-2 py-1 rounded">X</button>
+          <button type="button" (click)="removeSubtask(sub.index)" class="bg-red-400 cursor-pointer hover:bg-red-600 text-white px-2 py-1 rounded">X</button>
         </div>
       }
 
@@ -76,7 +76,7 @@
       <select
         [formControl]="todoForm.controls.formFilter"
         id="filter"
-        class="border-2 rounded-xl px-2 py-1"
+        class="border-2 rounded-xl cursor-pointer px-2 py-1"
       >
         <option [ngValue]="'ALL'" selected>All</option>
         <option [ngValue]="Priority.LOW">Low</option>
@@ -90,11 +90,11 @@
       <select
         [formControl]="todoForm.controls.formFilterTag"
         id="filterTag"
-        class="border-2 rounded-xl px-2 py-1"
+        class="border-2 rounded-xl cursor-pointer px-2 py-1"
       >
         <option [ngValue]="null" selected>All tags</option>
         @for(tag of tagList; track tag){
-          <option [ngValue]="tag">{{ tag }}</option>
+          <option [ngValue]="tag" class="cursor-pointer">{{ tag }}</option>
         }
       </select>
     </div>
