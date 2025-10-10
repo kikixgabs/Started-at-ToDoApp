@@ -91,6 +91,12 @@ export class TodoList implements OnInit {
 
   addSubtaskInput() {
     const current = this.todoForm.controls.formSubtasks.value ?? [];
+
+    if(current.length > 0 && current[current.length -1].trim() === '') {
+      this.toastService.showToast('Fill the subtask before adding other');
+      return
+    }
+
     this.todoForm.controls.formSubtasks.setValue([...current, '']);
   }
 
