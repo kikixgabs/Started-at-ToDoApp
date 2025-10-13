@@ -6,6 +6,7 @@ import { FilterService, ToastService, TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ThemeSelector } from "../theme-selector/theme-selector/theme-selector";
 
 interface contentForm {
   formContent: FormControl<string>;
@@ -18,7 +19,7 @@ interface contentForm {
 
 @Component({
   selector: 'app-todo-list',
-  imports: [ReactiveFormsModule, TodoItem, CommonModule, DragDropModule],
+  imports: [ReactiveFormsModule, TodoItem, CommonModule, DragDropModule, ThemeSelector],
   templateUrl: './todo-list.html',
   styleUrls: ['./todo-list.css'],
 })
