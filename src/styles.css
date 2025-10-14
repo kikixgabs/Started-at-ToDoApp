@@ -2,5 +2,52 @@
 @import "tailwindcss";
 
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.theme-modal-panel {
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+    transform-origin: top center;
+    animation: modal-pop 0.25s ease-out;
+}
+
+@keyframes modal-pop {
+    from {
+        transform: scale(0.8);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.transparent-backdrop {
+    background: transparent !important;
+}
+
+.material-icons {
+    font-family: 'Material Icons' !important;
+}
+
+.cdk-global-scrollblock {
+    padding-right: 0 !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+    overflow: hidden;
+}
+
+.mat-mdc-icon-button:focus-visible::before {
+  opacity: 0 !important;
+}

@@ -1,7 +1,10 @@
 <div class="flex min-h-screen">
   <!-- Sidebar izquierdo -->
   <div class="bg-blue-400 w-[10rem] flex-shrink-0">
-    <p class="p-2">Reddot.</p>
+    <div class="flex justify-evenly items-center">
+      <p class="pt-2 text-lg">Reddot.</p>
+      <app-theme-selector/>
+    </div>
   </div>
 
   <!-- Contenido central -->
@@ -10,7 +13,7 @@
   </div>
 
   <!-- Sidebar derecho / helper -->
-  <div class="w-[30rem] flex-shrink-0">
+  <div class="w-[30rem] border-l-1 border-gray-300 flex-shrink-0">
     <app-todo-helper-component class="flex-1"></app-todo-helper-component>
   </div>
 </div>

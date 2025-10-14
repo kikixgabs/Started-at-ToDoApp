@@ -19,7 +19,7 @@ interface contentForm {
 
 @Component({
   selector: 'app-todo-list',
-  imports: [ReactiveFormsModule, TodoItem, CommonModule, DragDropModule, ThemeSelector],
+  imports: [ReactiveFormsModule, TodoItem, CommonModule, DragDropModule],
   templateUrl: './todo-list.html',
   styleUrls: ['./todo-list.css'],
 })

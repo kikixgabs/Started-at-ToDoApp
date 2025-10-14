@@ -17,14 +17,14 @@
     </div>
 
     <div class="flex flex-wrap gap-2 pt items-center pt-1">
-      <span class="text-gray-500 w-full">Add tags:</span>
+      <span class="w-full">Add tags:</span>
       @for(tag of tagList; track tag){
         <button
           type="button"
           (click)="toggleTag(tag)"
           [ngClass]="[
             tagColors[tag],
-            selectedTags().includes(tag) ? 'border-2 border-gray-950' : 'text-black',
+            selectedTags().includes(tag) ? 'border-3 font-bold text-black' : 'text-black',
             'px-3 py-1 cursor-pointer rounded-lg border border-gray-300 text-sm transition-all duration-300 hover:scale-105 hover:brightness-90'
           ]"
         >
@@ -55,7 +55,7 @@
         </div>
       }
 
-      <button type="button" (click)="addSubtaskInput()" class="mt-1 hover:bg-blue-500 cursor-pointer bg-blue-400 text-black px-3 py-1 rounded">
+      <button type="button" (click)="addSubtaskInput()" class="mt-1 transition-colors duration-300 hover:bg-blue-500 cursor-pointer bg-blue-400 text-black px-3 py-1 rounded">
         Add subtask
       </button>
     </div>
@@ -63,14 +63,12 @@
     <button
       type="submit"
       [disabled]="todoForm.invalid"
-      class="rounded-lg w-[10vw] h-[4rem] bg-orange-400 mt-2 text-black cursor-pointer hover:bg-orange-500 px-6 py-3 text-lg"
+      class="rounded-lg w-[10vw] h-[4rem] transition-colors duration-300 bg-orange-400 mt-2 text-black cursor-pointer hover:brightness-90 px-6 py-3 text-lg"
     >
       Add ToDo
     </button>
 
   </form>
-
-  <app-theme-selector></app-theme-selector>
 
   <div class="flex mb-4 gap-x-8 pt-10">
     <div class="flex items-center gap-x-1">
@@ -104,7 +102,7 @@
     <div>
       <button
         type="button"
-        class="bg-sky-400 p-1 px-2 rounded-xl cursor-pointer brightness-110 hover:brightness-100"
+        class="bg-sky-400 p-1 px-2 rounded-xl cursor-pointer text-black brightness-110 hover:brightness-100"
         (click)="resetFilters()"
       >
         Reset Filters
@@ -132,7 +130,7 @@
           [class.translate-y-0]="appearingMap()[todo.id]"
         >
           <ng-container *cdkDragPreview>
-            <div class="bg-gray-50 h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem]">
+            <div class="h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem]">
               <span class="text-2xl break-words">{{ todo.content }}</span>
               <div class="flex justify-end gap-2 mt-2">
                 <button class="bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
