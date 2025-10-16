@@ -29,11 +29,22 @@ html.dark {
   --mat-sys-on-surface: #e0e0e0;
   --select-bg: #1e2939;
   --select-hover-bg: #475569;
+  --div-bg: #24292f;
 }
 
 html.light {
   --mat-sys-surface: #f3f4f6;
   --mat-sys-on-surface: #030712;
+  --select-bg: #f3f4f6;
+  --select-hover-bg: #e0e0e0;
+  --div-bg: #c4c4c4;
+}
+
+.my-custom-div {
+  background-color: var(--div-bg);
+  color: var(--mat-sys-on-surface);
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 
 .my-custom-select {

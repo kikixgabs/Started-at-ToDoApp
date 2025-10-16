@@ -15,7 +15,8 @@
           "options": {
             "browser": "src/main.ts",
             "tsConfig": "tsconfig.app.json",
-            "baseHref":"/Started-at-ToDoApp/",
+            "baseHref": "/Started-at-ToDoApp/",
+            "outputPath": "dist/nagular-tailwind-postcss",
             "assets": [
               {
                 "glob": "**/*",
@@ -25,12 +26,7 @@
             "styles": [
               "src/custom-theme.scss",
               "src/styles.css"
-            ],
-            "server": "src/main.server.ts",
-            "outputMode": "server",
-            "ssr": {
-              "entry": "src/server.ts"
-            }
+            ]
           },
           "configurations": {
             "production": {
@@ -46,7 +42,9 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "optimization": true,
+              "sourceMap": false
             },
             "development": {
               "optimization": false,
@@ -55,6 +53,28 @@
             }
           },
           "defaultConfiguration": "production"
+        },
+        "build:server": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.server.ts",
+            "tsConfig": "tsconfig.server.json",
+            "outputPath": "dist/nagular-tailwind-postcss/server",
+            "outputMode": "server",
+            "ssr": {
+              "entry": "src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "optimization": true,
+              "sourceMap": false
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true
+            }
+          }
         },
         "serve": {
           "builder": "@angular/build:dev-server",
