@@ -1,4 +1,12 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';
@@ -6,7 +14,6 @@ import { FilterService, ToastService, TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
-import { ThemeSelector } from "../theme-selector/theme-selector/theme-selector";
 
 interface contentForm {
   formContent: FormControl<string>;
@@ -22,6 +29,7 @@ interface contentForm {
   imports: [ReactiveFormsModule, TodoItem, CommonModule, DragDropModule],
   templateUrl: './todo-list.html',
   styleUrls: ['./todo-list.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoList implements OnInit {
   localManager = inject(LocalManagerService);
@@ -90,12 +98,23 @@ export class TodoList implements OnInit {
     });
   }
 
+  constructor() {
+    effect((): void => {
+      const todos: TodoItemInterface[] = this.filteredTodos();
+      todos.forEach((todo: TodoItemInterface) => {
+        if (!this.appearingMap()[todo.id]) {
+          this.appearingMap.update((map) => ({ ...map, [todo.id]: true }));
+        }
+      });
+    });
+  }
+
   addSubtaskInput() {
     const current = this.todoForm.controls.formSubtasks.value ?? [];
 
-    if(current.length > 0 && current[current.length -1].trim() === '') {
+    if (current.length > 0 && current[current.length - 1].trim() === '') {
       this.toastService.showToast('Fill the subtask before adding other');
-      return
+      return;
     }
 
     this.todoForm.controls.formSubtasks.setValue([...current, '']);
@@ -107,20 +126,15 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formSubtasks.setValue([...current]);
   }
 
-
   toggleFilterTag(tag: string) {
     const current = this.filterTags();
-    const newTags = current.includes(tag)
-      ? current.filter((t) => t !== tag)
-      : [...current, tag];
+    const newTags = current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag];
     this.filterTags.set(newTags);
   }
 
   toggleTag(tag: string) {
     const current = this.selectedTags();
-    const newTags = current.includes(tag)
-      ? current.filter((t) => t !== tag)
-      : [...current, tag];
+    const newTags = current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag];
 
     this.selectedTags.set(newTags);
     this.todoForm.controls.formTag.setValue(newTags.length ? newTags : null);
@@ -143,11 +157,11 @@ export class TodoList implements OnInit {
     const rawSubtasks = this.todoForm.value.formSubtasks ?? [];
 
     const processedSubtasks = rawSubtasks
-      .filter(sub => sub.trim() !== '')
-      .map(sub => ({
+      .filter((sub) => sub.trim() !== '')
+      .map((sub) => ({
         id: Date.now().toString() + Math.random().toString(36).slice(2),
         content: sub,
-        completed: false
+        completed: false,
       }));
 
     const newTodo: TodoItemInterface = {
@@ -157,7 +171,7 @@ export class TodoList implements OnInit {
       date: new Date(),
       completed: false,
       tag: this.todoForm.value.formTag || null,
-      subtask: processedSubtasks.length ? processedSubtasks : null
+      subtask: processedSubtasks.length ? processedSubtasks : null,
     };
 
     this.todoState.addTodo(newTodo);
@@ -174,7 +188,6 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formTag.reset(null);
     this.todoForm.controls.formSubtasks.setValue([]);
     this.selectedTags.set([]);
-
   }
 
   get formSubtasksWithIndex() {
@@ -213,8 +226,8 @@ export class TodoList implements OnInit {
     const newAllTodos: TodoItemInterface[] = [];
     let visibleIndex = 0;
 
-    allTodos.forEach(todo => {
-      if (visibleTodos.find(v => v.id === todo.id)) {
+    allTodos.forEach((todo) => {
+      if (visibleTodos.find((v) => v.id === todo.id)) {
         newAllTodos.push(visibleTodos[visibleIndex]);
         visibleIndex++;
       } else {
@@ -225,5 +238,4 @@ export class TodoList implements OnInit {
     this.todoState.setTodos(newAllTodos);
     this.localManager.setToDoItems(newAllTodos);
   }
-
 }

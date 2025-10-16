@@ -1,14 +1,9 @@
 <div class="p-6 space-y-4">
   <form class="flex flex-col gap-y-0.5" [formGroup]="todoForm" (ngSubmit)="onSubmit()">
     <div class="flex items-center gap-x-4">
-      <input
-        formControlName="formContent"
-        class="bg-zinc-100 w-[25rem] border-2 text-zinc-950 rounded-xl h-[3.35rem] text-lg"
-      />
-      <select
-        formControlName="formSelector"
-        class="w-[8rem] cursor-pointer h-[2rem] border-2 rounded-xl px-2 py-1"
-      >
+      <input formControlName="formContent"
+        class="bg-zinc-100 w-[25rem] border-2 text-zinc-950 rounded-xl h-[3.35rem] text-lg" />
+      <select formControlName="formSelector" class="w-[8rem] cursor-pointer my-custom-select h-[2rem] border-2 rounded-xl px-2 py-1">
         <option [ngValue]="null" disabled selected>Priority</option>
         <option [ngValue]="Priority.LOW">Low</option>
         <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -19,52 +14,42 @@
     <div class="flex flex-wrap gap-2 pt items-center pt-1">
       <span class="w-full">Add tags:</span>
       @for(tag of tagList; track tag){
-        <button
-          type="button"
-          (click)="toggleTag(tag)"
-          [ngClass]="[
+      <button type="button" (click)="toggleTag(tag)" [ngClass]="[
             tagColors[tag],
             selectedTags().includes(tag) ? 'border-3 font-bold text-black' : 'text-black',
             'px-3 py-1 cursor-pointer rounded-lg border border-gray-300 text-sm transition-all duration-300 hover:scale-105 hover:brightness-90'
-          ]"
-        >
-          {{ tag }}
-        </button>
+          ]">
+        {{ tag }}
+      </button>
       }
     </div>
 
     @if(
-      (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
-      (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
+    (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
+    (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
     ){
-      <div class="text-red-500 text-sm font-bold">
-        Content & Priority required
-      </div>
+    <div class="text-red-500 text-sm font-bold">
+      Content & Priority required
+    </div>
     }
     <div class="subtasks mt-2">
       @for(sub of formSubtasksWithIndex; track sub.index) {
-        <div class="flex gap-2 w-[50%] mt-1">
-          <input
-            type="text"
-            [value]="sub.content"
-            (input)="updateSubtask(sub.index, $any($event.target).value)"
-            placeholder="Subtask"
-            class="border rounded px-2 py-1 flex-1"
-          />
-          <button type="button" (click)="removeSubtask(sub.index)" class="bg-red-400 cursor-pointer hover:bg-red-600 text-white px-2 py-1 rounded">X</button>
-        </div>
+      <div class="flex gap-2 w-[50%] mt-1">
+        <input type="text" [value]="sub.content" (input)="updateSubtask(sub.index, $any($event.target).value)"
+          placeholder="Subtask" class="border rounded px-2 py-1 flex-1" />
+        <button type="button" (click)="removeSubtask(sub.index)"
+          class="bg-red-400 cursor-pointer hover:bg-red-600 text-white px-2 py-1 rounded">X</button>
+      </div>
       }
 
-      <button type="button" (click)="addSubtaskInput()" class="mt-1 transition-colors duration-300 hover:bg-blue-500 cursor-pointer bg-blue-400 text-black px-3 py-1 rounded">
+      <button type="button" (click)="addSubtaskInput()"
+        class="mt-1 transition-colors duration-300 hover:bg-blue-500 cursor-pointer bg-blue-400 text-black px-3 py-1 rounded">
         Add subtask
       </button>
     </div>
 
-    <button
-      type="submit"
-      [disabled]="todoForm.invalid"
-      class="rounded-lg w-[10vw] h-[4rem] transition-colors duration-300 bg-orange-400 mt-2 text-black cursor-pointer hover:brightness-90 px-6 py-3 text-lg"
-    >
+    <button type="submit" [disabled]="todoForm.invalid"
+      class="rounded-lg w-[10vw] h-[4rem] transition-colors duration-300 bg-orange-400 mt-2 text-black cursor-pointer hover:brightness-90 px-6 py-3 text-lg">
       Add ToDo
     </button>
 
@@ -73,11 +58,8 @@
   <div class="flex mb-4 gap-x-8 pt-10">
     <div class="flex items-center gap-x-1">
       <label for="filter">Filter priority:</label>
-      <select
-        [formControl]="todoForm.controls.formFilter"
-        id="filter"
-        class="border-2 rounded-xl cursor-pointer px-2 py-1"
-      >
+      <select [formControl]="todoForm.controls.formFilter" id="filter"
+        class="border-2 rounded-xl my-custom-select cursor-pointer px-2 py-1">
         <option [ngValue]="'ALL'" selected>All</option>
         <option [ngValue]="Priority.LOW">Low</option>
         <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -87,84 +69,63 @@
 
     <div class="flex items-center gap-x-1">
       <label for="filterTag">Filter tag: </label>
-      <select
-        [formControl]="todoForm.controls.formFilterTag"
-        id="filterTag"
-        class="border-2 rounded-xl cursor-pointer px-2 py-1"
-      >
+      <select [formControl]="todoForm.controls.formFilterTag" id="filterTag"
+        class="border-2 rounded-xl my-custom-select cursor-pointer px-2 py-1">
         <option [ngValue]="null" selected>All tags</option>
         @for(tag of tagList; track tag){
-          <option [ngValue]="tag" class="cursor-pointer">{{ tag }}</option>
+        <option [ngValue]="tag" class="cursor-pointer">{{ tag }}</option>
         }
       </select>
     </div>
 
     <div>
-      <button
-        type="button"
+      <button type="button"
         class="bg-sky-400 p-1 px-2 rounded-xl cursor-pointer text-black brightness-110 hover:brightness-100"
-        (click)="resetFilters()"
-      >
+        (click)="resetFilters()">
         Reset Filters
       </button>
     </div>
   </div>
 
   @if(filteredTodos().length === 0){
-    <p>There're ain't ToDo's for this filter</p>
+  <p>There're ain't ToDo's for this filter</p>
   }
   @else {
-    <ul
-      cdkDropList
-      [cdkDropListData]="filteredTodos()"
-      (cdkDropListDropped)="onDrop($event)"
-      class="space-y-3"
-    >
-      @for(todo of filteredTodos(); track todo.id){
-        <li
-          cdkDrag
-          class="transition-opacity transition-transform duration-300 ease-out transform"
-          [class.opacity-0]="!appearingMap()[todo.id] || removingMap()[todo.id]"
-          [class.opacity-100]="appearingMap()[todo.id] && !removingMap()[todo.id]"
-          [class.translate-y-4]="!appearingMap()[todo.id]"
-          [class.translate-y-0]="appearingMap()[todo.id]"
-        >
-          <ng-container *cdkDragPreview>
-            <div class="h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem]">
-              <span class="text-2xl break-words">{{ todo.content }}</span>
-              <div class="flex justify-end gap-2 mt-2">
-                <button class="bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
-                <button class="bg-green-400 text-white px-3 py-1 rounded">Done</button>
-                <button class="bg-red-400 text-white px-3 py-1 rounded">Delete</button>
-              </div>
-            </div>
-          </ng-container>
+  <ul cdkDropList [cdkDropListData]="filteredTodos()" (cdkDropListDropped)="onDrop($event)" class="space-y-3">
+    @for(todo of filteredTodos(); track todo.id){
+    <li cdkDrag class="transition-opacity transition-transform duration-300 ease-out transform"
+      [class.opacity-0]="!appearingMap()[todo.id] || removingMap()[todo.id]"
+      [class.opacity-100]="appearingMap()[todo.id] && !removingMap()[todo.id]"
+      [class.translate-y-4]="!appearingMap()[todo.id]" [class.translate-y-0]="appearingMap()[todo.id]">
+      <ng-container *cdkDragPreview>
+        <div class="h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem]">
+          <span class="text-2xl break-words">{{ todo.content }}</span>
+          <div class="flex justify-end gap-2 mt-2">
+            <button class="bg-blue-400 text-white px-3 py-1 rounded">Edit</button>
+            <button class="bg-green-400 text-white px-3 py-1 rounded">Done</button>
+            <button class="bg-red-400 text-white px-3 py-1 rounded">Delete</button>
+          </div>
+        </div>
+      </ng-container>
 
-          <app-todo-item [todo]="todo" (delete)="removeTodoWithAnimation($event)"></app-todo-item>
-        </li>
-      }
-    </ul>
+      <app-todo-item [todo]="todo" (delete)="removeTodoWithAnimation($event)"></app-todo-item>
+    </li>
+    }
+  </ul>
   }
 
   <div class="fixed bottom-4 right-4 space-y-2">
     @for(toast of toastService.toasts(); track toast.id) {
-      <div
-        (click)="removeToast(toast.id)"
-        class="px-14 py-4 rounded-lg shadow-lg border bg-gray-50 border-orange-400 text-black text-2xl min-w-[20rem] cursor-pointer text-center overflow-hidden transition-all duration-700 transform"
-        [class.opacity-100]="toast.visible"
-        [class.opacity-0]="!toast.visible"
-        [class.translate-y-0]="toast.visible"
-        [class.translate-y-4]="!toast.visible"
-      >
-        <div class="mb-1">{{ toast.message }}</div>
-        <div class="h-1 bg-orange-200 rounded-full overflow-hidden">
-          <div
-            class="h-1 bg-orange-500"
-            [style.width.%]="toast.shrinking ? 0 : 100"
-            [style.transition]="'width ' + (toast.duration / 1000) + 's linear'"
-          ></div>
-        </div>
+    <div (click)="removeToast(toast.id)"
+      class="px-14 py-4 rounded-lg shadow-lg border border-orange-400 text-2xl min-w-[20rem] cursor-pointer text-center overflow-hidden transition-all duration-700 transform"
+      [class.opacity-100]="toast.visible" [class.opacity-0]="!toast.visible" [class.translate-y-0]="toast.visible"
+      [class.translate-y-4]="!toast.visible">
+      <div class="mb-1">{{ toast.message }}</div>
+      <div class="h-1 bg-orange-200 rounded-full overflow-hidden">
+        <div class="h-1 bg-orange-500" [style.width.%]="toast.shrinking ? 0 : 100"
+          [style.transition]="'width ' + (toast.duration / 1000) + 's linear'"></div>
       </div>
+    </div>
     }
   </div>
 </div>

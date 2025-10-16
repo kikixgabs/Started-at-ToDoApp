@@ -1,58 +1,61 @@
-import { computed, effect, inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
-import { ThemeModel } from '../../models';
+import { Injectable, inject, effect, signal, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { LocalManagerService } from '../local-manager-service/local-manager-service';
+import { ThemeModel } from '../../models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
-  platformID = inject(PLATFORM_ID);
-  localManager = inject(LocalManagerService);
+  private platformID = inject(PLATFORM_ID);
+  private localManager = inject(LocalManagerService);
+
+  // Signal para el tema actual
   appTheme = signal<'light' | 'dark' | 'system'>(this.localManager.loadLocalTheme() || 'system');
+
   themes: ThemeModel[] = [
     { name: 'light', icon: 'light_mode' },
     { name: 'dark', icon: 'dark_mode' },
     { name: 'system', icon: 'desktop_windows' },
   ];
 
-  selectedTheme = computed(() => {
-    this.themes.find((t) => t.name === this.appTheme());
-  });
+  constructor() {
+    // Inicializar con el tema guardado
+    const savedTheme = this.localManager.loadLocalTheme();
+    if (savedTheme) this.appTheme.set(savedTheme);
 
-  getThemes() {
-    return this.themes;
+    // Efecto reactivo para actualizar la clase 'dark' en html
+    effect(() => {
+      if (!isPlatformBrowser(this.platformID)) return;
+
+      const html = document.documentElement;
+      html.classList.remove('dark'); // Limpiamos siempre
+
+      const theme = this.appTheme();
+
+      if (theme === 'dark') {
+        html.classList.add('dark');
+      } else if (theme === 'system') {
+        // Detecta el sistema
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) html.classList.add('dark');
+      }
+
+      // Opcional: ajustar color-scheme para navegadores
+      const colorScheme = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+        ? 'dark'
+        : 'light';
+      html.style.setProperty('color-scheme', colorScheme);
+    });
   }
 
+  // Guardar tema y persistir
   setTheme(theme: 'light' | 'dark' | 'system') {
     this.appTheme.set(theme);
     this.localManager.saveLocalTheme(theme);
   }
 
-  constructor() {
-    const savedTheme = this.localManager.loadLocalTheme();
-    if (savedTheme) {
-      this.appTheme.set(savedTheme);
-    }
-
-    effect(() => {
-      if (!isPlatformBrowser(this.platformID)) return;
-
-      const appTheme = this.appTheme();
-      document.body.classList.remove('light', 'dark');
-      switch (appTheme) {
-        case 'dark': {
-          document.body.classList.add('dark');
-          break;
-        }
-        case 'light': {
-          document.body.classList.add('light');
-          break;
-        }
-      }
-
-      const colorScheme = appTheme === 'system' ? 'light dark' : appTheme;
-      document.body.style.setProperty('color-scheme', colorScheme);
-    });
+  getThemes() {
+    return this.themes;
   }
 }

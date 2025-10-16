@@ -24,16 +24,22 @@ body {
   margin: 0;
 }
 
-html[data-theme='dark'] {
-  --mat-sys-surface: #2f2f2f; // Fondo
-  --mat-sys-on-surface: #e0e0e0; // Texto
-
-  @include mat.theme((
-    color: (
-      theme-type: dark,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+html.dark {
+  --mat-sys-surface: #1e2939;
+  --mat-sys-on-surface: #e0e0e0;
+  --select-bg: #1e2939;
+  --select-hover-bg: #475569;
 }
 
+html.light {
+  --mat-sys-surface: #f3f4f6;
+  --mat-sys-on-surface: #030712;
+}
+
+.my-custom-select {
+  background-color: var(--select-bg);
+  color: var(--mat-sys-on-surface);
+}
+.my-custom-select:hover {
+  background-color: var(--select-hover-bg);
+}

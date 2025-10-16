@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { DoneTodoList } from "../done-todo-list/done-todo-list";
+import { CommonModule } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-todo-helper-component',
-  imports: [DoneTodoList],
+  standalone: true,
+  imports: [CommonModule, RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './todo-helper-component.html',
-  styleUrl: './todo-helper-component.css'
+  styleUrls: ['./todo-helper-component.css']
 })
-export class TodoHelperComponent {
-
-}
+export class TodoHelperComponent {}
