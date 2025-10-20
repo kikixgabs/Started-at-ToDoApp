@@ -1,0 +1,19 @@
+/* Transiciones para los botones de navegación */
+nav button {
+  transition: all 0.3s ease;
+}
+
+nav button:hover {
+  transform: scale(1.05);
+  background: rgba(249, 115, 22, 0.1); /* efecto sutil de hover naranja */
+}
+
+nav button.router-link-active {
+  border-color: #3b82f6; /* azul para activo */
+  background-color: rgba(59, 130, 246, 0.1);
+  color: #3b82f6;
+}
+
+.my-custom-div {
+  background-color: var(--panel-bg, #f9fafb); /* panel claro por defecto */
+}

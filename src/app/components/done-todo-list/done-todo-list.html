@@ -1,11 +1,13 @@
-<div class="flex-1 p-4 overflow-y-auto">
-  <p class="text-center text-lg font-bold mb-4">Completed Tasks</p>
-  <div class="flex gap-x-2 items-center mb-4">
-    <label for="doneFilter">Filter by:</label>
-    <select id="doneFilter"
-      [ngModel]="filterSignal()"
-      (ngModelChange)="filterSignal.set($event)"
-      class="border-2 rounded-xl px-2 py-1">
+<div class="flex-1 p-6 overflow-y-auto bg-[var(--panel-bg)] rounded-xl shadow-inner">
+
+  <!-- Título -->
+  <p class="text-center text-lg font-bold mb-6 text-gray-700">Completed Tasks</p>
+
+  <!-- Filtro -->
+  <div class="flex gap-x-3 items-center mb-6">
+    <label for="doneFilter" class="font-semibold text-gray-600">Filter by:</label>
+    <select id="doneFilter" [ngModel]="filterSignal()" (ngModelChange)="filterSignal.set($event)"
+      class="border-2 border-gray-300 rounded-xl px-3 py-1 shadow-sm focus:ring-2 focus:ring-orange-400 cursor-pointer bg-white">
       <option [ngValue]="null" disabled>Priority</option>
       <option [ngValue]="Priority.LOW">Low</option>
       <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -14,36 +16,36 @@
     </select>
   </div>
 
+  <!-- Mensajes si no hay tareas -->
   @if(filteredDoneTodos().length === 0) {
-    @if(filterSignal() === null){
-      <p class="text-center">No completed tasks yet.</p>
-    }@else {
-      
-      <p class="text-center">No completed tasks for {{ filterSignal() }} priority ToDo yet.</p>
-    }
+  @if(filterSignal() === null){
+  <p class="text-center text-gray-500 italic">No completed tasks yet.</p>
+  }@else {
+  <p class="text-center text-gray-500 italic">No completed tasks for {{ filterSignal() }} priority ToDo yet.</p>
+  }
   } @else {
 
-    <ul class="space-y-3">
-      @for(todo of filteredDoneTodos(); track todo.id) {
-        <li class="flex justify-between items-center w-full border-2 border-[#f43a09] rounded-xl shadow-md p-3">
-          <span class="text-gray-400 break-words flex-1 pr-4">
-            {{ todo.content }}
-          </span>
+  <!-- Lista de tareas completadas -->
+  <ul class="space-y-4">
+    @for(todo of filteredDoneTodos(); track todo.id) {
+    <li class="flex justify-between items-center w-full border-2 border-[#f43a09] rounded-xl shadow-lg p-4 bg-white">
 
-          <div class="flex gap-2">
-            <button 
-              (click)="todoState.toggleCompletedToDo(todo.id)" 
-              class="bg-green-400 text-white px-3 py-1 rounded hover:bg-green-500 text-sm">
-              Undone
-            </button>
-            <button 
-              (click)="todoState.deleteTodo(todo.id)" 
-              class="bg-red-400 text-white px-3 py-1 rounded hover:bg-red-500 text-sm">
-              Delete
-            </button>
-          </div>
-        </li>
-      }
-    </ul>
+      <span class="text-gray-600 break-words flex-1 pr-4 font-medium">
+        {{ todo.content }}
+      </span>
+
+      <div class="flex gap-2">
+        <button (click)="todoState.toggleCompletedToDo(todo.id)"
+          class="bg-green-400 text-white px-3 py-1 rounded-lg hover:bg-green-500 shadow-md text-sm font-semibold">
+          Undone
+        </button>
+        <button (click)="todoState.deleteTodo(todo.id)"
+          class="bg-red-400 text-white px-3 py-1 rounded-lg hover:bg-red-500 shadow-md text-sm font-semibold">
+          Delete
+        </button>
+      </div>
+    </li>
+    }
+  </ul>
   }
 </div>

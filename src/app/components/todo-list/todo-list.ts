@@ -82,12 +82,10 @@ export class TodoList implements OnInit {
     const savedTodos = this.localManager.getAllTodos();
     this.todoState.loadFromStorage(savedTodos);
 
-    // Inicializamos appearingMap para todos los todos cargados
     const initialMap: Record<string, boolean> = {};
     savedTodos.forEach((todo) => (initialMap[todo.id] = true));
     this.appearingMap.set(initialMap);
 
-    // Suscripciones a filtros
     this.todoForm.controls.formFilter.valueChanges.subscribe((value) => {
       if (value) this.filterSignal.set(value);
     });
@@ -99,7 +97,7 @@ export class TodoList implements OnInit {
 
   constructor() {
     effect(() => {
-      const todos = this.todoState.todos(); // leer solo el signal base
+      const todos = this.todoState.todos();
       const appearingUpdate: Record<string, boolean> = {};
       todos.forEach((todo) => {
         if (!this.appearingMap()[todo.id]) {
@@ -155,7 +153,7 @@ export class TodoList implements OnInit {
         delete copy[id];
         return copy;
       });
-    }, 300);
+    }, 300); // Duración de la animación
   }
 
   onSubmit(): void {
@@ -185,7 +183,7 @@ export class TodoList implements OnInit {
     this.appearingMap.update((map) => ({ ...map, [newTodo.id]: false }));
     setTimeout(() => {
       this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true }));
-    }, 10);
+    }, 10); // 10ms es suficiente para disparar la transición
 
     this.toastService.showToast('Created new todo');
     this.todoForm.controls.formContent.reset('');

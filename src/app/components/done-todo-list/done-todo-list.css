@@ -1,0 +1,30 @@
+/* Inputs y selects */
+select {
+    transition: all 0.3s ease;
+    outline: none;
+}
+
+select:focus {
+    border-color: #f97316;
+    /* naranja vivo */
+    box-shadow: 0 0 6px rgba(249, 115, 22, 0.5);
+}
+
+/* Botones */
+button {
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* Lista de tareas completadas */
+ul li {
+    transition: all 0.3s ease, transform 0.2s ease;
+}
+
+ul li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}

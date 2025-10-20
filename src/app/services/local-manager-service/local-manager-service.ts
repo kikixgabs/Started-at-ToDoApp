@@ -65,7 +65,18 @@ export class LocalManagerService {
   }
 
   setToDoItem(item: TodoItemInterface): void {
-    if (typeof localStorage !== 'undefined') localStorage.setItem(item.id, JSON.stringify(item));
+    if (typeof localStorage === 'undefined') return;
+
+    localStorage.setItem(item.id, JSON.stringify(item));
+
+    const orderData = localStorage.getItem('todos_order');
+    let order: string[] = orderData ? JSON.parse(orderData) : [];
+
+    if (!order.includes(item.id)) {
+      order.push(item.id);
+    }
+
+    localStorage.setItem('todos_order', JSON.stringify(order));
   }
 
   setToDoItems(todos: TodoItemInterface[]) {

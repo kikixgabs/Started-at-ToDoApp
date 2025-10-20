@@ -1,32 +1,50 @@
-
-
-li {
-  transition: opacity 0.3s ease, transform 0.3s ease;
+/* Animaciones y transiciones para botones y inputs */
+input, select {
+  transition: all 0.3s ease;
+  outline: none;
 }
 
-/* Entrada */
-li.entering {
-  opacity: 0;
-  transform: translateY(1rem);
-}
-li.entered {
-  opacity: 1;
-  transform: translateY(0);
+input:focus, select:focus {
+  border-color: #f97316; /* naranja vivo */
+  box-shadow: 0 0 6px rgba(249,115,22,0.5);
 }
 
-/* Salida */
-li.removing {
-  opacity: 0;
-  transform: scale(0.9);
+button {
+  transition: all 0.3s ease;
 }
 
-.cdk-drag-placeholder {
-  display: block;
-  visibility: hidden;
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
-.cdk-drag-preview {
-  width: 100%; /* ocupa todo el ancho del item */
-  pointer-events: none;
-  cursor: grabbing !important;
+/* Subtask buttons */
+.subtasks button {
+  transition: all 0.3s ease, transform 0.2s ease;
 }
+
+.subtasks button:hover {
+  transform: scale(1.05);
+}
+
+/* Todo cards */
+ul li {
+  display: flex;
+  justify-content: center;
+}
+
+ul li app-todo-item {
+  width: 100%;
+}
+
+.cdk-drag-preview div {
+  background-color: rgba(255, 159, 10, 0.2);
+  border-radius: 1rem;
+}
+
+/* Toasts */
+.fixed div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+

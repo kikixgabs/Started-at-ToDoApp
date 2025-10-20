@@ -1,14 +1,19 @@
-<div class="h-full flex flex-col">
-  <nav class="flex justify-around border-b py-2 my-custom-div font-bold">
-    <button routerLink="done" routerLinkActive="font-extrabold  text-blue-500" class="border-2 border-orange-500 p-3 rounded-xl cursor-pointer mx-2 px-2">
+<div class="h-full flex flex-col bg-[var(--body-bg)] text-[var(--text-color)]">
+  
+  <!-- Navegación principal -->
+  <nav class="flex justify-around border-b border-[var(--border-color)] py-2 my-custom-div font-bold shadow-sm">
+    <button routerLink="done" routerLinkActive="router-link-active"
+      class="border-2 border-orange-500 p-3 rounded-xl cursor-pointer mx-2 px-4 text-gray-700 hover:text-gray-900 hover:shadow-md">
       ✅ Done List
     </button>
-    <button routerLink="dashboard" routerLinkActive="font-extrabold  text-blue-500" class="border-2 border-orange-500 p-3 rounded-xl cursor-pointer mx-2 px-2">
+    <button routerLink="dashboard" routerLinkActive="router-link-active"
+      class="border-2 border-orange-500 p-3 rounded-xl cursor-pointer mx-2 px-4 text-gray-700 hover:text-gray-900 hover:shadow-md">
       📊 Dashboard
     </button>
   </nav>
 
-  <div class="flex-1 overflow-auto p-4">
+  <!-- Contenido principal -->
+  <div class="flex-1 overflow-auto p-4 bg-[var(--panel-bg)] rounded-b-xl shadow-inner">
     <router-outlet></router-outlet>
   </div>
 </div>
