@@ -1,19 +1,41 @@
-<div class="flex min-h-screen">
-  <!-- Sidebar izquierdo -->
-  <div class="bg-blue-400 w-[10rem] flex-shrink-0">
-    <div class="flex justify-evenly items-center">
-      <p class="pt-2 text-lg">Reddot.</p>
-      <app-theme-selector/>
+<div class="flex min-h-screen bg-[var(--body-bg)] text-[var(--text-color)] transition-colors duration-300">
+  <!-- 🧭 Sidebar Izquierdo -->
+  <aside
+    class="w-[12rem] flex flex-col justify-between border-r border-[var(--border-color)] bg-[var(--sidebar-bg)]/70 backdrop-blur-md p-4"
+  >
+    <!-- Branding -->
+    <div>
+      <h1 class="text-2xl font-bold tracking-tight text-orange-400">
+        Reddot<span class="text-zinc-400">Tasks</span>
+      </h1>
+      <p class="text-xs text-[var(--text-secondary)] mt-1">
+        Productivity made simple
+      </p>
     </div>
-  </div>
 
-  <!-- Contenido central -->
-  <div class="flex-1">
-    <app-todo-list></app-todo-list>
-  </div>
+    <!-- Theme selector -->
+    <div class="mt-6">
+      <app-theme-selector></app-theme-selector>
+    </div>
 
-  <!-- Sidebar derecho / helper -->
-  <div class="w-[30rem] border-l-1 border-gray-300 flex-shrink-0">
-    <router-outlet></router-outlet>
-  </div>
+    <!-- Footer -->
+    <div class="text-xs text-[var(--text-secondary)] mt-auto pt-6 border-t border-[var(--border-color)]">
+      <p>© 2025 Ezequiel</p>
+    </div>
+  </aside>
+
+  <!-- 🧩 Contenido Principal -->
+  <main class="flex-1 flex flex-col overflow-hidden">
+    <div class="flex flex-1">
+      <!-- Lista de tareas pendientes -->
+      <div class="flex-1 p-6 overflow-auto">
+        <app-todo-list></app-todo-list>
+      </div>
+
+      <!-- Dashboard lateral (tareas completadas, stats) -->
+      <div class="w-[25rem] border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-6 overflow-auto">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </main>
 </div>

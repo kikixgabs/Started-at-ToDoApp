@@ -82,6 +82,12 @@ export class TodoList implements OnInit {
     const savedTodos = this.localManager.getAllTodos();
     this.todoState.loadFromStorage(savedTodos);
 
+    // Inicializamos appearingMap para todos los todos cargados
+    const initialMap: Record<string, boolean> = {};
+    savedTodos.forEach((todo) => (initialMap[todo.id] = true));
+    this.appearingMap.set(initialMap);
+
+    // Suscripciones a filtros
     this.todoForm.controls.formFilter.valueChanges.subscribe((value) => {
       if (value) this.filterSignal.set(value);
     });
@@ -89,23 +95,22 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formFilterTag.valueChanges.subscribe((value) => {
       this.filterTags.set(value ? [value] : []);
     });
-
-    this.filteredTodos().forEach((todo) => {
-      this.appearingMap.update((map) => ({ ...map, [todo.id]: false }));
-      setTimeout(() => {
-        this.appearingMap.update((map) => ({ ...map, [todo.id]: true }));
-      }, 10);
-    });
   }
 
   constructor() {
-    effect((): void => {
-      const todos: TodoItemInterface[] = this.filteredTodos();
-      todos.forEach((todo: TodoItemInterface) => {
+    effect(() => {
+      const todos = this.todoState.todos(); // leer solo el signal base
+      const appearingUpdate: Record<string, boolean> = {};
+      todos.forEach((todo) => {
         if (!this.appearingMap()[todo.id]) {
-          this.appearingMap.update((map) => ({ ...map, [todo.id]: true }));
+          appearingUpdate[todo.id] = true;
         }
       });
+
+      // Actualizamos de una sola vez para no disparar múltiples cambios
+      if (Object.keys(appearingUpdate).length > 0) {
+        this.appearingMap.update((map) => ({ ...map, ...appearingUpdate }));
+      }
     });
   }
 

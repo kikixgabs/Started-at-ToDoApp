@@ -1,0 +1,23 @@
+:host {
+  --body-bg: var(--mat-sys-surface);
+  --sidebar-bg: var(--mat-sys-surface-container-highest);
+  --panel-bg: var(--mat-sys-surface-container);
+  --text-color: var(--mat-sys-on-surface);
+  --text-secondary: var(--mat-sys-outline);
+  --border-color: var(--mat-sys-outline-variant);
+
+  display: block;
+  height: 100%;
+}
+
+aside {
+  transition: all 0.3s ease;
+}
+
+h1 span {
+  transition: color 0.3s ease;
+}
+
+main {
+  background-color: var(--body-bg);
+}
