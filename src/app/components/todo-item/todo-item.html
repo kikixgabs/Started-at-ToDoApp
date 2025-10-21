@@ -1,44 +1,45 @@
 @if(todo().completed === false){
 <div
-  class="flex flex-col justify-between rounded-xl border-2 border-zinc-300 m-1.5 p-4 transition-all duration-400 ease-out transform origin-top"
->
+  class="flex flex-col justify-between rounded-xl border-2 border-zinc-300 m-1.5 p-4 transition-all duration-400 ease-out transform origin-top">
   @if(!isEditing()){
   <div class="flex flex-col w-full">
-    <span
-      [class.line-through]="todo().completed"
-      [class.text-gray-400]="todo().completed"
-      class="text-2xl break-words w-full mb-[0.5rem]"
-    >
+    <span [class.line-through]="todo().completed" [class.text-gray-400]="todo().completed"
+      class="text-2xl break-words w-full mb-[0.5rem]">
       {{ todo().content }}
     </span>
 
     @if(todo().tag?.length){
     <div class="flex flex-wrap gap-2 mb-2">
       @for(tag of todo().tag; track tag){
-      <span
-        class="px-2 py-0.5 rounded-full text-center text-sm text-black"
-        [ngClass]="tagColors[tag]"
-      >
+      <span class="px-2 py-0.5 rounded-full text-center text-sm text-black" [ngClass]="tagColors[tag]">
         {{ tag }}
       </span>
       }
     </div>
-    } @if(todo().subtask !== [] && todo().subtask?.length){
+    }
+    @if(todo().subtask !== [] && todo().subtask?.length){
     <div class="m-2 mb-[2rem]">
       <ul>
         @for(sub of todo().subtask; track sub.id){
         <li class="flex items-center gap-2">
-          <input
-            type="checkbox"
-            [checked]="sub.completed"
-            (change)="toggleSubtaskCompletion(sub.id)"
-          />
-          <span
-            (click)="toggleSubtaskCompletion(sub.id)"
-            class="cursor-pointer"
-            [class.line-through]="sub.completed"
-            >{{ sub.content }}</span
-          >
+          <input type="checkbox" [checked]="sub.completed" (change)="toggleSubtaskCompletion(sub.id)" />
+
+          <!-- Mostrar contenido o input según edición -->
+          @if(editingSubtaskId() !== sub.id){
+          <span (click)="toggleSubtaskCompletion(sub.id)" class="cursor-pointer" [class.line-through]="sub.completed">
+            {{sub.content}}
+          </span>
+          <span class="material-symbols-outlined cursor-pointer" (click)="startSubtaskEdit(sub)">
+            edit
+          </span>
+          } @else {
+          <input type="text" [ngModel]="subtaskEditContent()" (ngModelChange)="subtaskEditContent.set($event)"
+            class="border rounded px-2 py-1 max-w-[15rem] flex-1" />
+          <button class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
+            (click)="saveSubtaskEdit(sub)">check</button>
+          <button class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
+            (click)="cancelSubtaskEdit()">close</button>
+          }
         </li>
         }
       </ul>
@@ -66,7 +67,7 @@
           <div>
             <i class="fa-solid fa-clock"></i>
             {{ todo().date.getHours() | number : '2.0' }}:{{
-              todo().date.getMinutes() | number : '2.0'
+            todo().date.getMinutes() | number : '2.0'
             }}
           </div>
         </div>
@@ -75,19 +76,11 @@
   </div>
   } @else {
   <div class="flex flex-col gap-4 w-full">
-    <input
-      type="text"
-      [ngModel]="contentEdit()"
-      (ngModelChange)="contentEdit.set($event)"
-      class="text-[1.5rem] w-full border rounded px-2 py-1"
-    />
+    <input type="text" [ngModel]="contentEdit()" (ngModelChange)="contentEdit.set($event)"
+      class="text-[1.5rem] w-full border rounded px-2 py-1" />
     <span class="flex-2">
-      <select
-        id="todoPriority"
-        [ngModel]="prioritySignal()"
-        (ngModelChange)="prioritySignal.set($event)"
-        class="border-2 rounded-xs px-2 py-1"
-      >
+      <select id="todoPriority" [ngModel]="prioritySignal()" (ngModelChange)="prioritySignal.set($event)"
+        class="border-2 rounded-xs px-2 py-1">
         <option [ngValue]="null" disabled>Change priority</option>
         <option [ngValue]="Priority.LOW">Low</option>
         <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -99,36 +92,22 @@
 
   <div class="flex justify-end space-x-2 mt-2">
     @if(!isEditing()){ @if(!todo().completed){
-    <button
-      class="bg-blue-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-blue-500"
-      (click)="startEdit()"
-    >
+    <button class="bg-blue-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-blue-500" (click)="startEdit()">
       Edit
     </button>
     }
-    <button
-      class="bg-green-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-500"
-      (click)="completeToDo()"
-    >
+    <button class="bg-green-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-500"
+      (click)="completeToDo()">
       Done
     </button>
-    <button
-      class="bg-red-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-red-500"
-      (click)="deleteTodo()"
-    >
+    <button class="bg-red-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-red-500" (click)="deleteTodo()">
       Delete
     </button>
     } @else {
-    <button
-      class="bg-green-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-500"
-      (click)="saveEdit()"
-    >
+    <button class="bg-green-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-green-500" (click)="saveEdit()">
       Save
     </button>
-    <button
-      class="bg-gray-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-gray-500"
-      (click)="cancelEdit()"
-    >
+    <button class="bg-gray-400 cursor-pointer text-white px-3 py-1 rounded hover:bg-gray-500" (click)="cancelEdit()">
       Go back
     </button>
     }
