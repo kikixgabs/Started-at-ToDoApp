@@ -1,16 +1,41 @@
-/* Animaciones y transiciones para botones y inputs */
-input, select {
+:host {
+  display: block;
+  color: var(--text-color);
+}
+
+/* --- Inputs y selects --- */
+input,
+select {
   transition: all 0.3s ease;
   outline: none;
+  background-color: var(--mat-sys-surface-container-highest);
+  border: 1.5px solid var(--border-color);
+  color: var(--text-color);
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
 }
 
-input:focus, select:focus {
-  border-color: #f97316; /* naranja vivo */
-  box-shadow: 0 0 6px rgba(249,115,22,0.5);
+input::placeholder {
+  color: var(--text-secondary);
 }
 
+input:focus,
+select:focus {
+  border-color: #f97316;
+  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.3);
+  background-color: var(--mat-sys-surface);
+}
+
+/* --- Botones globales --- */
 button {
-  transition: all 0.3s ease;
+  transition: all 0.3s ease, transform 0.2s ease;
+  border: none;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
 }
 
 button:disabled {
@@ -18,7 +43,7 @@ button:disabled {
   opacity: 0.5;
 }
 
-/* Subtask buttons */
+/* --- Botones de subtareas --- */
 .subtasks button {
   transition: all 0.3s ease, transform 0.2s ease;
 }
@@ -27,7 +52,41 @@ button:disabled {
   transform: scale(1.05);
 }
 
-/* Todo cards */
+/* --- Contenedor de formulario --- */
+form {
+  background-color: var(--panel-bg);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 1.25rem;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --- Botón principal --- */
+form button[type="submit"] {
+  background: linear-gradient(90deg, #f97316, #fb923c);
+  color: #000;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+}
+
+form button[type="submit"]:hover {
+  box-shadow: 0 6px 18px rgba(249, 115, 22, 0.5);
+}
+
+/* --- Filtros --- */
+label {
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+select {
+  background-color: var(--mat-sys-surface-container);
+}
+
+/* --- ToDo Cards (ul li) --- */
 ul li {
   display: flex;
   justify-content: center;
@@ -35,16 +94,67 @@ ul li {
 
 ul li app-todo-item {
   width: 100%;
-}
-
-.cdk-drag-preview div {
-  background-color: rgba(255, 159, 10, 0.2);
+  background-color: var(--mat-sys-surface-container-high);
+  border: 1px solid var(--border-color);
   border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
 }
 
-/* Toasts */
+ul li app-todo-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Drag Preview --- */
+.cdk-drag-preview div {
+  background-color: rgba(249, 115, 22, 0.2);
+  border-radius: 1rem;
+  border: 2px solid #f97316;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* --- Toasts --- */
+.fixed div {
+  background-color: var(--mat-sys-surface-container-highest);
+  border: 1px solid #f97316;
+  color: var(--text-color);
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
 .fixed div:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
 }
 
+/* --- Tag Buttons --- */
+button[ng-reflect-ng-class] {
+  background-color: var(--mat-sys-surface-container);
+}
+
+button[ng-reflect-ng-class].font-bold {
+  background-color: #f97316 !important;
+  color: #000 !important;
+  border-color: #f97316 !important;
+  box-shadow: 0 4px 10px rgba(249, 115, 22, 0.3);
+}
+
+/* --- Animaciones de entrada/salida --- */
+li[class*="opacity-"] {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.todo-list-wrapper {
+  position: relative; /* el contenedor padre */
+}
+
+.todo-list-wrapper .toast {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 30;
+  transition: all 0.4s ease;
+  pointer-events: auto;
+}
