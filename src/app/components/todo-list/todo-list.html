@@ -118,15 +118,6 @@
       [class.translate-y-[10px]]="removingMap()[todo.id]" [class.translate-y-[0]]="!removingMap()[todo.id]">
       <!-- Drag preview -->
       <ng-container *cdkDragPreview>
-        <div
-          class="h-[10rem] p-4 rounded-xl border-2 border-orange-600 shadow-lg w-[20rem] bg-[var(--mat-sys-surface-container-highest)]/95 text-[var(--text-color)]">
-          <span class="text-2xl break-words">{{ todo.content }}</span>
-          <div class="flex justify-end gap-2 mt-3">
-            <button class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-lg shadow-md">Edit</button>
-            <button class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg shadow-md">Done</button>
-            <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg shadow-md">Delete</button>
-          </div>
-        </div>
       </ng-container>
 
       <!-- Item real -->
