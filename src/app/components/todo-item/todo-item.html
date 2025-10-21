@@ -35,9 +35,11 @@
           } @else {
           <input type="text" [ngModel]="subtaskEditContent()" (ngModelChange)="subtaskEditContent.set($event)"
             class="border rounded px-2 py-1 max-w-[15rem] flex-1" />
-          <button class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
+          <button
+            class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
             (click)="saveSubtaskEdit(sub)">check</button>
-          <button class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
+          <button
+            class="material-symbols-outlined border-1 rounded-4xl cursor-pointer hover:scale-110 transition-transform"
             (click)="cancelSubtaskEdit()">close</button>
           }
         </li>

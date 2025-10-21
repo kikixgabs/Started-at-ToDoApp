@@ -85,7 +85,7 @@ export class TodoItem {
 
   // Toggle completion de subtasks
   toggleSubtaskCompletion(subtaskId: string) {
-    const subtask = this.todo().subtask?.find(s => s.id === subtaskId);
+    const subtask = this.todo().subtask?.find((s) => s.id === subtaskId);
     if (subtask) {
       subtask.completed = !subtask.completed;
       this.localManager.setToDoItem(this.todo());

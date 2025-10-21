@@ -28,9 +28,9 @@
   <!-- Lista de tareas completadas -->
   <ul class="space-y-4">
     @for(todo of filteredDoneTodos(); track todo.id) {
-    <li class="flex justify-between items-center w-full border-2 border-[#f43a09] rounded-xl shadow-lg p-4 bg-white">
+    <li class="flex justify-between items-center w-full border-2 border-[#f43a09] rounded-xl shadow-lg p-4">
 
-      <span class="text-gray-600 break-words flex-1 pr-4 font-medium">
+      <span class="text-gray-500 break-words flex-1 pr-4 font-medium">
         {{ todo.content }}
       </span>
 

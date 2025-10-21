@@ -9,7 +9,7 @@
         placeholder="New ToDo..." />
 
       <select formControlName="formSelector"
-        class="w-[8rem] md:w-[10rem] cursor-pointer h-[3rem] border border-[var(--border-color)] rounded-xl px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
+        class="w-[8rem] md:w-[10rem] cursor-pointer h-[3.35rem] border border-[var(--border-color)] rounded-xl px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
         <option [ngValue]="null" disabled selected>Priority</option>
         <option [ngValue]="Priority.LOW">Low</option>
         <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -47,10 +47,10 @@
       <div class="flex gap-2 w-full md:w-[60%]">
         <input type="text" [value]="sub.content" (input)="updateSubtask(sub.index, $any($event.target).value)"
           placeholder="Subtask"
-          class="border border-[var(--border-color)] rounded-lg px-3 py-2 flex-1 bg-[var(--mat-sys-surface-container)] shadow-sm focus:ring-2 focus:ring-orange-400 text-[var(--text-color)] transition-all duration-300" />
+          class="border border-[var(--border-color)] rounded-xl px-3 py-2 flex-1 bg-[var(--mat-sys-surface-container)] shadow-sm focus:ring-2 focus:ring-orange-400 text-[var(--text-color)] transition-all duration-300" />
 
         <button type="button"
-          class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg shadow-md transition-all duration-300">
+          class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl shadow-md transition-all duration-300">
           X
         </button>
       </div>
@@ -64,7 +64,7 @@
 
     <!-- Add ToDo -->
     <button type="submit" [disabled]="todoForm.invalid"
-      class="rounded-xl w-full sm:w-[14rem] h-[4rem] bg-gradient-to-r from-orange-400 to-orange-500 mt-6 text-black cursor-pointer hover:brightness-105 shadow-lg text-lg font-semibold transition-all duration-300">
+      class="rounded-lg w-full sm:w-[14rem] h-[4rem] bg-gradient-to-r from-orange-400 to-orange-500 mt-6 text-black cursor-pointer hover:brightness-105 shadow-lg text-lg font-semibold transition-all duration-300">
       Add ToDo
     </button>
   </form>
@@ -75,7 +75,7 @@
     <div class="flex items-center gap-x-2">
       <label for="filter" class="font-semibold text-[var(--text-color)]">Filter priority:</label>
       <select [formControl]="todoForm.controls.formFilter" id="filter"
-        class="border rounded-lg cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
+        class="border rounded-xl cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
         <option [ngValue]="'ALL'" selected>All</option>
         <option [ngValue]="Priority.LOW">Low</option>
         <option [ngValue]="Priority.MEDIUM">Medium</option>
@@ -86,7 +86,7 @@
     <div class="flex items-center gap-x-2">
       <label for="filterTag" class="font-semibold text-[var(--text-color)]">Filter tag:</label>
       <select [formControl]="todoForm.controls.formFilterTag" id="filterTag"
-        class="border rounded-lg cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
+        class="border rounded-xl cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
         <option [ngValue]="null" selected>All tags</option>
         @for(tag of tagList; track tag){
         <option [ngValue]="tag" class="cursor-pointer">{{ tag }}</option>
@@ -96,7 +96,7 @@
 
     <div>
       <button type="button" (click)="resetFilters()"
-        class="bg-sky-400 hover:bg-sky-500 text-black font-medium px-4 py-2 rounded-lg cursor-pointer shadow-md transition-all duration-300">
+        class="bg-sky-400 hover:bg-sky-500 text-black font-medium px-4 py-2 rounded-xl cursor-pointer shadow-md transition-all duration-300">
         Reset Filters
       </button>
     </div>
