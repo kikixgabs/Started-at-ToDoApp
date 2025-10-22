@@ -3,6 +3,17 @@
   height: 100%;
 }
 
+/* Asegura que el gráfico no se deforme */
 canvas {
   max-width: 100%;
+  height: auto !important;
+}
+
+/* Animaciones sutiles para coherencia visual */
+.my-custom-div {
+  transition: all 0.3s ease;
+}
+
+.my-custom-div:hover {
+  transform: translateY(-3px);
 }
