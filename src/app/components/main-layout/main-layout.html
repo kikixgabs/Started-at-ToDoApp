@@ -16,7 +16,7 @@
 
     <!-- Theme selector -->
     <div class="mt-6">
-      <app-theme-selector/>
+      <app-theme-selector />
     </div>
 
     <!-- Footer -->
@@ -32,24 +32,23 @@
     [class.pointer-events-none]="!sidebarOpen() || !isMobile()" (click)="toggleSidebar()"></div>
 
   <!-- 🧩 Contenido Principal -->
-  <main class="flex-1 flex flex-col overflow-hidden sm:ml-[12rem] relative">
+  <main class="flex-1 flex flex-col overflow-hidden sm:ml-[12rem] ml-0 relative">
     <!-- Botón para abrir sidebar en móvil -->
     @if(isMobile() && !sidebarOpen()) {
-      <div class="w-dvw material-symbols-outlined z-40 p-2 bg-orange-400 text-white">
-        <button class=""
-          (click)="toggleSidebar()">
-          menu
-        </button>
-      </div>
+    <div class="w-dvw material-symbols-outlined z-40 p-2 bg-orange-400 text-white">
+      <button class="" (click)="toggleSidebar()">
+        menu
+      </button>
+    </div>
     }
 
-    <div class="flex flex-col sm:flex-row flex-1">
-      <!-- Lista de tareas pendientes -->
+    <div class="flex flex-col md:flex-row flex-1">
+      <!-- Todo List -->
       <div class="flex-1 p-4 sm:p-6 overflow-auto">
         <app-todo-list></app-todo-list>
       </div>
 
-      <!-- Dashboard lateral (tareas completadas, stats) -->
+      <!-- Dashboard lateral -->
       <div
         class="w-full sm:w-[25rem] border-t sm:border-t-0 sm:border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-4 sm:p-6 overflow-auto">
         <router-outlet></router-outlet>
