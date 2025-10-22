@@ -110,7 +110,7 @@
   <ul cdkDropList [cdkDropListData]="filteredTodos()" (cdkDropListDropped)="onDrop($event)"
     class="space-y-4 todo-list-wrapper flex flex-col relative">
     @for(todo of filteredTodos(); track todo.id){
-    <li cdkDrag class="transition-all duration-300 ease-out transform"
+    <li cdkDrag [cdkDragStartDelay]="200" class="transition-all duration-300 ease-out transform"
       [class.opacity-0]="removingMap()[todo.id] || !appearingMap()[todo.id]"
       [class.opacity-100]="!removingMap()[todo.id] && appearingMap()[todo.id]"
       [class.scale-95]="removingMap()[todo.id] || !appearingMap()[todo.id]"
