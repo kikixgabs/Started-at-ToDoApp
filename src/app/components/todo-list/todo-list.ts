@@ -2,7 +2,7 @@ import {  ChangeDetectionStrategy,  Component,  computed,  effect,  inject,  OnI
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';
-import { FilterService, ToastService, TodoStateService } from '../../services';
+import { FilterService, LanguageService, ToastService, TodoStateService } from '../../services';
 import { TodoItem } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -28,6 +28,7 @@ export class TodoList implements OnInit {
   todoState = inject(TodoStateService);
   filterService = inject(FilterService);
   toastService = inject(ToastService);
+  lang = inject(LanguageService);
 
   Priority = Priority;
   filterSignal = signal<Priority | 'ALL' | null>('ALL');

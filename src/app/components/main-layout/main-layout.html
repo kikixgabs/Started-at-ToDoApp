@@ -20,6 +20,18 @@
       <app-theme-selector />
     </div>
 
+    <div class="flex gap-2">
+      <button class="px-2 py-1 border rounded" [class.bg-orange-500]="lang.currentLang() === 'en'"
+        (click)="lang.setLanguage('en')">
+        🇬🇧 English
+      </button>
+      <button class="px-2 py-1 border rounded" [class.bg-orange-500]="lang.currentLang() === 'es'"
+        (click)="lang.setLanguage('es')">
+        🇪🇸 Español
+      </button>
+    </div>
+
+
     <!-- Footer -->
     <div class="text-xs text-[var(--text-secondary)] mt-auto pt-6 border-t border-[var(--border-color)]">
       <p>© 2025 Kikixgabs</p>
@@ -52,7 +64,7 @@
 
     <!-- Dashboard lateral -->
     <div
-      class="w-full lg:w-[25rem] border-t lg:border-t-0 lg:border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-4 sm:p-6 overflow-auto shrink-0">
+      class="w-full lg:w-[30rem] border-t lg:border-t-0 lg:border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-4 sm:p-6 overflow-auto shrink-0">
       <router-outlet></router-outlet>
     </div>
   </main>

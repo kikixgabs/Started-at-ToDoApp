@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { FilterService, TodoStateService } from '../../services';
+import { FilterService, LanguageService, TodoStateService } from '../../services';
 import { Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
 
@@ -13,6 +13,7 @@ export class DoneTodoList {
 
   todoState = inject(TodoStateService);
   filterService = inject(FilterService);
+  lang = inject(LanguageService);
   Priority = Priority;
 
   filterSignal = signal<Priority | 'ALL'>('ALL');

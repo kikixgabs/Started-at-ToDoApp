@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { TodoList } from '../todo-list/todo-list';
 import { RouterOutlet } from '@angular/router';
 import { ThemeSelector } from '../theme-selector/theme-selector/theme-selector';
+import { LanguageService } from '../../services';
 
 @Component({
   selector: 'app-main-layout',
@@ -10,6 +11,9 @@ import { ThemeSelector } from '../theme-selector/theme-selector/theme-selector';
   styleUrls: ['./main-layout.css'],
 })
 export class MainLayout {
+
+  lang = inject(LanguageService);
+
   sidebarOpen = signal(false);
   isMobile = signal(false);
 

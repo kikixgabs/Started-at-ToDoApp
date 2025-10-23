@@ -4,19 +4,19 @@
   <!-- Título -->
   <h2
     class="text-center text-2xl font-bold mb-8 text-[var(--text-primary)] tracking-wide select-none border-b pb-2 border-[var(--border-color)]">
-    Completed Tasks
+    {{lang.t('doneList.completedTask')}}
   </h2>
 
   <!-- Filtro -->
   <div class="flex gap-x-3 items-center mb-8">
-    <label for="doneFilter" class="font-semibold text-[var(--text-secondary)]">Filter by:</label>
+    <label for="doneFilter" class="font-semibold text-[var(--text-secondary)]">{{lang.t('filters.filterBy')}}</label>
     <select id="doneFilter" [ngModel]="filterSignal()" (ngModelChange)="filterSignal.set($event)"
       class="border-2 border-gray-300 bg-[var(--mat-sys-inverse-on-surface)] rounded-xl px-4 py-2 shadow-sm focus:ring-2 focus:ring-orange-400 cursor-pointer text-sm font-medium">
-      <option [ngValue]="null" disabled>Priority</option>
-      <option [ngValue]="Priority.LOW">Low</option>
-      <option [ngValue]="Priority.MEDIUM">Medium</option>
-      <option [ngValue]="Priority.HIGH">High</option>
-      <option [ngValue]="'ALL'">All</option>
+      <option [ngValue]="null" disabled>{{lang.t('priority.priority')}}</option>
+      <option [ngValue]="Priority.LOW">{{lang.t('priority.priorityLow')}}</option>
+      <option [ngValue]="Priority.MEDIUM">{{lang.t('priority.priorityMedium')}}</option>
+      <option [ngValue]="Priority.HIGH">{{lang.t('priority.priorityHigh')}}</option>
+      <option [ngValue]="'ALL'">{{lang.t('priority.priorityAll')}}</option>
     </select>
   </div>
 
@@ -37,7 +37,7 @@
       <!-- Contenido -->
       <div class="flex items-center gap-3 flex-1 min-w-0">
         <span class="material-symbols-outlined text-green-500 text-lg shrink-0">check_circle</span>
-        <span class="text-gray-200 break-words font-medium truncate">
+        <span class="text-[var(--text-primary)] break-words font-medium truncate">
           {{ todo.content }}
         </span>
       </div>
@@ -46,13 +46,13 @@
       <div class="flex gap-2 ml-3 shrink-0">
         <button (click)="todoState.toggleCompletedToDo(todo.id)"
           class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shadow-md flex items-center justify-center transition-all"
-          title="Mark as undone">
+          [title]="[lang.t('doneList.titleUndone')]">
           <span class="material-symbols-outlined text-[20px]">undo</span>
         </button>
 
         <button (click)="todoState.deleteTodo(todo.id)"
           class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg shadow-md flex items-center justify-center transition-all"
-          title="Delete task">
+          [title]="[lang.t('doneList.titleDelete')]">
           <span class="material-symbols-outlined text-[20px]">delete</span>
         </button>
       </div>

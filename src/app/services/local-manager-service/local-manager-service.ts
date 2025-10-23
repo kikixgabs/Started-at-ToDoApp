@@ -110,4 +110,18 @@ export class LocalManagerService {
     if (typeof localStorage === 'undefined') return null;
     return localStorage.getItem('app-theme') as 'light' | 'dark' | 'system' | null;
   }
+
+  saveLocalLanguage(lang: string){
+    if(typeof localStorage !== 'undefined'){
+      localStorage.setItem('language', lang);
+    }
+  }
+
+  loadLocalLanguage(): string | null{
+    if(typeof localStorage !== 'undefined'){
+      return localStorage.getItem('language');
+    }
+    return null;
+  }
+
 }

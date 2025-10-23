@@ -2,7 +2,7 @@ import { Component, inject, PLATFORM_ID, computed, effect } from '@angular/core'
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Chart, ChartData, ChartOptions, ArcElement, DoughnutController, Legend, Tooltip } from 'chart.js';
 import { ChartComponent } from './chart-component';
-import { TodoStateService } from '../../services';
+import { LanguageService, TodoStateService } from '../../services';
 
 // ✅ Registrar elementos para doughnut
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
@@ -17,6 +17,7 @@ Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
 export class DashboardComponent {
   private todoState = inject(TodoStateService);
   private platformID = inject(PLATFORM_ID);
+  lang = inject(LanguageService);
 
   isBrowser = isPlatformBrowser(this.platformID);
 

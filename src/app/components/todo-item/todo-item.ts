@@ -1,5 +1,5 @@
 import { Component, computed, EventEmitter, inject, input, Output, signal } from '@angular/core';
-import { LocalManagerService, TodoStateService } from '../../services';
+import { LanguageService, LocalManagerService, TodoStateService } from '../../services';
 import { DefaultTodoItem, Priority, TodoItemInterface, Subtask } from '../../models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
@@ -14,21 +14,22 @@ import { MatIconModule } from '@angular/material/icon';
 export class TodoItem {
   todo = input<TodoItemInterface>(DefaultTodoItem);
   Priority = Priority;
-
+  
   @Output() delete = new EventEmitter<string>();
-
+  
   deleteTodo() {
     this.delete.emit(this.todo().id);
   }
-
+  
   // Señales para manejo de edición
   isEditing = signal(false);
   prioritySignal = signal<Priority>(this.todo().priority);
   contentEdit = signal('');
-
+  
   editingSubtaskId = signal<string>('');
   subtaskEditContent = signal<string>('');
-
+  
+  lang = inject(LanguageService);
   localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService);
 

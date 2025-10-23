@@ -6,20 +6,20 @@
     <div class="flex flex-wrap md:flex-nowrap items-center gap-4">
       <input formControlName="formContent"
         class="flex-1 border border-[var(--border-color)] rounded-xl h-[3.35rem] text-base md:text-lg px-4 shadow-sm bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] placeholder-[var(--text-secondary)] focus:ring-2 focus:ring-orange-400 transition-all duration-300"
-        placeholder="New ToDo..." />
+        [placeholder]="[lang.t('placeholder.newTodo')]"/>
 
       <select formControlName="formSelector"
         class="w-[8rem] md:w-[10rem] cursor-pointer h-[3.35rem] border border-[var(--border-color)] rounded-xl px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
-        <option [ngValue]="null" disabled selected>Priority</option>
-        <option [ngValue]="Priority.LOW">Low</option>
-        <option [ngValue]="Priority.MEDIUM">Medium</option>
-        <option [ngValue]="Priority.HIGH">High</option>
+        <option [ngValue]="null" disabled selected>{{lang.t('priority.priority')}}</option>
+        <option [ngValue]="Priority.LOW">{{lang.t('priority.priorityLow')}}</option>
+        <option [ngValue]="Priority.MEDIUM">{{lang.t('priority.priorityMedium')}}</option>
+        <option [ngValue]="Priority.HIGH">{{lang.t('priority.priorityHigh')}}</option>
       </select>
     </div>
 
     <!-- Tags -->
     <div class="flex flex-wrap gap-2 items-center pt-2">
-      <span class="w-full text-[var(--text-secondary)] font-semibold text-sm uppercase tracking-wide">Add tags:</span>
+      <span class="w-full text-[var(--text-secondary)] font-semibold text-sm uppercase tracking-wide">{{lang.t('tags.addTags')}}</span>
       @for(tag of tagList; track tag){
       <button type="button" (click)="toggleTag(tag)" [ngClass]="[
           tagColors[tag],
@@ -37,7 +37,7 @@
     (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
     ){
     <div class="text-red-500 text-sm font-semibold mt-1">
-      Content & Priority required
+      {{lang.t('todoList.validator')}}
     </div>
     }
 
@@ -46,26 +46,26 @@
       @for(sub of formSubtasksWithIndex; track sub.index) {
       <div class="flex gap-2 w-full md:w-[60%]">
         <input type="text" [value]="sub.content" (input)="updateSubtask(sub.index, $any($event.target).value)"
-          placeholder="Subtask"
+          [placeholder]="[lang.t('placeholder.subtask')]"
           class="border border-[var(--border-color)] rounded-xl px-3 py-2 flex-1 bg-[var(--mat-sys-surface-container)] shadow-sm focus:ring-2 focus:ring-orange-400 text-[var(--text-color)] transition-all duration-300" />
 
         <button type="button" (click)="removeSubtask(sub.index)"
-          class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-xl shadow-md transition-all duration-300">
-          X
+          class="bg-red-500 material-symbols-outlined hover:bg-red-600 text-white px-3 py-1 rounded-xl shadow-md transition-all duration-300">
+          close
         </button>
       </div>
       }
 
       <button type="button" (click)="addSubtaskInput()"
         class="mt-2 cursor-pointer bg-blue-500 hover:bg-blue-600 text-black curpo px-5 py-2 rounded-lg shadow-md transition-all duration-300">
-        Add subtask
+        {{lang.t('todoList.buttons.addSubtask')}}
       </button>
     </div>
 
     <!-- Add ToDo -->
     <button type="submit" [disabled]="todoForm.invalid"
       class="rounded-lg w-full sm:w-[14rem] h-[4rem] bg-gradient-to-r from-orange-400 to-orange-500 mt-6 text-black cursor-pointer hover:brightness-105 shadow-lg text-lg font-semibold transition-all duration-300">
-      Add ToDo
+      {{lang.t('todoList.buttons.addTodo')}}
     </button>
   </form>
 
@@ -73,21 +73,21 @@
   <div
     class="flex my-5 flex-wrap gap-6 pt-5 items-center justify-between bg-[var(--mat-sys-surface-container)]/50 border border-[var(--border-color)] rounded-xl p-4 shadow-sm">
     <div class="flex items-center gap-x-2">
-      <label for="filter" class="font-semibold text-[var(--text-color)]">Filter priority:</label>
+      <label for="filter" class="font-semibold text-[var(--text-color)]">{{lang.t('filters.filterPriority')}}</label>
       <select [formControl]="todoForm.controls.formFilter" id="filter"
         class="border rounded-xl cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
-        <option [ngValue]="'ALL'" selected>All</option>
-        <option [ngValue]="Priority.LOW">Low</option>
-        <option [ngValue]="Priority.MEDIUM">Medium</option>
-        <option [ngValue]="Priority.HIGH">High</option>
+        <option [ngValue]="'ALL'" selected>{{lang.t('priority.priorityAll')}}</option>
+        <option [ngValue]="Priority.LOW">{{lang.t('priority.priorityLow')}}</option>
+        <option [ngValue]="Priority.MEDIUM">{{lang.t('priority.priorityMedium')}}</option>
+        <option [ngValue]="Priority.HIGH">{{lang.t('priority.priorityHigh')}}</option>
       </select>
     </div>
 
     <div class="flex items-center gap-x-2">
-      <label for="filterTag" class="font-semibold text-[var(--text-color)]">Filter tag:</label>
+      <label for="filterTag" class="font-semibold text-[var(--text-color)]">{{lang.t('filters.filterTag')}}</label>
       <select [formControl]="todoForm.controls.formFilterTag" id="filterTag"
         class="border rounded-xl cursor-pointer px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
-        <option [ngValue]="null" selected>All tags</option>
+        <option [ngValue]="null" selected>{{lang.t('tags.tagsAll')}}</option>
         @for(tag of tagList; track tag){
         <option [ngValue]="tag" class="cursor-pointer">{{ tag }}</option>
         }
@@ -97,14 +97,14 @@
     <div>
       <button type="button" (click)="resetFilters()"
         class="bg-sky-400 hover:bg-sky-500 text-black font-medium px-4 py-2 rounded-xl cursor-pointer shadow-md transition-all duration-300">
-        Reset Filters
+        {{lang.t('filters.reset')}}
       </button>
     </div>
   </div>
 
   <!-- ToDo List -->
   @if(filteredTodos().length === 0){
-  <p class="text-[var(--text-secondary)] italic text-center">There're no ToDo's for this filter</p>
+  <p class="text-[var(--text-secondary)] italic text-center">{{lang.t('filters.empty')}}</p>
   }
   @else {
   <ul cdkDropList [cdkDropListData]="filteredTodos()" (cdkDropListDropped)="onDrop($event)"
