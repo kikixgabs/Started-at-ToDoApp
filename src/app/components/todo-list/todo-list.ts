@@ -1,12 +1,4 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import {  ChangeDetectionStrategy,  Component,  computed,  effect,  inject,  OnInit,  signal,} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
 import { Priority, TodoItemInterface } from '../../models';

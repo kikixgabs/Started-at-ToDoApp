@@ -1,9 +1,10 @@
 <div class="flex min-h-screen bg-[var(--body-bg)] text-[var(--text-color)] transition-colors duration-300">
 
   <!-- 🧭 Sidebar Izquierdo -->
-  <aside class="fixed sm:relative sm:w-[12rem] w-64 h-full sm:h-auto flex flex-col justify-between border-r border-[var(--border-color)] bg-[var(--sidebar-bg)]/70 backdrop-blur-md p-4 overflow-hidden z-30
-           transform transition-transform duration-300 ease-in-out"
-    [class.translate-x-0]="sidebarOpen() || !isMobile()" [class.-translate-x-full]="!sidebarOpen() && isMobile()">
+  <aside class="fixed top-0 left-0 h-screen sm:relative sm:h-auto sm:w-[12rem] w-64 flex flex-col justify-between border-r border-[var(--border-color)] bg-[var(--sidebar-bg)]/70 backdrop-blur-md p-4 overflow-hidden z-30
+         transform transition-transform duration-300 ease-in-out" [class.translate-x-0]="sidebarOpen() || !isMobile()"
+    [class.-translate-x-full]="!sidebarOpen() && isMobile()">
+
     <!-- Branding -->
     <div>
       <h1 class="text-2xl font-bold tracking-tight text-orange-400">
@@ -25,6 +26,7 @@
     </div>
   </aside>
 
+
   <!-- Overlay para móvil cuando el sidebar está abierto -->
   <div class="fixed inset-0 z-20 bg-black transition-opacity duration-300"
     [class.opacity-30]="sidebarOpen() && isMobile()" [class.opacity-0]="!sidebarOpen() || !isMobile()"
@@ -32,7 +34,7 @@
     [class.pointer-events-none]="!sidebarOpen() || !isMobile()" (click)="toggleSidebar()"></div>
 
   <!-- 🧩 Contenido Principal -->
-  <main class="flex-1 flex flex-col overflow-hidden sm:ml-[12rem] ml-0 relative">
+  <main class="flex flex-col lg:flex-row flex-1 overflow-hidden">
     <!-- Botón para abrir sidebar en móvil -->
     @if(isMobile() && !sidebarOpen()) {
     <div class="w-dvw material-symbols-outlined z-40 p-2 bg-orange-400 text-white">
@@ -42,17 +44,16 @@
     </div>
     }
 
-    <div class="flex flex-col md:flex-row flex-1">
-      <!-- Todo List -->
-      <div class="flex-1 p-4 sm:p-6 overflow-auto">
-        <app-todo-list></app-todo-list>
-      </div>
 
-      <!-- Dashboard lateral -->
-      <div
-        class="w-full sm:w-[25rem] border-t sm:border-t-0 sm:border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-4 sm:p-6 overflow-auto">
-        <router-outlet></router-outlet>
-      </div>
+    <!-- Todo List -->
+    <div class="flex-1 p-4 sm:p-6 overflow-auto min-w-0">
+      <app-todo-list></app-todo-list>
+    </div>
+
+    <!-- Dashboard lateral -->
+    <div
+      class="w-full lg:w-[25rem] border-t lg:border-t-0 lg:border-l border-[var(--border-color)] bg-[var(--panel-bg)] p-4 sm:p-6 overflow-auto shrink-0">
+      <router-outlet></router-outlet>
     </div>
   </main>
 </div>
