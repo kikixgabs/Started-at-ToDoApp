@@ -109,7 +109,7 @@ export class TodoList implements OnInit {
     const current = this.todoForm.controls.formSubtasks.value ?? [];
 
     if (current.length > 0 && current[current.length - 1].trim() === '') {
-      this.toastService.showToast('Fill the subtask before adding other');
+      this.toastService.showToast(this.lang.t('todoList.toast.emptySubtaskToast'));
       return;
     }
 
@@ -178,7 +178,7 @@ export class TodoList implements OnInit {
       this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true }));
     }, 10); // 10ms es suficiente para disparar la transición
 
-    this.toastService.showToast('Created new todo');
+    this.toastService.showToast(this.lang.t('todoList.toast.newToast'));
     this.todoForm.controls.formContent.reset('');
     this.todoForm.controls.formSelector.reset(null);
     this.todoForm.controls.formTag.reset(null);

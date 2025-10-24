@@ -26,7 +26,7 @@
           selectedTags().includes(tag) ? 'border-2 font-bold text-black' : 'text-black',
           'px-3 py-1 rounded-lg border cursor-pointer border-[var(--border-color)] text-sm transition-all duration-300 hover:scale-105 hover:brightness-95 shadow-sm'
         ]">
-        {{ tag }}
+        {{lang.t('tags.'+tag.toLowerCase())}}
       </button>
       }
     </div>

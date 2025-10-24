@@ -11,7 +11,6 @@ export class LanguageService {
     (this.localManager.loadLocalLanguage() as 'es' | 'en') || 'en'
   );
 
-  
   private translations = {
     en: {
       sidebar: {
@@ -28,13 +27,19 @@ export class LanguageService {
       filters: {
         filterPriority: 'Filter priority',
         filterTag: 'Filter tag',
-        reset: 'Reset filter',
-        empty: `There ain't ToDo's for this filter`,
+        reset: 'Reset filters',
+        empty: 'No ToDos found for this filter.',
         filterBy: 'Filter by: ',
       },
       tags: {
         addTags: 'Add tags:',
-        tagsAll: 'Todas',
+        tagsAll: 'All',
+        work: 'Work',
+        learning: 'Learning',
+        home: 'Home',
+        finance: 'Finance',
+        health: 'Health',
+        personal: 'Personal',
       },
       placeholder: {
         subtask: 'Subtask',
@@ -48,7 +53,7 @@ export class LanguageService {
         validator: 'Content & priority required.',
         toast: {
           newToast: 'Created new ToDo',
-          emptySubtaskToast: 'Fill subtask before adding other.',
+          emptySubtaskToast: 'Fill subtask before adding another.',
         },
       },
       todoItem: {
@@ -59,7 +64,7 @@ export class LanguageService {
           save: 'Save',
           goBack: 'Go Back',
         },
-        priority: 'Priority: '
+        priority: 'Priority: ',
       },
       helper: {
         doneList: '✅ Done List',
@@ -69,6 +74,8 @@ export class LanguageService {
         completedTask: 'Completed Tasks',
         titleUndone: 'Mark as undone',
         titleDelete: 'Delete this ToDo',
+        emptyDoneTask: 'No completed tasks yet.',
+        emptyFilter: 'No completed tasks for this filter yet.',
       },
       dashboard: {
         dashboard: 'Dashboard',
@@ -87,22 +94,28 @@ export class LanguageService {
         priorityLow: 'Baja',
         priorityMedium: 'Media',
         priorityHigh: 'Alta',
-        changePriority: 'Cambiar Priodidad',
+        changePriority: 'Cambiar Prioridad',
       },
       filters: {
         filterPriority: 'Filtrar prioridad',
         filterTag: 'Filtrar etiqueta',
         reset: 'Reiniciar filtros',
-        empty: 'No se encuentran tareas para estos filtros.',
+        empty: 'No se encuentran tareas para este filtro.',
         filterBy: 'Filtrar por: ',
       },
       tags: {
-        addTags: 'Añadir tarjetas:',
+        addTags: 'Añadir etiquetas:',
         tagsAll: 'Todas',
+        work: 'Trabajo',
+        learning: 'Aprendizaje',
+        home: 'Hogar',
+        finance: 'Finanzas',
+        health: 'Salud',
+        personal: 'Personales',
       },
       placeholder: {
         subtask: 'Subtarea',
-        newTodo: 'Nueva Tarea...',
+        newTodo: 'Nueva tarea...',
       },
       todoList: {
         buttons: {
@@ -112,7 +125,7 @@ export class LanguageService {
         validator: 'Contenido y prioridad requeridos.',
         toast: {
           newToast: 'Tarea creada',
-          emptySubtaskToast: 'Rellene la subtarea vacía antes de crear otra',
+          emptySubtaskToast: 'Complete la subtarea vacía antes de crear otra.',
         },
       },
       todoItem: {
@@ -123,7 +136,7 @@ export class LanguageService {
           save: 'Guardar',
           goBack: 'Revertir cambios',
         },
-        priority: 'Prioridad: '
+        priority: 'Prioridad: ',
       },
       helper: {
         doneList: '✅ Lista de completados',
@@ -131,8 +144,10 @@ export class LanguageService {
       },
       doneList: {
         completedTask: 'Tareas completadas',
-        titleUndone: 'Marcar incompleto',
+        titleUndone: 'Marcar como incompleta',
         titleDelete: 'Eliminar tarea completada',
+        emptyDoneTask: 'Sin tareas completas.',
+        emptyFilter: 'No se encuentran tareas completadas para este filtro.',
       },
       dashboard: {
         dashboard: 'Panel de tareas',
@@ -142,19 +157,19 @@ export class LanguageService {
       },
     },
   };
-  
+
   initLanguage() {
     const savedLang = this.localManager.loadLocalLanguage() as 'es' | 'en' | null;
     if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
-      this.language.set(savedLang)
+      this.language.set(savedLang);
     }
   }
-  
+
   setLanguage(lang: 'es' | 'en') {
     this.language.set(lang);
     this.localManager.saveLocalLanguage(lang);
   }
-  
+
   t(path: string): string {
     const keys = path.split('.');
     let value: any = this.translations[this.language()];

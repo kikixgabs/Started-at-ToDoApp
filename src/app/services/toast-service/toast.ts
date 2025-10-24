@@ -5,7 +5,7 @@ export interface Toast {
   message: string;
   duration: number;
   shrinking: boolean;
-  visible: boolean; // 👈 fade in/out
+  visible: boolean;
 }
 
 @Injectable({ providedIn: 'root' })

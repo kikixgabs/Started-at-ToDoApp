@@ -31,7 +31,7 @@ export class DashboardComponent {
 
   // ✅ Signal para chartData
   chartData = computed<ChartData<'doughnut'>>(() => ({
-    labels: ['Completed', 'Pending'],
+    labels: [this.lang.t('dashboard.complete'), this.lang.t('dashboard.pending')],
     datasets: [
       {
         data: [this.completedTodos(), this.pendingTodos()],

@@ -23,9 +23,9 @@
   <!-- Mensaje si no hay tareas -->
   @if(filteredDoneTodos().length === 0) {
   @if(filterSignal() === null){
-  <p class="text-center text-gray-400 italic">No completed tasks yet.</p>
+  <p class="text-center text-gray-400 italic">{{lang.t('doneList.emptyDoneTask')}}</p>
   } @else {
-  <p class="text-center text-gray-400 italic">No completed tasks for {{ filterSignal() }} priority ToDo yet.</p>
+  <p class="text-center text-gray-400 italic">{{lang.t('doneList.emptyFilter')}}</p>
   }
   } @else {
 
