@@ -1,59 +1,154 @@
-# NagularTailwindPostcss
+🎯 TaskFlow: Collaborative Task Management
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.1.
+<!-- BADGE Placeholder: You can add badges (shields) here to show build status, version, or key technologies. -->
 
-## Development server
+🌟 Project Overview
 
-To start a local development server, run:
+TaskFlow is a full-stack task management application designed for individual productivity, with a roadmap focused on collaboration and security.
 
-```bash
-ng serve
-```
+This project was developed with the goal of showcasing modern development skills using the Angular, Tailwind CSS, and GoLang stack, offering a fluid, customizable, and fully functional user experience.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Development is active and continuous, with new features and optimizations implemented weekly.
 
-## Code scaffolding
+<img width="1919" height="893" alt="image" src="https://github.com/user-attachments/assets/aec95b88-828e-4d3d-980b-d1a129806d2b" />
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+🛠️ Complete Technology Stack
 
-```bash
-ng generate component component-name
-```
+This project is built on a modern, high-performance stack:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Component
 
-```bash
-ng generate --help
-```
+Technology
 
-## Building
+Primary Purpose
 
-To build the project run:
+Frontend
 
-```bash
-ng build
-```
+🅰️ Angular 20+
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Reactive and modular SPA (Single Page Application).
 
-## Running unit tests
+Styling
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+🌬️ Tailwind CSS
 
-```bash
-ng test
-```
+Utility-first CSS framework for fast, responsive design.
 
-## Running end-to-end tests
+Backend
 
-For end-to-end (e2e) testing, run:
+⚙️ Go (GoLang)
 
-```bash
-ng e2e
-```
+Efficient and secure RESTful API, currently used for data management.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Database
 
-## Additional Resources
+💾 [To be defined/Implemented]
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Data persistence and scalability management.
+
+✅ Current Features (MVP)
+
+TaskFlow offers complete control over task management:
+
+Item Management
+
+Dynamic Creation and Editing: Create new tasks and modify any field (priority, tags, title, description) at any time.
+
+Customizable Priority: Assign priority levels (High, Medium, Low) to each task.
+
+Labels and Cards: Assign labels or tags to tasks for easy categorization and searching.
+
+Subtasks: Break down complex tasks into lists of subtasks within the main item.
+
+Drag & Drop: Intuitively reorder list items using simple drag & drop functionality.
+
+Complete and Delete: Mark items as completed or permanently delete them.
+
+Productivity and Usability
+
+Advanced Filters: Instantly filter the task list by Priority or Label/Tag.
+
+Visual Dashboard: A Pie Chart shows the distribution of Pending vs. Completed tasks with a clear color scheme.
+
+Completed History: A separate view allows reviewing completed items, with the option to mark them as incomplete or remove them from history.
+
+Customizable Themes: Support for Light Mode, Dark Mode, and system-synchronized theme settings.
+
+Multilingual Support: Interface available in English and Spanish.
+
+💡 Roadmap and Future Features
+
+The following points are planned or currently in development:
+
+Secure Authentication (In Progress): Implementation of the GoLang backend for secure user registration and login.
+
+List Persistence: Secure storage of task lists associated with the user's account.
+
+Collaborative Lists: Allow sharing and managing task lists with other users.
+
+Reminders and Notifications: Integration of time-based notifications.
+
+Calendar Integration.
+
+🚀 Installation and Execution
+
+To run TaskFlow in your local environment, follow these steps.
+
+📋 Prerequisites
+
+Git
+
+Node.js and npm (Required for Angular)
+
+Go (GoLang) (Required for the Backend)
+
+1. Clone the Repository
+
+git clone [https://github.com/kikixgabs/Started-at-ToDoApp.git](https://github.com/kikixgabs/Started-at-ToDoApp.git)
+cd Started-at-ToDoApp
+
+
+
+2. Backend Setup (GoLang)
+
+Navigate to the backend directory (e.g.: cd backend/).
+
+Install dependencies:
+
+go mod download
+
+
+
+Run the server (default at http://localhost:8080):
+
+go run main.go
+
+
+
+3. Frontend Setup (Angular)
+
+Open a new terminal and navigate to the frontend directory (e.g.: cd frontend/).
+
+Install Node.js dependencies:
+
+npm install
+
+
+
+Start the application (default at http://localhost:4200):
+
+npm run start
+
+
+
+🤝 Contribution
+
+If you find any bugs or have suggestions for improvement, they are welcome! Please open an issue or a pull request.
+
+👨‍💻 Author
+
+kikixgabs - https://www.github.com/kikixgabs
+
+⚖️ License
+
+This project is distributed under the MIT License. See the LICENSE file for more details.
