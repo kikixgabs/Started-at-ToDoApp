@@ -1,37 +1,33 @@
-import { Component, computed, EventEmitter, inject, input, Output, signal } from '@angular/core';
-import { LanguageService, LocalManagerService, TodoStateService } from '../../services';
-import { DefaultTodoItem, Priority, TodoItemInterface, Subtask } from '../../models';
+import { Component, EventEmitter, inject, input, Output, signal } from '@angular/core';
+import { LanguageService, TodoStateService } from '../../services';
+import { TodoItemInterface, Priority, Subtask } from '../../models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-todo-item',
+  standalone: true,
   imports: [FormsModule, DecimalPipe, CommonModule, MatIconModule],
   templateUrl: './todo-item.html',
-  styleUrl: './todo-item.css',
+  styleUrls: ['./todo-item.css'],
 })
 export class TodoItem {
-  todo = input<TodoItemInterface>(DefaultTodoItem);
-  Priority = Priority;
   
+  todo = input<TodoItemInterface>();
   @Output() delete = new EventEmitter<string>();
-  
-  deleteTodo() {
-    this.delete.emit(this.todo().id);
-  }
-  
-  // Señales para manejo de edición
+
+  // Signals para edición
   isEditing = signal(false);
-  prioritySignal = signal<Priority>(this.todo().priority);
+  prioritySignal = signal<Priority>(Priority.MEDIUM);
   contentEdit = signal('');
-  
   editingSubtaskId = signal<string>('');
   subtaskEditContent = signal<string>('');
-  
+
+  // Servicios
   lang = inject(LanguageService);
-  localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService);
+  Priority = Priority;
 
   tagColors: Record<string, string> = {
     Work: 'bg-blue-300',
@@ -42,80 +38,89 @@ export class TodoItem {
     Personal: 'bg-pink-300',
   };
 
-  // Inicia edición del todo principal
+  ngOnInit(): void {
+    const todo = this.todo();
+    if (todo) {
+      this.prioritySignal.set(todo.priority);
+    }
+  }
+
+  // 🔹 Eliminar ToDo
+  deleteTodo() {
+    const todo = this.todo();
+    if (!todo) return;
+    this.delete.emit(todo.id);
+  }
+
+  // 🔹 Editar ToDo principal
   startEdit() {
+    const todo = this.todo();
+    if (!todo) return;
     this.isEditing.set(true);
-    this.contentEdit.set(this.todo().content);
-    this.prioritySignal.set(this.todo().priority);
+    this.contentEdit.set(todo.content);
+    this.prioritySignal.set(todo.priority);
   }
 
-  // Marca/desmarca el todo como completado
-  completeToDo() {
-    this.todoState.toggleCompletedToDo(this.todo().id);
-  }
-
-  // Cancela edición del todo principal
   cancelEdit() {
     this.isEditing.set(false);
     this.contentEdit.set('');
   }
 
-  // Guarda edición del todo principal, ignorando contenido vacío
   saveEdit() {
+    const todo = this.todo();
+    if (!todo) return;
+
     const newContent = this.contentEdit().trim();
     if (!newContent) {
       this.cancelEdit();
       return;
     }
 
-    const updateTodo: TodoItemInterface = {
-      ...this.todo(),
+    // Actualizamos en frontend y backend
+    this.todoState.updateTodoFields(todo.id, {
       content: newContent,
       priority: this.prioritySignal(),
-    };
-
-    this.todoState.editTodo(updateTodo.id, updateTodo.content);
-    this.todoState.editTodoPriority(updateTodo.id, updateTodo.priority);
-
-    this.todo().content = updateTodo.content;
-    this.todo().priority = updateTodo.priority;
+    });
 
     this.isEditing.set(false);
     this.contentEdit.set('');
   }
 
-  // Toggle completion de subtasks
-  toggleSubtaskCompletion(subtaskId: string) {
-    const subtask = this.todo().subtask?.find((s) => s.id === subtaskId);
-    if (subtask) {
-      subtask.completed = !subtask.completed;
-      this.localManager.setToDoItem(this.todo());
-    }
+  // 🔹 Marcar como completado/incompleto (persistente)
+  completeToDo() {
+    const todo = this.todo();
+    if (!todo) return;
+    this.todoState.toggleCompleted(todo.id);
   }
 
-  // Inicia edición de subtask
+  // 🔹 Subtasks
+  toggleSubtaskCompletion(subtaskId: string) {
+    const todo = this.todo();
+    if (!todo) return;
+    this.todoState.toggleSubtaskCompletion(todo.id, subtaskId);
+  }
+
   startSubtaskEdit(subtask: Subtask) {
     this.editingSubtaskId.set(subtask.id);
     this.subtaskEditContent.set(subtask.content);
   }
 
-  // Cancela edición de subtask
   cancelSubtaskEdit() {
     this.editingSubtaskId.set('');
     this.subtaskEditContent.set('');
   }
 
-  // Guarda edición de subtask, ignorando contenido vacío
   saveSubtaskEdit(subtask: Subtask) {
+    const todo = this.todo();
+    if (!todo) return;
+
     const newContent = this.subtaskEditContent().trim();
     if (!newContent) {
       this.cancelSubtaskEdit();
       return;
     }
 
-    subtask.content = newContent;
-    this.localManager.setToDoItem(this.todo());
-
+    this.todoState.updateSubtaskContent(todo.id, subtask.id, newContent);
     this.editingSubtaskId.set('');
     this.subtaskEditContent.set('');
   }

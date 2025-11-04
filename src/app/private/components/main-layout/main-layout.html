@@ -21,13 +21,19 @@
     </div>
 
     <div class="flex gap-2">
-      <button class="px-2 py-1 border rounded" [class.bg-orange-500]="lang.currentLang() === 'en'"
+      <button class="px-2 py-1 text-black font-medium border rounded" [class.bg-orange-500]="lang.currentLang() === 'en'"
         (click)="lang.setLanguage('en')">
         🇬🇧 English
       </button>
-      <button class="px-2 py-1 border rounded" [class.bg-orange-500]="lang.currentLang() === 'es'"
+      <button class="px-2 py-1 text-black font-medium border rounded" [class.bg-orange-500]="lang.currentLang() === 'es'"
         (click)="lang.setLanguage('es')">
         🇪🇸 Español
+      </button>
+    </div>
+    <div>
+      <button class="mt-2 text-2xl w-full bg-red-500 rounded-xl p-2 cursor-pointer hover:bg-red-400 transition-colors duration-700 text-black font-medium" 
+      (click)="privateAuthService.logout()">
+        Logout
       </button>
     </div>
 

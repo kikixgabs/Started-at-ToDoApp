@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { FilterService, LanguageService, TodoStateService } from '../../services';
 import { Priority, TodoItemInterface } from '../../models';
 import { FormsModule } from '@angular/forms';
+import { TodoManagerService } from '../../services/todo-manager-service/todo-manager-service';
 
 @Component({
   selector: 'app-done-todo-list',
@@ -15,6 +16,7 @@ export class DoneTodoList {
   filterService = inject(FilterService);
   lang = inject(LanguageService);
   Priority = Priority;
+  todoManager = inject(TodoManagerService);
 
   filterSignal = signal<Priority | 'ALL'>('ALL');
 

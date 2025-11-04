@@ -1,20 +1,20 @@
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
-import { Auth, AuthData, loginResponse } from '../../models/auth-model';
-import { AuthAdapter } from './adapters';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AuthService {
-  private readonly baseUrl = 'http://localhost:4000/auth';
-  http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080';
 
-  login(user: AuthData): Observable<Auth> {
-    return this.http.post<loginResponse>(`${this.baseUrl}/login`, user).pipe(
-      map(AuthAdapter)
-    );
+  constructor(private http: HttpClient) {}
+
+  register(user: { username: string; password: string; email: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/register`, user);
   }
 
+  login(credentials: { email: string; password: string }): Observable<any> {
+    return this.http.post(`${this.apiUrl}/login`, credentials, { withCredentials: true });
+  }
 }

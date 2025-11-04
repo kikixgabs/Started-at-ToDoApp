@@ -1,1 +1,40 @@
-<p>register works!</p>
+<div class="flex items-center justify-center bg-gradient-to-br from-orange-500 via-orange-400 to-amber-300">
+    <div class="bg-white/90 backdrop-blur-md shadow-2xl p-8 w-[24rem] md:w-[28rem] flex flex-col gap-6">
+
+        <div class="text-center">
+            <h1 class="text-3xl font-semibold text-gray-800">
+                Create Account ✨
+            </h1>
+            <p class="text-sm text-gray-500 mt-1">
+                Join us and start organizing your tasks
+            </p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
+            <app-custom-input label="Username" [control]="$any(registerForm.get('username'))"
+                placeholder="Enter your username" type="text" errorMessage="Enter a valid username" />
+
+            <app-custom-input label="Email" [control]="$any(registerForm.get('email'))" placeholder="Enter your email"
+                type="email" errorMessage="Enter a valid email" />
+
+            <app-custom-input label="Password" [control]="$any(registerForm.get('password'))"
+                placeholder="Enter your password" type="password" errorMessage="Enter a valid password" />
+
+            <app-custom-input label="confirmPassword" [control]="$any(registerForm.get('password'))"
+                placeholder="Confirm your password" type="password" errorMessage="Mismatch passwords" />
+
+            <button type="submit" [disabled]="registerForm.invalid"
+                class="bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-medium py-2.5 rounded-xl shadow transition-colors duration-200">
+                Register
+            </button>
+        </form>
+
+        <p class="text-center text-sm text-gray-500">
+            Already have an account?
+            <a routerLink="/login"
+                class="text-orange-600 hover:text-orange-700 font-medium transition-colors duration-200">
+                Login
+            </a>
+        </p>
+    </div>
+</div>

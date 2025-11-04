@@ -44,7 +44,7 @@
 
       <!-- Botones solo con íconos -->
       <div class="flex gap-2 ml-3 shrink-0">
-        <button (click)="todoState.toggleCompletedToDo(todo.id)"
+        <button (click)="todoState.toggleCompleted(todo.id)"
           class="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg shadow-md flex items-center justify-center transition-all"
           [title]="[lang.t('doneList.titleUndone')]">
           <span class="material-symbols-outlined text-[20px]">undo</span>

@@ -1,11 +1,24 @@
-import {  ChangeDetectionStrategy,  Component,  computed,  effect,  inject,  OnInit,  signal,} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { LocalManagerService } from '../../services/local-manager-service/local-manager-service';
-import { Priority, TodoItemInterface } from '../../models';
-import { FilterService, LanguageService, ToastService, TodoStateService } from '../../services';
-import { TodoItem } from '../todo-item/todo-item';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
+import { TodoItem } from '../todo-item/todo-item';
+import {
+  LocalManagerService,
+  FilterService,
+  LanguageService,
+  ToastService,
+  TodoStateService,
+} from '../../services';
+import { Priority, TodoItemInterface } from '../../models';
 
 interface contentForm {
   formContent: FormControl<string>;
@@ -31,6 +44,7 @@ export class TodoList implements OnInit {
   lang = inject(LanguageService);
 
   Priority = Priority;
+
   filterSignal = signal<Priority | 'ALL' | null>('ALL');
   selectedTags = signal<string[]>([]);
   filterTags = signal<string[]>([]);
@@ -66,19 +80,24 @@ export class TodoList implements OnInit {
   filteredTodos = computed<TodoItemInterface[]>(() =>
     this.filterService.filteredTodos(
       this.todoState.todos(),
-      this.filterTags().length > 0 ? this.filterTags() : null,
+      this.filterTags().length ? this.filterTags() : null,
       this.filterSignal()
     )
   );
 
   ngOnInit(): void {
-    const savedTodos = this.localManager.getAllTodos();
-    this.todoState.loadFromStorage(savedTodos);
+    // Cargar todos desde backend
+    this.todoState.loadTodos().then(() => {
+      // Inicializamos mapa de animaciones
+      const map: Record<string, boolean> = {};
+      this.todoState.todos().forEach((todo) => (map[todo.id] = true));
+      this.appearingMap.set(map);
 
-    const initialMap: Record<string, boolean> = {};
-    savedTodos.forEach((todo) => (initialMap[todo.id] = true));
-    this.appearingMap.set(initialMap);
+      // Guardamos también en LocalStorage para persistencia
+      //this.localManager.setToDoItems(this.todoState.todos());
+    });
 
+    // Observadores de filtros
     this.todoForm.controls.formFilter.valueChanges.subscribe((value) => {
       if (value) this.filterSignal.set(value);
     });
@@ -90,6 +109,7 @@ export class TodoList implements OnInit {
 
   constructor() {
     effect(() => {
+      // Detectar nuevos todos y animarlos
       const todos = this.todoState.todos();
       const appearingUpdate: Record<string, boolean> = {};
       todos.forEach((todo) => {
@@ -97,22 +117,19 @@ export class TodoList implements OnInit {
           appearingUpdate[todo.id] = true;
         }
       });
-
-      // Actualizamos de una sola vez para no disparar múltiples cambios
-      if (Object.keys(appearingUpdate).length > 0) {
+      if (Object.keys(appearingUpdate).length) {
         this.appearingMap.update((map) => ({ ...map, ...appearingUpdate }));
       }
     });
   }
 
+  // Subtasks
   addSubtaskInput() {
     const current = this.todoForm.controls.formSubtasks.value ?? [];
-
-    if (current.length > 0 && current[current.length - 1].trim() === '') {
+    if (current.length && current[current.length - 1].trim() === '') {
       this.toastService.showToast(this.lang.t('todoList.toast.emptySubtaskToast'));
       return;
     }
-
     this.todoForm.controls.formSubtasks.setValue([...current, '']);
   }
 
@@ -122,6 +139,18 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formSubtasks.setValue([...current]);
   }
 
+  updateSubtask(index: number, value: string) {
+    const current = this.todoForm.controls.formSubtasks.value ?? [];
+    current[index] = value;
+    this.todoForm.controls.formSubtasks.setValue([...current]);
+  }
+
+  get formSubtasksWithIndex() {
+    const subtasks = this.todoForm.controls.formSubtasks.value ?? [];
+    return subtasks.map((content, index) => ({ content, index }));
+  }
+
+  // Tags
   toggleFilterTag(tag: string) {
     const current = this.filterTags();
     const newTags = current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag];
@@ -131,70 +160,8 @@ export class TodoList implements OnInit {
   toggleTag(tag: string) {
     const current = this.selectedTags();
     const newTags = current.includes(tag) ? current.filter((t) => t !== tag) : [...current, tag];
-
     this.selectedTags.set(newTags);
     this.todoForm.controls.formTag.setValue(newTags.length ? newTags : null);
-  }
-
-  removeTodoWithAnimation(id: string) {
-    this.removingMap.update((map) => ({ ...map, [id]: true }));
-    setTimeout(() => {
-      this.todoState.deleteTodo(id);
-      this.localManager.eraseToDoItem(id);
-      this.removingMap.update((map) => {
-        const copy = { ...map };
-        delete copy[id];
-        return copy;
-      });
-    }, 300); // Duración de la animación
-  }
-
-  onSubmit(): void {
-    const rawSubtasks = this.todoForm.value.formSubtasks ?? [];
-
-    const processedSubtasks = rawSubtasks
-      .filter((sub) => sub.trim() !== '')
-      .map((sub) => ({
-        id: Date.now().toString() + Math.random().toString(36).slice(2),
-        content: sub,
-        completed: false,
-      }));
-
-    const newTodo: TodoItemInterface = {
-      id: Date.now().toString(),
-      content: this.todoForm.getRawValue().formContent!,
-      priority: this.todoForm.value.formSelector!,
-      date: new Date(),
-      completed: false,
-      tag: this.todoForm.value.formTag || null,
-      subtask: processedSubtasks.length ? processedSubtasks : null,
-    };
-
-    this.todoState.addTodo(newTodo);
-    this.localManager.setToDoItem(newTodo);
-
-    this.appearingMap.update((map) => ({ ...map, [newTodo.id]: false }));
-    setTimeout(() => {
-      this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true }));
-    }, 10); // 10ms es suficiente para disparar la transición
-
-    this.toastService.showToast(this.lang.t('todoList.toast.newToast'));
-    this.todoForm.controls.formContent.reset('');
-    this.todoForm.controls.formSelector.reset(null);
-    this.todoForm.controls.formTag.reset(null);
-    this.todoForm.controls.formSubtasks.setValue([]);
-    this.selectedTags.set([]);
-  }
-
-  get formSubtasksWithIndex() {
-    const subtasks = this.todoForm.controls.formSubtasks.value ?? [];
-    return subtasks.map((content, index) => ({ content, index }));
-  }
-
-  updateSubtask(index: number, value: string) {
-    const current = this.todoForm.controls.formSubtasks.value ?? [];
-    current[index] = value;
-    this.todoForm.controls.formSubtasks.setValue([...current]);
   }
 
   removeToast(id: number) {
@@ -206,14 +173,63 @@ export class TodoList implements OnInit {
     }, 700);
   }
 
-  resetFilters() {
-    this.filterSignal.set('ALL');
-    this.todoForm.controls.formFilter.setValue('ALL');
-    this.filterTags.set([]);
-    this.todoForm.controls.formFilterTag.setValue(null);
+  // Crear nuevo todo
+  async onSubmit(): Promise<void> {
+    const rawSubtasks = this.todoForm.value.formSubtasks ?? [];
+
+    const processedSubtasks = rawSubtasks
+      .filter((sub) => sub.trim() !== '')
+      .map((sub) => ({
+        id: Date.now().toString() + Math.random().toString(36).slice(2),
+        content: sub,
+        completed: false,
+      }));
+
+    await this.todoState.addTodo({
+      content: this.todoForm.getRawValue().formContent!,
+      priority: this.todoForm.value.formSelector!,
+      tag: this.todoForm.value.formTag || null,
+      subtask: processedSubtasks.length ? processedSubtasks : null,
+    });
+
+    // Actualizamos LocalStorage
+    //this.localManager.setToDoItems(this.todoState.todos());
+
+    // Animación de aparición
+    const newTodo = this.todoState.todos().slice(-1)[0];
+    this.appearingMap.update((map) => ({ ...map, [newTodo.id]: false }));
+    setTimeout(() => this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true })), 10);
+
+    // Reset form
+    this.todoForm.reset({
+      formContent: '',
+      formSelector: null,
+      formTag: null,
+      formFilter: 'ALL',
+      formFilterTag: null,
+      formSubtasks: [],
+    });
+    this.selectedTags.set([]);
+
+    this.toastService.showToast(this.lang.t('todoList.toast.newToast'));
   }
 
-  onDrop(event: CdkDragDrop<TodoItemInterface[]>) {
+  // Eliminar
+  removeTodoWithAnimation(id: string) {
+    this.removingMap.update((map) => ({ ...map, [id]: true }));
+    setTimeout(async () => {
+      await this.todoState.deleteTodo(id);
+      this.localManager.setToDoItems(this.todoState.todos());
+      this.removingMap.update((map) => {
+        const copy = { ...map };
+        delete copy[id];
+        return copy;
+      });
+    }, 300);
+  }
+
+  // Drag & Drop
+  async onDrop(event: CdkDragDrop<TodoItemInterface[]>) {
     const allTodos = [...this.todoState.todos()];
     const visibleTodos = this.filteredTodos();
 
@@ -221,7 +237,6 @@ export class TodoList implements OnInit {
 
     const newAllTodos: TodoItemInterface[] = [];
     let visibleIndex = 0;
-
     allTodos.forEach((todo) => {
       if (visibleTodos.find((v) => v.id === todo.id)) {
         newAllTodos.push(visibleTodos[visibleIndex]);
@@ -231,7 +246,14 @@ export class TodoList implements OnInit {
       }
     });
 
-    this.todoState.setTodos(newAllTodos);
-    this.localManager.setToDoItems(newAllTodos);
+    await this.todoState.reorderTodos(newAllTodos);
+    //this.localManager.setToDoItems(this.todoState.todos());
+  }
+
+  resetFilters() {
+    this.filterSignal.set('ALL');
+    this.todoForm.controls.formFilter.setValue('ALL');
+    this.filterTags.set([]);
+    this.todoForm.controls.formFilterTag.setValue(null);
   }
 }

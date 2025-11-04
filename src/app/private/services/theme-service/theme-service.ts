@@ -1,17 +1,16 @@
 import { Injectable, inject, effect, signal, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-import { LocalManagerService } from '../local-manager-service/local-manager-service';
 import { ThemeModel } from '../../models';
+import { UserPreferencesService } from '../user-preferences-service/user-preferences-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ThemeService {
   private platformID = inject(PLATFORM_ID);
-  private localManager = inject(LocalManagerService);
+  private userPreference = inject(UserPreferencesService);
 
-  // Signal para el tema actual
-  appTheme = signal<'light' | 'dark' | 'system'>(this.localManager.loadLocalTheme() || 'system');
+  appTheme = signal<'light' | 'dark' | 'system'>('system');
 
   themes: ThemeModel[] = [
     { name: 'light', icon: 'light_mode' },
@@ -20,39 +19,63 @@ export class ThemeService {
   ];
 
   constructor() {
-    // Inicializar con el tema guardado
-    const savedTheme = this.localManager.loadLocalTheme();
-    if (savedTheme) this.appTheme.set(savedTheme);
-
-    // Efecto reactivo para actualizar la clase 'dark' en html
+    // ✅ Efecto permanente para aplicar el tema cada vez que cambia
     effect(() => {
       if (!isPlatformBrowser(this.platformID)) return;
 
       const html = document.documentElement;
-      html.classList.remove('dark'); // Limpiamos siempre
+      html.classList.remove('dark');
 
       const theme = this.appTheme();
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
-      if (theme === 'dark') {
+      if (theme === 'dark' || (theme === 'system' && prefersDark)) {
         html.classList.add('dark');
-      } else if (theme === 'system') {
-        // Detecta el sistema
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        if (prefersDark) html.classList.add('dark');
       }
 
-      // Opcional: ajustar color-scheme para navegadores
-      const colorScheme = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-        ? 'dark'
-        : 'light';
+      const colorScheme =
+        theme === 'dark' ||
+        (theme === 'system' && prefersDark)
+          ? 'dark'
+          : 'light';
+
       html.style.setProperty('color-scheme', colorScheme);
     });
   }
 
-  // Guardar tema y persistir
-  setTheme(theme: 'light' | 'dark' | 'system') {
+  /**
+   * 🔹 Inicializa el tema al cargar la app (desde localStorage o backend)
+   */
+  async init() {
+    try {
+      // Primero tratamos de cargar desde localStorage (más rápido)
+      const localTheme = localStorage.getItem('preferredTheme');
+      if (localTheme) {
+        this.appTheme.set(localTheme as 'light' | 'dark' | 'system');
+        return;
+      }
+
+      // Si no hay nada guardado, lo pedimos al backend
+      const prefs = await this.userPreference.getPreferredTheme();
+      this.appTheme.set(prefs as 'light' | 'dark' | 'system');
+      localStorage.setItem('preferredTheme', prefs);
+    } catch {
+      this.appTheme.set('system');
+    }
+  }
+
+  /**
+   * 🔹 Cambia el tema dinámicamente y guarda la preferencia
+   */
+  async setTheme(theme: 'light' | 'dark' | 'system') {
     this.appTheme.set(theme);
-    this.localManager.saveLocalTheme(theme);
+    localStorage.setItem('preferredTheme', theme);
+
+    try {
+      await this.userPreference.updatePreferredTheme(theme);
+    } catch (e) {
+      console.warn('No se pudo actualizar la preferencia del tema en el backend', e);
+    }
   }
 
   getThemes() {

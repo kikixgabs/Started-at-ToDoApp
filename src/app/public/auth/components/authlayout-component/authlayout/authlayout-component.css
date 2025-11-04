@@ -1,0 +1,39 @@
+.auth-container {
+  @apply flex items-center justify-center min-h-screen bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500;
+}
+
+.auth-card {
+  @apply bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl p-8 w-[24rem] md:w-[28rem] flex flex-col gap-6 transition-all;
+}
+
+.auth-header {
+  @apply text-center;
+}
+
+.title {
+  @apply text-3xl font-semibold text-gray-800;
+}
+
+.subtitle {
+  @apply text-sm text-gray-500 mt-1;
+}
+
+.auth-content {
+  @apply mt-4;
+}
+
+/* Transición suave entre login y register */
+:host ::ng-deep router-outlet + * {
+  @apply animate-fadeIn;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

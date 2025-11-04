@@ -1,21 +1,16 @@
 import { inject, Injectable, signal } from '@angular/core';
-import { LocalManagerService } from '../local-manager-service/local-manager-service';
+import { UserPreferencesService } from '../user-preferences-service/user-preferences-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LanguageService {
-  localManager = inject(LocalManagerService);
-
-  private language = signal<'es' | 'en'>(
-    (this.localManager.loadLocalLanguage() as 'es' | 'en') || 'en'
-  );
+  private userPreference = inject(UserPreferencesService);
+  private language = signal<'es' | 'en'>('en');
 
   private translations = {
     en: {
-      sidebar: {
-        subtitle: 'Productivity made simple',
-      },
+      sidebar: { subtitle: 'Productivity made simple' },
       priority: {
         priority: 'Priority',
         priorityAll: 'All',
@@ -41,15 +36,9 @@ export class LanguageService {
         health: 'Health',
         personal: 'Personal',
       },
-      placeholder: {
-        subtask: 'Subtask',
-        newTodo: 'New ToDo...',
-      },
+      placeholder: { subtask: 'Subtask', newTodo: 'New ToDo...' },
       todoList: {
-        buttons: {
-          addSubtask: 'Add subtask',
-          addTodo: 'Add ToDo',
-        },
+        buttons: { addSubtask: 'Add subtask', addTodo: 'Add ToDo' },
         validator: 'Content & priority required.',
         toast: {
           newToast: 'Created new ToDo',
@@ -66,10 +55,7 @@ export class LanguageService {
         },
         priority: 'Priority: ',
       },
-      helper: {
-        doneList: '✅ Done List',
-        dashboard: '📊 Dashboard',
-      },
+      helper: { doneList: '✅ Done List', dashboard: '📊 Dashboard' },
       doneList: {
         completedTask: 'Completed Tasks',
         titleUndone: 'Mark as undone',
@@ -85,9 +71,7 @@ export class LanguageService {
       },
     },
     es: {
-      sidebar: {
-        subtitle: 'Haciendo productividad simple',
-      },
+      sidebar: { subtitle: 'Haciendo productividad simple' },
       priority: {
         priority: 'Prioridad',
         priorityAll: 'Todas',
@@ -113,15 +97,9 @@ export class LanguageService {
         health: 'Salud',
         personal: 'Personales',
       },
-      placeholder: {
-        subtask: 'Subtarea',
-        newTodo: 'Nueva tarea...',
-      },
+      placeholder: { subtask: 'Subtarea', newTodo: 'Nueva tarea...' },
       todoList: {
-        buttons: {
-          addSubtask: 'Añadir subtarea',
-          addTodo: 'Añadir tarea',
-        },
+        buttons: { addSubtask: 'Añadir subtarea', addTodo: 'Añadir tarea' },
         validator: 'Contenido y prioridad requeridos.',
         toast: {
           newToast: 'Tarea creada',
@@ -138,10 +116,7 @@ export class LanguageService {
         },
         priority: 'Prioridad: ',
       },
-      helper: {
-        doneList: '✅ Lista de completados',
-        dashboard: '📊 Panel total',
-      },
+      helper: { doneList: '✅ Lista de completados', dashboard: '📊 Panel total' },
       doneList: {
         completedTask: 'Tareas completadas',
         titleUndone: 'Marcar como incompleta',
@@ -158,25 +133,28 @@ export class LanguageService {
     },
   };
 
-  initLanguage() {
-    const savedLang = this.localManager.loadLocalLanguage() as 'es' | 'en' | null;
-    if (savedLang && (savedLang === 'es' || savedLang === 'en')) {
-      this.language.set(savedLang);
+  async initLanguage() {
+    try {
+      const prefs = await this.userPreference.getPreferredLanguage();
+      if (prefs) {
+        this.language.set(prefs as 'es' | 'en');
+        localStorage.setItem('preferredLang', prefs);
+      }
+    } catch {
+      this.language.set('en');
     }
   }
 
-  setLanguage(lang: 'es' | 'en') {
+  async setLanguage(lang: 'es' | 'en') {
     this.language.set(lang);
-    this.localManager.saveLocalLanguage(lang);
+    localStorage.setItem('preferredLang', lang);
+    await this.userPreference.updatePreferredLanguage(lang);
   }
 
   t(path: string): string {
     const keys = path.split('.');
     let value: any = this.translations[this.language()];
-    for (const key of keys) {
-      value = value?.[key];
-      if (!value) break;
-    }
+    for (const key of keys) value = value?.[key];
     return value ?? path;
   }
 

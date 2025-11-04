@@ -1,17 +1,14 @@
 import { Routes } from '@angular/router';
-import { TodoHelperComponent } from './components/todo-helper-component/todo-helper-component';
-import { DoneTodoList } from './components/done-todo-list/done-todo-list';
-import { DashboardComponent } from './components/dashboard-component/dashboard-component';
+import { PUBLIC_ROUTES } from './public/auth/public.routes';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/helper', pathMatch: 'full' },
   {
-    path: 'helper',
-    component: TodoHelperComponent,
-    children: [
-      { path: 'done', component: DoneTodoList },
-      { path: 'dashboard', component: DashboardComponent },
-      { path: '', redirectTo: 'done', pathMatch: 'full' }
-    ]
-  }
+    path: '',
+    children: PUBLIC_ROUTES,
+  },
+  {
+    path: 'app',
+    loadChildren: () => import('./private/private.routes').then(m => m.PRIVATE_ROUTES),
+  },
+  { path: '**', redirectTo: '' },
 ];

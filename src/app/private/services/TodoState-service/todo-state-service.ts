@@ -1,54 +1,84 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Priority, TodoItemInterface } from '../../models';
-import { LocalManagerService } from '../local-manager-service/local-manager-service';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { TodoItemInterface, Priority, Subtask } from '../../models';
+import { TodoManagerService } from '../todo-manager-service/todo-manager-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoStateService {
   todos = signal<TodoItemInterface[]>([]);
-  localManager = inject(LocalManagerService);
+  private todoManager = inject(TodoManagerService);
 
-  addTodo(todo: TodoItemInterface) {
-    this.todos.update((t) => [...t, todo]);
-  }
+  completedTodos = computed(() => this.todos().filter(todo => todo.completed));
 
-  completedTodos = computed(() => this.todos().filter((todo) => todo.completed));
-
-  remove(id: string) {
-    this.todos.update((t) => t.filter((todo) => todo.id !== id));
-  }
-
-  loadFromStorage(items: TodoItemInterface[]) {
+  // 🔹 Cargar todos desde backend
+  async loadTodos() {
+    const items = await this.todoManager.getAllTodos();
     this.todos.set(items);
   }
 
-  setTodos(todos: TodoItemInterface[]) {
-    this.todos.set(todos);
+  // 🔹 Crear un todo
+  async addTodo(todo: Partial<TodoItemInterface>) {
+    const created = await this.todoManager.createTodo(todo);
+    this.todos.update(t => [...t, created]);
   }
 
-  editTodo(id: string, updateContent: string) {
-    this.todos.update((todos) =>
-      todos.map((todo) => (todo.id === id ? { ...todo, content: updateContent } : todo))
+  // 🔹 Actualiza campos de un todo (contenido y/o prioridad)
+  async updateTodoFields(id: string, fields: Partial<Pick<TodoItemInterface, 'content' | 'priority'>>) {
+    const todo = this.todos().find(t => t.id === id);
+    if (!todo) return;
+
+    const updated: TodoItemInterface = { ...todo, ...fields };
+    await this.todoManager.updateTodo(updated);
+    this.todos.update(t => t.map(x => x.id === id ? updated : x));
+  }
+
+  // 🔹 Marcar completado/incompleto
+  async toggleCompleted(id: string) {
+    const todo = this.todos().find(t => t.id === id);
+    if (!todo) return;
+
+    const updated: TodoItemInterface = { ...todo, completed: !todo.completed };
+    await this.todoManager.updateTodo(updated);
+    this.todos.update(t => t.map(x => x.id === id ? updated : x));
+  }
+
+  // 🔹 Eliminar todo
+  async deleteTodo(id: string) {
+    await this.todoManager.deleteTodo(id);
+    this.todos.update(t => t.filter(x => x.id !== id));
+  }
+
+  // 🔹 Reordenar todos
+  async reorderTodos(newOrder: TodoItemInterface[]) {
+    this.todos.set(newOrder);
+    await this.todoManager.reorderTodos(newOrder);
+  }
+
+  // 🔹 Subtasks
+  async toggleSubtaskCompletion(todoId: string, subtaskId: string) {
+    const todo = this.todos().find(t => t.id === todoId);
+    if (!todo || !todo.subtask) return;
+
+    const updatedSubtasks = todo.subtask.map(s =>
+      s.id === subtaskId ? { ...s, completed: !s.completed } : s
     );
-    this.localManager.updateToDoItem(id, updateContent);
+
+    const updated: TodoItemInterface = { ...todo, subtask: updatedSubtasks };
+    await this.todoManager.updateTodo(updated);
+    this.todos.update(t => t.map(x => x.id === todoId ? updated : x));
   }
 
-  editTodoPriority(id: string, priority: Priority) {
-    this.todos.update((todos) => todos.map((t) => (t.id === id ? { ...t, priority } : t)));
-  }
+  async updateSubtaskContent(todoId: string, subtaskId: string, content: string) {
+    const todo = this.todos().find(t => t.id === todoId);
+    if (!todo || !todo.subtask) return;
 
-  toggleCompletedToDo(id: string) {
-    this.todos.update((todos) =>
-      todos.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+    const updatedSubtasks = todo.subtask.map(s =>
+      s.id === subtaskId ? { ...s, content } : s
     );
 
-    const updatedTodos = this.todos();
-    this.localManager.setToDoItems(updatedTodos);
-  }
-
-  deleteTodo(id: string) {
-    this.localManager.eraseToDoItem(id);
-    this.remove(id);
+    const updated: TodoItemInterface = { ...todo, subtask: updatedSubtasks };
+    await this.todoManager.updateTodo(updated);
+    this.todos.update(t => t.map(x => x.id === todoId ? updated : x));
   }
 }
