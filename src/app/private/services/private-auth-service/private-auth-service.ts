@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 export class PrivateAuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = 'http://auth-backend-production-7017.up.railway.app';
 
   logout() {
     this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe({

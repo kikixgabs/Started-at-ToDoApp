@@ -7,7 +7,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class TodoManagerService {
-  private baseUrl = 'http://localhost:8080/todos';
+  private baseUrl = 'http://auth-backend-production-7017.up.railway.app/todos';
 
   constructor(private http: HttpClient) {}
 

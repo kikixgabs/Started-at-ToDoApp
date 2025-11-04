@@ -6,7 +6,7 @@ import { firstValueFrom } from 'rxjs';
   providedIn: 'root',
 })
 export class UserPreferencesService {
-  private baseUrl = 'http://localhost:8080/preferences';
+  private baseUrl = 'http://auth-backend-production-7017.up.railway.app/preferences';
 
   constructor(private http: HttpClient) {}
 
