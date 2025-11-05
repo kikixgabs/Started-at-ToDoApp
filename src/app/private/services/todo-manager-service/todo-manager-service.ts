@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { TodoItemInterface } from '../../models';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TodoManagerService {
-  private baseUrl = 'http://auth-backend-production-7017.up.railway.app/todos';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 

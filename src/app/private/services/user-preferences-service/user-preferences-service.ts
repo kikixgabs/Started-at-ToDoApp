@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserPreferencesService {
-  private baseUrl = 'http://auth-backend-production-7017.up.railway.app/preferences';
+  private baseUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) {}
 
