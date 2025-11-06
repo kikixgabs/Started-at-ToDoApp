@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -8,14 +8,13 @@ import { environment } from '../../../../environments/environment';
 })
 export class UserPreferencesService {
   private baseUrl = environment.apiUrl;
-
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient)
 
   // ✅ Obtener todas las preferencias
   async getPreferences() {
     return firstValueFrom(
       this.http.get<{ preferredLanguage: string; preferredTheme: string }>(
-        this.baseUrl,
+        `${this.baseUrl}/preferences`,
         { withCredentials: true }
       )
     );
@@ -37,7 +36,7 @@ export class UserPreferencesService {
   async updatePreferredLanguage(preferredLanguage: string) {
     return firstValueFrom(
       this.http.put(
-        this.baseUrl,
+        `${this.baseUrl}/preferences`,
         { preferredLanguage },
         { withCredentials: true }
       )
@@ -48,7 +47,7 @@ export class UserPreferencesService {
   async updatePreferredTheme(preferredTheme: string) {
     return firstValueFrom(
       this.http.put(
-        this.baseUrl,
+        `${this.baseUrl}/preferences`,
         { preferredTheme },
         { withCredentials: true }
       )
@@ -57,6 +56,6 @@ export class UserPreferencesService {
 
   // (opcional) Para login inicial
   getPreferencesLogin() {
-    return this.http.get(`${this.baseUrl}`, { withCredentials: true });
+    return this.http.get(`${this.baseUrl}/preferences`, { withCredentials: true });
   }
 }
