@@ -8,7 +8,7 @@ import { environment } from '../../../../environments/environment';
   providedIn: 'root',
 })
 export class TodoManagerService {
-  private baseUrl = environment.apiUrl;
+  private baseUrl = `${environment.apiUrl}/todos`;
 
   constructor(private http: HttpClient) {}
 
