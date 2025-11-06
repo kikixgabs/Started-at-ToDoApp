@@ -93,8 +93,6 @@ export class TodoList implements OnInit {
       this.todoState.todos().forEach((todo) => (map[todo.id] = true));
       this.appearingMap.set(map);
 
-      // Guardamos también en LocalStorage para persistencia
-      //this.localManager.setToDoItems(this.todoState.todos());
     });
 
     // Observadores de filtros
@@ -173,7 +171,6 @@ export class TodoList implements OnInit {
     }, 700);
   }
 
-  // Crear nuevo todo
   async onSubmit(): Promise<void> {
     const rawSubtasks = this.todoForm.value.formSubtasks ?? [];
 
@@ -192,15 +189,10 @@ export class TodoList implements OnInit {
       subtask: processedSubtasks.length ? processedSubtasks : null,
     });
 
-    // Actualizamos LocalStorage
-    //this.localManager.setToDoItems(this.todoState.todos());
-
-    // Animación de aparición
     const newTodo = this.todoState.todos().slice(-1)[0];
     this.appearingMap.update((map) => ({ ...map, [newTodo.id]: false }));
     setTimeout(() => this.appearingMap.update((map) => ({ ...map, [newTodo.id]: true })), 10);
 
-    // Reset form
     this.todoForm.reset({
       formContent: '',
       formSelector: null,
@@ -219,7 +211,7 @@ export class TodoList implements OnInit {
     this.removingMap.update((map) => ({ ...map, [id]: true }));
     setTimeout(async () => {
       await this.todoState.deleteTodo(id);
-      this.localManager.setToDoItems(this.todoState.todos());
+      //this.localManager.setToDoItems(this.todoState.todos());
       this.removingMap.update((map) => {
         const copy = { ...map };
         delete copy[id];

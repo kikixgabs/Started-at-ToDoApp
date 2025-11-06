@@ -43,33 +43,18 @@ export class ThemeService {
     });
   }
 
-  /**
-   * 🔹 Inicializa el tema al cargar la app (desde localStorage o backend)
-   */
   async init() {
     try {
-      // Primero tratamos de cargar desde localStorage (más rápido)
-      const localTheme = localStorage.getItem('preferredTheme');
-      if (localTheme) {
-        this.appTheme.set(localTheme as 'light' | 'dark' | 'system');
-        return;
-      }
-
-      // Si no hay nada guardado, lo pedimos al backend
       const prefs = await this.userPreference.getPreferredTheme();
       this.appTheme.set(prefs as 'light' | 'dark' | 'system');
-      localStorage.setItem('preferredTheme', prefs);
     } catch {
       this.appTheme.set('system');
     }
   }
 
-  /**
-   * 🔹 Cambia el tema dinámicamente y guarda la preferencia
-   */
+  
   async setTheme(theme: 'light' | 'dark' | 'system') {
     this.appTheme.set(theme);
-    localStorage.setItem('preferredTheme', theme);
 
     try {
       await this.userPreference.updatePreferredTheme(theme);

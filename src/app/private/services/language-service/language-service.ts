@@ -138,7 +138,7 @@ export class LanguageService {
       const prefs = await this.userPreference.getPreferredLanguage();
       if (prefs) {
         this.language.set(prefs as 'es' | 'en');
-        localStorage.setItem('preferredLang', prefs);
+        //localStorage.setItem('preferredLang', prefs);
       }
     } catch {
       this.language.set('en');
@@ -147,7 +147,7 @@ export class LanguageService {
 
   async setLanguage(lang: 'es' | 'en') {
     this.language.set(lang);
-    localStorage.setItem('preferredLang', lang);
+    //localStorage.setItem('preferredLang', lang);
     await this.userPreference.updatePreferredLanguage(lang);
   }
 
