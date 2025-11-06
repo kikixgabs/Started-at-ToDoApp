@@ -138,6 +138,7 @@ export class TodoList implements OnInit {
   }
 
   updateSubtask(index: number, value: string) {
+    if (value === '') return
     const current = this.todoForm.controls.formSubtasks.value ?? [];
     current[index] = value;
     this.todoForm.controls.formSubtasks.setValue([...current]);
