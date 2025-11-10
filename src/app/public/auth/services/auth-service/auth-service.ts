@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../../environments/environment';
@@ -9,7 +9,7 @@ import { environment } from '../../../../../environments/environment';
 export class AuthService {
   private apiUrl: string = environment.apiUrl
 
-  constructor(private http: HttpClient) {}
+  http = inject(HttpClient);
 
   register(user: { username: string; password: string; email: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/register`, user);

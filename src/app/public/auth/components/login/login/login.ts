@@ -47,27 +47,22 @@ export class Login {
     if (this.loginForm.invalid) return;
 
     try {
-      // ✅ 1. Hacer login
       await firstValueFrom(this.authService.login(this.loginForm.getRawValue()));
 
-      // ✅ 2. Obtener preferencias del backend
       const prefs = await this.userPreference.getPreferences();
 
-      // ✅ 3. Aplicar idioma
       if (prefs.preferredLanguage) {
         await this.languageService.setLanguage(prefs.preferredLanguage as 'es' | 'en');
       } else {
-        await this.languageService.setLanguage('en'); // valor por defecto
+        await this.languageService.setLanguage('en');
       }
 
-      // ✅ 4. Aplicar tema
       if (prefs.preferredTheme) {
         await this.themeService.setTheme(prefs.preferredTheme as 'light' | 'dark' | 'system');
       } else {
         await this.themeService.setTheme('system');
       }
-
-      // ✅ 5. Redirigir al dashboard o app
+      console.log('login existoso');
       this.router.navigate(['/app']);
     } catch (error) {
       console.error('Error en login:', error);
