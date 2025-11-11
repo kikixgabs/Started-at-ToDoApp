@@ -1,23 +1,9 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  signal,
-} from '@angular/core';
+import {ChangeDetectionStrategy,ChangeDetectorRef,Component,computed,effect,inject,OnInit,signal,} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TodoItem } from '../todo-item/todo-item';
-import {
-  LocalManagerService,
-  FilterService,
-  LanguageService,
-  ToastService,
-  TodoStateService,
-} from '../../services';
+import {FilterService,LanguageService,ToastService,TodoStateService,} from '../../services';
 import { Priority, TodoItemInterface } from '../../models';
 
 interface contentForm {
@@ -37,11 +23,11 @@ interface contentForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TodoList implements OnInit {
-  localManager = inject(LocalManagerService);
   todoState = inject(TodoStateService);
   filterService = inject(FilterService);
   toastService = inject(ToastService);
   lang = inject(LanguageService);
+  cdr = inject(ChangeDetectorRef);
 
   Priority = Priority;
 
@@ -92,7 +78,6 @@ export class TodoList implements OnInit {
       const map: Record<string, boolean> = {};
       this.todoState.todos().forEach((todo) => (map[todo.id] = true));
       this.appearingMap.set(map);
-
     });
 
     // Observadores de filtros
@@ -103,6 +88,8 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formFilterTag.valueChanges.subscribe((value) => {
       this.filterTags.set(value ? [value] : []);
     });
+
+    //this.cdr.markForCheck();
   }
 
   constructor() {
@@ -238,7 +225,7 @@ export class TodoList implements OnInit {
         newAllTodos.push(todo);
       }
     });
-
+    
     await this.todoState.reorderTodos(newAllTodos);
     //this.localManager.setToDoItems(this.todoState.todos());
   }

@@ -87,7 +87,7 @@
       class="text-[1.5rem] w-full border rounded px-2 py-1" />
     <span class="flex-2">
       <select id="todoPriority" [ngModel]="prioritySignal()" (ngModelChange)="prioritySignal.set($event)"
-        class="border-2 rounded-xs px-2 py-1">
+        class="border-2 bg-[var(--mat-sys-surface-container-highest)] rounded-xs px-2 py-1">
         <option [ngValue]="null" disabled>{{lang.t('priority.changePriority')}}</option>
         <option [ngValue]="Priority.LOW">{{lang.t('priority.priorityLow')}}</option>
         <option [ngValue]="Priority.MEDIUM">{{lang.t('priority.priorityMedium')}}</option>

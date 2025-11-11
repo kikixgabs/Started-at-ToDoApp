@@ -1,0 +1,61 @@
+export const en = {
+  sidebar: { subtitle: 'Productivity made simple' },
+  priority: {
+    priority: 'Priority',
+    priorityAll: 'All',
+    priorityLow: 'Low',
+    priorityMedium: 'Medium',
+    priorityHigh: 'High',
+    changePriority: 'Change Priority',
+  },
+  filters: {
+    filterPriority: 'Filter priority',
+    filterTag: 'Filter tag',
+    reset: 'Reset filters',
+    empty: 'No ToDos found for this filter.',
+    filterBy: 'Filter by: ',
+  },
+  tags: {
+    addTags: 'Add tags:',
+    tagsAll: 'All',
+    work: 'Work',
+    learning: 'Learning',
+    home: 'Home',
+    finance: 'Finance',
+    health: 'Health',
+    personal: 'Personal',
+  },
+  placeholder: { subtask: 'Subtask', newTodo: 'New ToDo...' },
+  todoList: {
+    buttons: { addSubtask: 'Add subtask', addTodo: 'Add ToDo' },
+    validator: 'Content & priority required.',
+    toast: {
+      newToast: 'Created new ToDo',
+      emptySubtaskToast: 'Fill subtask before adding another.',
+    },
+  },
+  todoItem: {
+    buttons: {
+      edit: 'Edit',
+      done: 'Done',
+      delete: 'Delete',
+      save: 'Save',
+      goBack: 'Go Back',
+    },
+    priority: 'Priority: ',
+  },
+  helper: { doneList: '✅ Done List', dashboard: '📊 Dashboard' },
+  doneList: {
+    completedTask: 'Completed Tasks',
+    titleUndone: 'Mark as undone',
+    titleDelete: 'Delete this ToDo',
+    emptyDoneTask: 'No completed tasks yet.',
+    emptyFilter: 'No completed tasks for this filter yet.',
+  },
+  dashboard: {
+    dashboard: 'Dashboard',
+    total: 'Total',
+    complete: 'Complete',
+    pending: 'Pending',
+  },
+};

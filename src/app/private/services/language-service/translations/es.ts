@@ -1,0 +1,61 @@
+export const es = {
+  sidebar: { subtitle: 'Haciendo productividad simple' },
+  priority: {
+    priority: 'Prioridad',
+    priorityAll: 'Todas',
+    priorityLow: 'Baja',
+    priorityMedium: 'Media',
+    priorityHigh: 'Alta',
+    changePriority: 'Cambiar Prioridad',
+  },
+  filters: {
+    filterPriority: 'Filtrar prioridad',
+    filterTag: 'Filtrar etiqueta',
+    reset: 'Reiniciar filtros',
+    empty: 'No se encuentran tareas para este filtro.',
+    filterBy: 'Filtrar por: ',
+  },
+  tags: {
+    addTags: 'Añadir etiquetas:',
+    tagsAll: 'Todas',
+    work: 'Trabajo',
+    learning: 'Aprendizaje',
+    home: 'Hogar',
+    finance: 'Finanzas',
+    health: 'Salud',
+    personal: 'Personales',
+  },
+  placeholder: { subtask: 'Subtarea', newTodo: 'Nueva tarea...' },
+  todoList: {
+    buttons: { addSubtask: 'Añadir subtarea', addTodo: 'Añadir tarea' },
+    validator: 'Contenido y prioridad requeridos.',
+    toast: {
+      newToast: 'Tarea creada',
+      emptySubtaskToast: 'Complete la subtarea vacía antes de crear otra.',
+    },
+  },
+  todoItem: {
+    buttons: {
+      edit: 'Editar',
+      done: 'Terminar',
+      delete: 'Borrar',
+      save: 'Guardar',
+      goBack: 'Revertir cambios',
+    },
+    priority: 'Prioridad: ',
+  },
+  helper: { doneList: '✅ Lista de completados', dashboard: '📊 Panel total' },
+  doneList: {
+    completedTask: 'Tareas completadas',
+    titleUndone: 'Marcar como incompleta',
+    titleDelete: 'Eliminar tarea completada',
+    emptyDoneTask: 'Sin tareas completas.',
+    emptyFilter: 'No se encuentran tareas completadas para este filtro.',
+  },
+  dashboard: {
+    dashboard: 'Panel de tareas',
+    total: 'Total',
+    complete: 'Completadas',
+    pending: 'Pendientes',
+  },
+};

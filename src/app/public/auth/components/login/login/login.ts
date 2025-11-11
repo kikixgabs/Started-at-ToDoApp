@@ -62,7 +62,6 @@ export class Login {
       } else {
         await this.themeService.setTheme('system');
       }
-      console.log('login existoso');
       this.router.navigate(['/app']);
     } catch (error) {
       console.error('Error en login:', error);
@@ -72,6 +71,8 @@ export class Login {
   }
 
   guestLogin() {
+
+    this.authService.loginAsGuest();
     this.router.navigate(['/app']);
   }
 }

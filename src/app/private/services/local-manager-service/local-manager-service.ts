@@ -1,10 +1,25 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { TodoItemInterface } from '../../models';
+import { LanguageService } from '../language-service/language-service';
+import { ThemeService } from '../theme-service/theme-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LocalManagerService {
+
+  languageService = inject(LanguageService);
+  themeService = inject(ThemeService);
+
+  logAsGuest(){
+    if(typeof localStorage === undefined) return
+
+    localStorage.setItem('guest-session', 'true');
+    this.languageService.setLanguage('en');
+    this.themeService.setTheme('system');
+
+  }
+
   getAllTodos(): TodoItemInterface[] {
     if (typeof localStorage === 'undefined') return [];
 
@@ -124,4 +139,8 @@ export class LocalManagerService {
     return null;
   }
 
+  logout(): void{
+    localStorage.clear()
+  }
+ 
 }

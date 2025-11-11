@@ -4,6 +4,7 @@ import { TodoItemInterface, Priority, Subtask } from '../../models';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../../public/auth/services';
 
 @Component({
   selector: 'app-todo-item',
@@ -27,6 +28,7 @@ export class TodoItem {
   // Servicios
   lang = inject(LanguageService);
   todoState = inject(TodoStateService);
+  authService = inject(AuthService);
   Priority = Priority;
 
   tagColors: Record<string, string> = {
