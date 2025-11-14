@@ -1,10 +1,20 @@
-<div class="flex items-center justify-center min-h-screen bg-gradient-to-tl from-blue-600 via-zinc-600 to-orange-400 cursor-default">
-  <div class="m-3 bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl p-6 w-[24rem] md:w-[28rem] flex flex-col transition-all">
+<div
+  class="flex items-center justify-center min-h-screen bg-gradient-to-tl from-blue-600 via-zinc-600 to-orange-400 cursor-default">
+  <div
+    class="m-3 bg-white/90 backdrop-blur-md shadow-2xl rounded-3xl p-6 w-[24rem] md:w-[28rem] flex flex-col transition-all">
     <div class="text-center">
+      <div class="flex w-full justify-end gap-4 ">
+        <div class="text-zinc-800 cursor-pointer mb-2 underline" (click)="lang.setLanguage('en')">
+          English
+        </div>
+        <div class="text-zinc-800 cursor-pointer mb-2 underline" (click)="lang.setLanguage('es')">
+          Español
+        </div>
+      </div>
       <h1 class="text-4xl font-bold tracking-tight text-orange-400">
         Reddot<span class="text-zinc-400">Tasks</span>
       </h1>
-      <p class="text-sm text-gray-500 mt-1">Welcome back — please sign in to continue</p>
+      <p class="text-sm text-gray-500 mt-1">{{lang.t('authLayout.subtitle')}}</p>
     </div>
     <div class="mt-4">
       <router-outlet />

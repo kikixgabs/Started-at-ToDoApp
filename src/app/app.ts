@@ -1,10 +1,11 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { LanguageService, ThemeService } from './private/services';
+import { LoadingSpinnerComponent } from "./global/components/loading-spinner-componente/loading-spinner-component/loading-spinner-component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, LoadingSpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

@@ -3,37 +3,89 @@
 
         <div class="text-center">
             <h1 class="text-3xl font-semibold text-gray-800">
-                Create Account ✨
+                {{lang.t('register.title')}} ✨
             </h1>
             <p class="text-sm text-gray-500 mt-1">
-                Join us and start organizing your tasks
+                {{lang.t('register.subtitle')}}
             </p>
         </div>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-4">
-            <app-custom-input label="Username" [control]="$any(registerForm.get('username'))"
-                placeholder="Enter your username" type="text" errorMessage="Enter a valid username" />
+            <app-custom-input [label]="lang.t('register.username')" [control]="$any(registerForm.get('username'))"
+                placeholder="John Doe" type="text" errorMessage="Enter a valid username" />
 
-            <app-custom-input label="Email" [control]="$any(registerForm.get('email'))" placeholder="Enter your email"
-                type="email" errorMessage="Enter a valid email" />
+            <app-custom-input [label]="lang.t('register.email')" [control]="$any(registerForm.get('email'))"
+                placeholder="John@Doe.com" type="email" (blur)="onEmailBlur()" errorMessage="Enter a valid email" />
 
-            <app-custom-input label="Password" [control]="$any(registerForm.get('password'))"
-                placeholder="Enter your password" type="password" errorMessage="Enter a valid password" />
+            @if(checkingEmail){
+            <p class="text-sm text-orange-600">Checking email availability</p>
+            }
+            @if(emailInUse && registerForm.get('email')?.valid){
+            <p class="text-sm text-red-600">This email is already registered ❌</p>
+            }
 
-            <app-custom-input label="confirmPassword" [control]="$any(registerForm.get('password'))"
-                placeholder="Confirm your password" type="password" errorMessage="Mismatch passwords" />
+            <app-custom-input [label]="lang.t('register.password')" [control]="$any(registerForm.get('password'))"
+                [placeholder]="lang.t('register.password')" type="password" errorMessage="Enter a valid password" />
+
+            <app-custom-input [label]="lang.t('register.confirmPassword')"
+                [control]="$any(registerForm.get('confirmPassword'))" [placeholder]="lang.t('register.password')"
+                type="password" errorMessage="Passwords do not match" />
+
+            @if (registerForm.get('password')?.touched
+            && registerForm.get('password')?.errors?.['weakPassword']) {
+
+            <div class="text-sm text-gray-600 mt-2 space-y-1">
+                <p class="flex items-center gap-1"
+                    [class.text-green-600]="registerForm.get('password')?.errors?.['weakPassword']?.hasMinLength">
+                    <span [class.hidden]="!registerForm.get('password')?.errors?.['weakPassword']?.hasMinLength">
+                        ✅
+                    </span>
+                    Minimum 8 characters
+                </p>
+
+                <p class="flex items-center gap-1"
+                    [class.text-green-600]="registerForm.get('password')?.errors?.['weakPassword']?.hasLetter">
+                    <span [class.hidden]="!registerForm.get('password')?.errors?.['weakPassword']?.hasLetter">
+                        ✅
+                    </span>
+                    Contains letters
+                </p>
+
+                <p class="flex items-center gap-1"
+                    [class.text-green-600]="registerForm.get('password')?.errors?.['weakPassword']?.hasNumber">
+                    <span [class.hidden]="!registerForm.get('password')?.errors?.['weakPassword']?.hasNumber">
+                        ✅
+                    </span>
+                    Contains numbers
+                </p>
+
+                <p class="flex items-center gap-1"
+                    [class.text-green-600]="registerForm.get('password')?.errors?.['weakPassword']?.hasSymbol">
+                    <span [class.hidden]="!registerForm.get('password')?.errors?.['weakPassword']?.hasSymbol">
+                        ✅
+                    </span>
+                    Contains symbols
+                </p>
+            </div>
+            }
+
+
+            @if(registerForm.errors?.['passwordsMismatch'] && registerForm.get('confirmPassword')?.touched) {
+            <p class="text-red-600 text-sm mt-1">Passwords do not match ❌</p>
+            }
+
 
             <button type="submit" [disabled]="registerForm.invalid"
                 class="bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-medium py-2.5 rounded-xl shadow transition-colors duration-200">
-                Register
+                {{lang.t('register.register')}}
             </button>
         </form>
 
         <p class="text-center text-sm text-gray-500">
-            Already have an account?
+            {{lang.t('register.goLogin')}}
             <a routerLink="/login"
                 class="text-orange-600 hover:text-orange-700 font-medium transition-colors duration-200">
-                Login
+                {{lang.t('register.login')}}
             </a>
         </p>
     </div>

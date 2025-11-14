@@ -32,10 +32,6 @@ export class LanguageService {
     await this.userPreference.updatePreferredLanguage(lang);
   }
 
-  /**
-   * Traduce un texto a partir de su ruta en el objeto de traducciones.
-   * Ej: t('filters.reset')
-   */
   t(path: string): string {
     const keys = path.split('.');
     let value: any = this.translations[this.language()];
@@ -45,6 +41,5 @@ export class LanguageService {
     return value ?? path;
   }
 
-  /** Reactive getter */
   currentLang = computed(() => this.language());
 }

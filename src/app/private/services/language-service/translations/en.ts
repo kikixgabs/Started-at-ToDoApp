@@ -1,4 +1,29 @@
 export const en = {
+  authLayout: {
+    title: 'ReddotTasks',
+    subtitle: 'Welcome back - please sign in to continue', 
+  },
+  login: { 
+    title: 'Welcome',
+    subtitle: 'Log in to continue',
+    email: 'Email',
+    password: 'Password',
+    login: 'Login',
+    guest: 'Join as Guest',
+    goRegist: `Don't have an account?`,
+    register: 'Register'
+  },
+  register: {
+    title: 'Create Account',
+    subtitle: 'Join us and start organizing your tasks',
+    username: 'Username',
+    email: 'Email',
+    password: 'Password',
+    confirmPassword: 'Confirm password',
+    register: 'Register',
+    goLogin: `Already have an account?`,
+    login: 'Login'
+  },
   sidebar: { subtitle: 'Productivity made simple' },
   priority: {
     priority: 'Priority',

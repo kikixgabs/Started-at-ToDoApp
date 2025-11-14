@@ -29,8 +29,8 @@ export class Login {
   private authService = inject(AuthService);
   private router = inject(Router);
   private userPreference = inject(UserPreferencesService);
-  private languageService = inject(LanguageService);
-  private themeService = inject(ThemeService);
+  languageService = inject(LanguageService);
+  themeService = inject(ThemeService);
 
   loginForm = new FormGroup<LoginForm>({
     email: new FormControl('', {

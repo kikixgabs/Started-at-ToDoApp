@@ -5,7 +5,7 @@ import { environment } from '../../../../../environments/environment';
 import { LocalManagerService } from '../../../../private/services';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private apiUrl: string = environment.apiUrl;
@@ -34,4 +34,7 @@ export class AuthService {
     }
   }
 
+  checkEmail(email: string) {
+    return this.http.post<{ inUse: boolean }>(`${this.apiUrl}/check-email`, { email });
+  }
 }

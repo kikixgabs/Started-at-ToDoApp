@@ -1,4 +1,29 @@
 export const es = {
+  authLayout: {
+    title: 'ReddotTasks',
+    subtitle: 'Bienvenido nuevamente. Ingresa tus datos para continuar', 
+  },
+  login: { 
+    title: 'Bienvenido',
+    subtitle: 'Inicia sesión para continuar',
+    email: 'Email',
+    password: 'Contraseña',
+    login: 'Iniciar sesión',
+    guest: 'Ingresar como invitado',
+    goRegist: `¿Todavía no tienes cuenta?`,
+    register: 'Regístrate',
+  },
+  register: {
+    title: 'Crea tu cuenta',
+    subtitle: 'Únete para empezar a organizar tus tareas',
+    username: 'Nombre de usuario',
+    email: 'Email',
+    password: 'Contraseña',
+    confirmPassword: 'Confirmar contraseña',
+    register: 'Registrarse',
+    goLogin: `¿Ya tienes cuenta?`,
+    login: 'Inicia sesión'
+  },
   sidebar: { subtitle: 'Haciendo productividad simple' },
   priority: {
     priority: 'Prioridad',
