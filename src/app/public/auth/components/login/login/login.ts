@@ -13,6 +13,7 @@ import { CustomInput } from '../../custom-input/custom-input/custom-input';
 import { UserPreferencesService } from '../../../../../private/services/user-preferences-service/user-preferences-service';
 import { LanguageService } from '../../../../../private/services/language-service/language-service';
 import { ThemeService } from '../../../../../private/services/theme-service/theme-service';
+import { LoadingService } from '../../../../../global/services/Loading-Service/loading-service';
 
 interface LoginForm {
   email: FormControl<string>;
@@ -31,6 +32,7 @@ export class Login {
   private userPreference = inject(UserPreferencesService);
   languageService = inject(LanguageService);
   themeService = inject(ThemeService);
+  loadingService = inject(LoadingService);
 
   loginForm = new FormGroup<LoginForm>({
     email: new FormControl('', {
@@ -45,6 +47,8 @@ export class Login {
 
   async onSubmit() {
     if (this.loginForm.invalid) return;
+
+    this.loadingService.show()
 
     try {
       await firstValueFrom(this.authService.login(this.loginForm.getRawValue()));
@@ -67,6 +71,7 @@ export class Login {
       console.error('Error en login:', error);
     } finally {
       this.loginForm.reset();
+      this.loadingService.hide();
     }
   }
 
