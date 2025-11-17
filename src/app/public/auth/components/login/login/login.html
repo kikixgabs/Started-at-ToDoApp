@@ -7,17 +7,22 @@
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="flex flex-col space-y-5">
-      <app-custom-input [label]="languageService.t('login.email')" [control]="$any(loginForm.get('email'))" placeholder="john@doe.com" type="email"
-        errorMessage="Must be a valid email" />
+      <app-custom-input [label]="languageService.t('login.email')" [control]="$any(loginForm.get('email'))"
+        placeholder="john@doe.com" type="email" errorMessage="Must be a valid email" />
 
-      <app-custom-input [label]="languageService.t('login.password')" [control]="$any(loginForm.get('password'))" placeholder="johndoe123"
-        type="password" errorMessage="Invalid password" />
+      <app-custom-input [label]="languageService.t('login.password')" [control]="$any(loginForm.get('password'))"
+        placeholder="johndoe123." type="password" errorMessage="Invalid password" />
+
+      <div class="flex gap-1">
+        <input type="checkbox" formControlName="rememberMe" class="cursor-pointer font-medium py-2.5"> <div class="text-black">{{languageService.t('login.rememberMe')}}</div>
+      </div>
 
       <button type="submit" [disabled]="loginForm.invalid"
         class="w-full bg-blue-600 text-white font-medium py-2.5 rounded-xl shadow hover:bg-blue-700 active:scale-[0.98] transition disabled:bg-zinc-400 disabled:cursor-not-allowed">
         {{languageService.t('login.login')}}
       </button>
     </form>
+
 
     <div>
       <button type="button" (click)="guestLogin()"
@@ -28,7 +33,8 @@
 
     <div class="text-center text-sm text-zinc-500">
       {{languageService.t('login.goRegist')}}
-      <a routerLink="/register" class="text-blue-600 cursor-pointer hover:underline">{{languageService.t('login.register')}}</a>
+      <a routerLink="/register"
+        class="text-blue-600 cursor-pointer hover:underline">{{languageService.t('login.register')}}</a>
     </div>
 
   </div>

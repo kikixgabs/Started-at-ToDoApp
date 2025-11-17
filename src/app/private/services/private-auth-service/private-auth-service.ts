@@ -7,7 +7,7 @@ import { LocalManagerService } from '../local-manager-service/local-manager-serv
 import { TodoStateService } from '../TodoState-service/todo-state-service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PrivateAuthService {
   private http = inject(HttpClient);
@@ -18,19 +18,25 @@ export class PrivateAuthService {
   private todoService = inject(TodoStateService);
 
   logout() {
-    this.authService.isGuest.set(false);
-    this.localManager.logout();
-    this.todoService.clearState();
-    
-    this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe({
-      next: () => {
-        console.log('Sesión cerrada');
-        this.router.navigate(['/login']);
-      },
-      error: (err) => {
-        console.error('Error al cerrar sesión:', err);
-        this.router.navigate(['/login']);
-      }
-    });
+    if (this.authService.isGuest()) {
+      this.todoService.clearState();
+      this.authService.isGuest.set(false);
+      this.localManager.logout();
+      this.router.navigate(['/login']);
+      return;
+    } else {
+      this.localManager.logout();
+      this.todoService.clearState();
+  
+      this.http.post(`${this.baseUrl}/logout`, {}, { withCredentials: true }).subscribe({
+        next: () => {
+          this.router.navigate(['/login']);
+        },
+        error: (err) => {
+          console.error('Error al cerrar sesión:', err);
+          this.router.navigate(['/login']);
+        },
+      });
+    }
   }
 }

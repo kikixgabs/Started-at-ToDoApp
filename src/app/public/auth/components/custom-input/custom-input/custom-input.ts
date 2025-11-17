@@ -3,6 +3,7 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-custom-input',
+  standalone: true,
   imports: [ReactiveFormsModule],
   templateUrl: './custom-input.html',
   styleUrl: './custom-input.css'

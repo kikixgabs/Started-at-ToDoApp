@@ -48,7 +48,7 @@ export class ThemeService {
       const prefs = await this.userPreference.getPreferredTheme();
       this.appTheme.set(prefs as 'light' | 'dark' | 'system');
     } catch {
-      this.appTheme.set('system');
+      this.appTheme.set('light');
     }
   }
 

@@ -142,5 +142,13 @@ export class LocalManagerService {
   logout(): void{
     localStorage.clear()
   }
+
+  rememberUser(): void{
+    localStorage.setItem('rememberMe', 'true');
+  }
+
+  deleteRememberMe(): void{
+    localStorage.removeItem('rememberMe')
+  }
  
 }

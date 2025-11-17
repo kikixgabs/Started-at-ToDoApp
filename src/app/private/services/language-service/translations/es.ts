@@ -9,9 +9,10 @@ export const es = {
     email: 'Email',
     password: 'Contraseña',
     login: 'Iniciar sesión',
-    guest: 'Ingresar como invitado',
+    guest: 'Ingresar como invitado.',
     goRegist: `¿Todavía no tienes cuenta?`,
     register: 'Regístrate',
+    rememberMe: 'Mantener la sesión.'
   },
   register: {
     title: 'Crea tu cuenta',

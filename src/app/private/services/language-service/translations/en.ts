@@ -11,7 +11,8 @@ export const en = {
     login: 'Login',
     guest: 'Join as Guest',
     goRegist: `Don't have an account?`,
-    register: 'Register'
+    register: 'Register',
+    rememberMe: 'Remember Me.'
   },
   register: {
     title: 'Create Account',

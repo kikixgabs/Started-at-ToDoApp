@@ -80,7 +80,6 @@ export class Register {
         const result = await firstValueFrom(
           this.authService.register(this.registerForm.getRawValue())
         );
-        console.log('✅ Usuario registrado:', result);
         // Después de registrarse, redirigimos al login
         this.router.navigate(['/login']);
       } catch (error) {
