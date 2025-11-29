@@ -1,10 +1,21 @@
-import {ChangeDetectionStrategy,ChangeDetectorRef,Component,computed,effect,inject,OnInit,signal,} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule, moveItemInArray } from '@angular/cdk/drag-drop';
 import { TodoItem } from '../todo-item/todo-item';
-import {FilterService,LanguageService,ToastService,TodoStateService,} from '../../services';
+import { FilterService, LanguageService, ToastService, TodoStateService } from '../../services';
 import { Priority, TodoItemInterface } from '../../models';
+import { ModalService } from '../../../global/services/Modal-service/modal-service';
+import { CreateTodoComponent } from '../create-todo-component/create-todo-component/create-todo-component';
 
 interface contentForm {
   formContent: FormControl<string>;
@@ -28,6 +39,7 @@ export class TodoList implements OnInit {
   toastService = inject(ToastService);
   lang = inject(LanguageService);
   cdr = inject(ChangeDetectorRef);
+  modalService = inject(ModalService);
 
   Priority = Priority;
 
@@ -36,6 +48,10 @@ export class TodoList implements OnInit {
   filterTags = signal<string[]>([]);
   appearingMap = signal<Record<string, boolean>>({});
   removingMap = signal<Record<string, boolean>>({});
+
+  openCreateModal() {
+    this.modalService.open(CreateTodoComponent);
+  }
 
   tagColors: Record<string, string> = {
     Work: 'bg-blue-300',
@@ -88,8 +104,6 @@ export class TodoList implements OnInit {
     this.todoForm.controls.formFilterTag.valueChanges.subscribe((value) => {
       this.filterTags.set(value ? [value] : []);
     });
-
-    //this.cdr.markForCheck();
   }
 
   constructor() {
@@ -125,7 +139,7 @@ export class TodoList implements OnInit {
   }
 
   updateSubtask(index: number, value: string) {
-    if (value === '') return
+    if (value === '') return;
     const current = this.todoForm.controls.formSubtasks.value ?? [];
     current[index] = value;
     this.todoForm.controls.formSubtasks.setValue([...current]);
@@ -225,7 +239,7 @@ export class TodoList implements OnInit {
         newAllTodos.push(todo);
       }
     });
-    
+
     await this.todoState.reorderTodos(newAllTodos);
     //this.localManager.setToDoItems(this.todoState.todos());
   }

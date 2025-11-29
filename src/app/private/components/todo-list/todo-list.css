@@ -101,7 +101,7 @@ ul li app-todo-item {
   transition: all 0.3s ease;
 }
 
-ul li app-todo-item:hover {
+ul li app-todo-item.hover-enabled:hover {
   transform: translateY(-3px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
 }

@@ -1,0 +1,71 @@
+<div #modalContainer class="bg-zinc-800 rounded-2xl p-4 h-[25rem] w-[45rem]">
+  <form class="flex flex-col gap-y-4" [formGroup]="todoForm" (ngSubmit)="onSubmit()">
+
+    <!-- Entrada principal -->
+    <div class="flex flex-wrap md:flex-nowrap items-center gap-4">
+      <input formControlName="formContent"
+        class="flex-1 border border-[var(--border-color)] rounded-xl h-[3.35rem] text-base md:text-lg px-4 shadow-sm bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] placeholder-[var(--text-secondary)] focus:ring-2 focus:ring-orange-400 transition-all duration-300"
+        [placeholder]="[lang.t('placeholder.newTodo')]" />
+
+      <select formControlName="formSelector"
+        class="w-[8rem] md:w-[10rem] cursor-pointer h-[3.35rem] border border-[var(--border-color)] rounded-xl px-3 py-1 bg-[var(--mat-sys-surface-container-highest)] text-[var(--text-color)] shadow-sm focus:ring-2 focus:ring-orange-400 transition-all duration-300">
+        <option [ngValue]="null" disabled selected>{{lang.t('priority.priority')}}</option>
+        <option [ngValue]="Priority.LOW">{{lang.t('priority.priorityLow')}}</option>
+        <option [ngValue]="Priority.MEDIUM">{{lang.t('priority.priorityMedium')}}</option>
+        <option [ngValue]="Priority.HIGH">{{lang.t('priority.priorityHigh')}}</option>
+      </select>
+    </div>
+
+    <!-- Tags -->
+    <div class="flex flex-wrap gap-2 items-center pt-2">
+      <span
+        class="w-full text-[var(--text-secondary)] font-semibold text-sm uppercase tracking-wide">{{lang.t('tags.addTags')}}</span>
+      @for(tag of tagList; track tag){
+      <button type="button" (click)="toggleTag(tag)" [ngClass]="[
+            tagColors[tag],
+            selectedTags().includes(tag) ? 'border-2 font-bold text-black' : 'text-black',
+            'px-3 py-1 rounded-lg border cursor-pointer border-[var(--border-color)] text-sm transition-all duration-300 hover:scale-105 hover:brightness-95 shadow-sm'
+          ]">
+        {{lang.t('tags.'+tag.toLowerCase())}}
+      </button>
+      }
+    </div>
+
+    <!-- Validación -->
+    @if(
+    (todoForm.controls.formContent.invalid && todoForm.controls.formContent.touched) ||
+    (todoForm.controls.formSelector.invalid && todoForm.controls.formSelector.touched)
+    ){
+    <div class="text-red-500 text-sm font-semibold mt-1">
+      {{lang.t('todoList.validator')}}
+    </div>
+    }
+
+    <!-- Subtasks -->
+    <div class="subtasks mt-2 space-y-2">
+      @for(sub of formSubtasksWithIndex; track sub.index) {
+      <div class="flex gap-2 w-full md:w-[60%]">
+        <input type="text" [value]="sub.content" (input)="updateSubtask(sub.index, $any($event.target).value)"
+          [placeholder]="[lang.t('placeholder.subtask')]"
+          class="border border-[var(--border-color)] rounded-xl px-3 py-2 flex-1 bg-[var(--mat-sys-surface-container)] shadow-sm focus:ring-2 focus:ring-orange-400 text-[var(--text-color)] transition-all duration-300" />
+
+        <button type="button" (click)="removeSubtask(sub.index)"
+          class="bg-red-500 material-symbols-outlined hover:bg-red-600 text-white px-3 py-1 rounded-xl shadow-md transition-all duration-300">
+          close
+        </button>
+      </div>
+      }
+
+      <button type="button" (click)="addSubtaskInput()"
+        class="mt-2 cursor-pointer bg-blue-500 hover:bg-blue-600 text-black curpo px-5 py-2 rounded-lg shadow-md transition-all duration-300">
+        {{lang.t('todoList.buttons.addSubtask')}}
+      </button>
+    </div>
+
+    <!-- Add ToDo -->
+    <button type="submit" [disabled]="todoForm.invalid"
+      class="rounded-lg w-full sm:w-[14rem] h-[4rem] bg-gradient-to-r from-orange-400 to-orange-500 mt-6 text-black cursor-pointer hover:brightness-105 shadow-lg text-lg font-semibold transition-all duration-300">
+      {{lang.t('todoList.buttons.addTodo')}}
+    </button>
+  </form>
+</div>

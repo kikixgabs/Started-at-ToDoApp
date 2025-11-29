@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, HostBinding, HostListener, inject, input, Output, signal } from '@angular/core';
 import { LanguageService, TodoStateService } from '../../services';
 import { TodoItemInterface, Priority, Subtask } from '../../models';
 import { FormsModule } from '@angular/forms';
@@ -24,6 +24,13 @@ export class TodoItem {
   contentEdit = signal('');
   editingSubtaskId = signal<string>('');
   subtaskEditContent = signal<string>('');
+
+  @HostBinding('class.hover-enabled') hoverEnabled = true;
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.hoverEnabled = false;
+  }
 
   // Servicios
   lang = inject(LanguageService);
